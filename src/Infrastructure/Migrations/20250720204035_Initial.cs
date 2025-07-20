@@ -12,22 +12,22 @@ namespace Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ContentTypes",
+                name: "content_types",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Kind = table.Column<int>(type: "INTEGER", nullable: false)
+                    id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    name = table.Column<string>(type: "TEXT", nullable: false),
+                    kind = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContentTypes", x => x.Id);
+                    table.PrimaryKey("pk_content_types", x => x.id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContentTypes_Name",
-                table: "ContentTypes",
-                column: "Name",
+                name: "ix_content_types_name",
+                table: "content_types",
+                column: "name",
                 unique: true);
         }
 
@@ -35,7 +35,7 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ContentTypes");
+                name: "content_types");
         }
     }
 }

@@ -13,7 +13,8 @@ public static class DependencyInjection
 		IConfiguration config)
 	{
 		services.AddDbContext<AppDbContext>(options =>
-				options.UseSqlite(config.GetConnectionString("DefaultConnection")))
+				options.UseSqlite(config.GetConnectionString("DefaultConnection"))
+					.UseSnakeCaseNamingConvention())
 			.AddScoped<IContentTypeRepository, ContentTypeRepository>();
 
 		return services;
