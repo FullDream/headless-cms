@@ -2,17 +2,31 @@
 
 public class ContentType(Guid id, string name, ContentTypeKind kind)
 {
+	private readonly List<ContentField> fields = [];
 	public Guid Id { get; private set; } = id;
 	public string Name { get; private set; } = name;
 	public ContentTypeKind Kind { get; private set; } = kind;
 
-	public void Rename(string name)
+	public IReadOnlyCollection<ContentField> Fields => fields.AsReadOnly();
+
+	public void Rename(string name) => Name = name;
+
+	public void ChangeKind(ContentTypeKind kind) => Kind = kind;
+
+	public ContentField AddField(string name, string label, FieldType type, bool isRequired = false)
 	{
-		Name = name;
+		ContentField field = new(Guid.NewGuid(), Id, name, label, type, isRequired);
+
+		fields.Add(field);
+
+		return field;
 	}
 
-	public void ChangeKind(ContentTypeKind kind)
+	public void RemoveField(Guid fieldId)
 	{
-		Kind = kind;
+		var field = fields.FirstOrDefault(f => f.Id == fieldId);
+
+		if (field is not null)
+			fields.Remove(field);
 	}
 }
