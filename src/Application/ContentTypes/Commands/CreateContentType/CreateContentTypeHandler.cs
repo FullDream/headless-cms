@@ -10,7 +10,7 @@ public class CreateContentTypeHandler(IContentTypeRepository repository)
 {
 	public async Task<ContentTypeDto> Handle(CreateContentTypeCommand request, CancellationToken cancellationToken)
 	{
-		var exists = repository.FindByNameAsync(request.Name, cancellationToken);
+		var exists = await repository.FindByNameAsync(request.Name, cancellationToken);
 
 		if (exists is not null)
 			throw new InvalidOperationException($"ContentType '{request.Name}' already exists.");
