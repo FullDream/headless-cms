@@ -9,6 +9,7 @@ public class ContentTypeRepository(AppDbContext dbContext) : IContentTypeReposit
 		CancellationToken cancellationToken = default)
 	{
 		return await dbContext.ContentTypes
+			.Include(ct => ct.Fields)
 			.AsNoTracking()
 			.Where(ct => kind == null || ct.Kind == kind)
 			.ToListAsync(cancellationToken);
@@ -16,7 +17,9 @@ public class ContentTypeRepository(AppDbContext dbContext) : IContentTypeReposit
 
 	public async Task<ContentType?> FindByNameAsync(string name, CancellationToken cancellationToken = default)
 	{
-		return await dbContext.ContentTypes.AsNoTracking()
+		return await dbContext.ContentTypes
+			.Include(ct => ct.Fields)
+			.AsNoTracking()
 			.FirstOrDefaultAsync(ct => ct.Name == name, cancellationToken);
 	}
 
