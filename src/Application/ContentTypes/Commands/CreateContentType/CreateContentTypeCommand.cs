@@ -4,4 +4,7 @@ using MediatR;
 
 namespace Application.ContentTypes.Commands.CreateContentType;
 
-public record CreateContentTypeCommand(string Name, ContentTypeKind Kind) : IRequest<ContentTypeDto>;
+public record CreateContentTypeCommand(
+	string Name,
+	ContentTypeKind Kind,
+	IReadOnlyCollection<CreateContentFieldDto> Fields) : IRequest<ContentTypeDto>;
