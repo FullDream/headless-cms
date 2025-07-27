@@ -1,5 +1,4 @@
 ﻿using Application.ContentTypes.Dtos;
-using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
 
@@ -16,6 +15,9 @@ public class CreateContentTypeHandler(IContentTypeRepository repository)
 			throw new InvalidOperationException($"ContentType '{request.Name}' already exists.");
 
 		var contentType = new ContentType(Guid.NewGuid(), request.Name, request.Kind);
+
+		contentType.AddFields(request.Fields.Select(f => (f.Name, f.Label, f.Type, f.IsRequired)));
+
 		var created = await repository.AddAsync(contentType, cancellationToken);
 
 		return created.ToDto();

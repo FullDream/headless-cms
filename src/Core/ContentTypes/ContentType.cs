@@ -22,6 +22,12 @@ public class ContentType(Guid id, string name, ContentTypeKind kind)
 		return field;
 	}
 
+	public IReadOnlyCollection<ContentField> AddFields(
+		IEnumerable<(string Name, string Label, FieldType Type, bool IsRequired)> definitions)
+	{
+		return definitions.Select(d => AddField(d.Name, d.Label, d.Type, d.IsRequired)).ToList();
+	}
+
 	public void RemoveField(Guid fieldId)
 	{
 		var field = fields.FirstOrDefault(f => f.Id == fieldId);
