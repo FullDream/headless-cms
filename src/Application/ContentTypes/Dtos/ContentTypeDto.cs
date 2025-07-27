@@ -2,4 +2,4 @@
 
 namespace Application.ContentTypes.Dtos;
 
-public record ContentTypeDto(Guid Id, string Name, ContentTypeKind Kind);
+public record ContentTypeDto(Guid Id, string Name, ContentTypeKind Kind, IReadOnlyCollection<ContentFieldDto> Fields);
