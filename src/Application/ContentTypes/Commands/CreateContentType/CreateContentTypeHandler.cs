@@ -1,4 +1,5 @@
 ﻿using Application.ContentTypes.Dtos;
+using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
 
@@ -18,8 +19,9 @@ public class CreateContentTypeHandler(IContentTypeRepository repository)
 
 		contentType.AddFields(request.Fields.Select(f => (f.Name, f.Label, f.Type, f.IsRequired)));
 
-		var created = await repository.AddAsync(contentType, cancellationToken);
+		repository.Add(contentType);
+		await repository.SaveChangesAsync(cancellationToken);
 
-		return created.ToDto();
+		return contentType.ToDto();
 	}
 }

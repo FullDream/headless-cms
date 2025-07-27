@@ -28,8 +28,10 @@ public class UpdateContentTypeHandler(IContentTypeRepository repository)
 		if (request.Kind is { } kind && kind != contentType.Kind)
 			contentType.ChangeKind(kind);
 
-		var updated = await repository.UpdateAsync(contentType, cancellationToken);
+		repository.Update(contentType);
+		await repository.SaveChangesAsync(cancellationToken);
 
-		return updated.ToDto();
+
+		return contentType.ToDto();
 	}
 }
