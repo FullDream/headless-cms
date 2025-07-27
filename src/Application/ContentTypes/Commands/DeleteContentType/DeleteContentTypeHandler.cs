@@ -10,8 +10,13 @@ public class DeleteContentTypeHandler(IContentTypeRepository repository)
 {
 	public async Task<ContentTypeDto?> Handle(DeleteContentTypeCommand request, CancellationToken cancellationToken)
 	{
-		var deleted = await repository.DeleteAsync(request.Id, cancellationToken);
+		var contentType = await repository.FindByIdAsync(request.Id, cancellationToken: cancellationToken);
 
-		return deleted?.ToDto();
+		if (contentType is null) return null;
+
+		repository.Remove(contentType);
+		await repository.SaveChangesAsync(cancellationToken);
+
+		return contentType.ToDto();
 	}
 }
