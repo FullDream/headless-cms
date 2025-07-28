@@ -28,11 +28,13 @@ public class ContentType(Guid id, string name, ContentTypeKind kind)
 		return definitions.Select(d => AddField(d.Name, d.Label, d.Type, d.IsRequired)).ToList();
 	}
 
-	public void RemoveField(Guid fieldId)
+	public ContentField? RemoveField(Guid fieldId)
 	{
 		var field = fields.FirstOrDefault(f => f.Id == fieldId);
 
 		if (field is not null)
 			fields.Remove(field);
+
+		return field;
 	}
 }
