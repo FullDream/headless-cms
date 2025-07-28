@@ -3,12 +3,12 @@ using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
 
-namespace Application.ContentTypes.Commands.DeleteContentType;
+namespace Application.ContentTypes.Commands.RemoveContentType;
 
-public class DeleteContentTypeHandler(IContentTypeRepository repository)
-	: IRequestHandler<DeleteContentTypeCommand, ContentTypeDto?>
+public class RemoveContentTypeHandler(IContentTypeRepository repository)
+	: IRequestHandler<RemoveContentTypeCommand, ContentTypeDto?>
 {
-	public async Task<ContentTypeDto?> Handle(DeleteContentTypeCommand request, CancellationToken cancellationToken)
+	public async Task<ContentTypeDto?> Handle(RemoveContentTypeCommand request, CancellationToken cancellationToken)
 	{
 		var contentType = await repository.FindByIdAsync(request.Id, cancellationToken: cancellationToken);
 
