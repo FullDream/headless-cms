@@ -8,6 +8,7 @@ public interface IContentTypeRepository
 	Task<ContentType?> FindByNameAsync(string name, CancellationToken cancellationToken = default);
 	Task<ContentType?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default);
 	void Add(ContentType contentType);
+	void AddField(ContentField field);
 	void Update(ContentType contentType);
 	void Remove(ContentType contentType);
 	Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

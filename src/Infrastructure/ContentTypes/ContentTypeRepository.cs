@@ -19,10 +19,12 @@ public class ContentTypeRepository(AppDbContext dbContext) : IContentTypeReposit
 			.FirstOrDefaultAsync(ct => ct.Name == name, cancellationToken);
 
 	public async Task<ContentType?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
-		await dbContext.ContentTypes.FindAsync([id], cancellationToken);
+		await dbContext.ContentTypes
+			.Include(ct => ct.Fields)
+			.FirstOrDefaultAsync(ct => ct.Id == id, cancellationToken);
 
 	public void Add(ContentType contentType) => dbContext.ContentTypes.Add(contentType);
-
+	public void AddField(ContentField field) => dbContext.ContentFields.Add(field);
 	public void Update(ContentType contentType) => dbContext.ContentTypes.Update(contentType);
 
 	public void Remove(ContentType contentType) => dbContext.ContentTypes.Remove(contentType);

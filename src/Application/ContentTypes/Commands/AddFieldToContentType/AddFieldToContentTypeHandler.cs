@@ -23,6 +23,8 @@ public class AddFieldToContentTypeHandler(IContentTypeRepository repository)
 		var field = contentType.AddField(fieldRequest.Name, fieldRequest.Label, fieldRequest.Type,
 			fieldRequest.IsRequired);
 
+		repository.AddField(field);
+
 		await repository.SaveChangesAsync(cancellationToken);
 
 		return field.ToDto();
