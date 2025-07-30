@@ -15,11 +15,36 @@ public class ContentType(Guid id, string name, ContentTypeKind kind)
 
 	public ContentField AddField(string name, string label, FieldType type, bool isRequired = false)
 	{
-		ContentField field = new(Guid.NewGuid(), Id, name, label, type, isRequired);
+		ContentField field = new(Id, name, label, type, isRequired);
 
 		fields.Add(field);
 
 		return field;
+	}
+
+	public ContentField UpdateField(Guid fieldId, ContentFieldPatch patch)
+	{
+		ContentField? currentField = fields.FirstOrDefault(f => f.Id == fieldId) ??
+		                             throw new InvalidOperationException($"Field with id {fieldId} not found");
+
+		if (patch.Name is not null && currentField.Name != patch.Name)
+		{
+			bool isDuplicate = fields.Any(f => f.Id != currentField.Id && f.Name == patch.Name);
+
+			if (isDuplicate)
+				throw new InvalidOperationException($"Field name '{patch.Name}' must be unique.");
+
+
+			currentField.UpdateName(patch.Name);
+		}
+
+		if (patch.Label is not null) currentField.UpdateLabel(patch.Label);
+
+		if (patch.IsRequired is not null) currentField.UpdateRequired(patch.IsRequired.Value);
+
+		if (patch.Type is not null) currentField.UpdateType(patch.Type.Value);
+
+		return currentField;
 	}
 
 	public IReadOnlyCollection<ContentField> AddFields(
