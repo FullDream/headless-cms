@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Application.ContentTypes.Commands.RemoveFieldFromContentType;
 
-public record RemoveFieldFromContentTypeCommand(Guid ContentFieldId, Guid ContentTypeId) : IRequest<ContentFieldDto?>;
+public record RemoveFieldFromContentTypeCommand(Guid ContentTypeId, Guid ContentFieldId) : IRequest<ContentFieldDto?>;
