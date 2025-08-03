@@ -10,10 +10,9 @@ public class ContentTypeConfiguration : IEntityTypeConfiguration<ContentType>
 	{
 		builder.HasKey(ct => ct.Id);
 
-		builder.Property(ct => ct.Name).IsRequired();
 		builder.HasIndex(ct => ct.Name).IsUnique();
-
-		builder.Property(ct => ct.Kind).IsRequired();
+		builder.Property(ct => ct.Name).IsRequired();
+		builder.Property(ct => ct.Kind).HasConversion<string>().IsRequired();
 
 
 		builder.HasMany<ContentField>(ct => ct.Fields)

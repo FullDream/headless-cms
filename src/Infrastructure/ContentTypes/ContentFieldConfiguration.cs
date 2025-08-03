@@ -10,7 +10,6 @@ public class ContentFieldConfiguration : IEntityTypeConfiguration<ContentField>
 	{
 		builder.HasKey(f => f.Id);
 
-
 		builder.Property(f => f.Name).IsRequired();
 		builder.Property(f => f.IsRequired).IsRequired();
 
