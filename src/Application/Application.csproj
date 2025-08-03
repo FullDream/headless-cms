@@ -12,7 +12,14 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="12.0.0"/>
         <PackageReference Include="MediatR" Version="13.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="FluentValidation.DependencyInjectionExtensions">
+            <HintPath>C:\Users\pvryb\.nuget\packages\fluentvalidation.dependencyinjectionextensions\12.0.0\lib\net8.0\FluentValidation.DependencyInjectionExtensions.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>

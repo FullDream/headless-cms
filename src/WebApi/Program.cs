@@ -7,13 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Infrastructure
-builder.Services.AddDbInfrastructure(builder.Configuration);
-
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Application
-builder.Services.AddMediatR(cfg =>
-	cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly));
-
+builder.Services.AddApplication();
 
 var enumConverter = new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false);
 
