@@ -5,4 +5,5 @@ public enum FieldType
 	Text,
 	LongText,
 	Number,
+	Boolean,
 }

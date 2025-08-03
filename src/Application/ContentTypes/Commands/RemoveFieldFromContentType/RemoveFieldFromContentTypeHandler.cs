@@ -1,11 +1,14 @@
-﻿using Application.ContentTypes.Dtos;
+﻿using Application.Abstractions;
+using Application.ContentTypes.Dtos;
 using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
 
 namespace Application.ContentTypes.Commands.RemoveFieldFromContentType;
 
-public class RemoveFieldFromContentTypeHandler(IContentTypeRepository repository)
+public class RemoveFieldFromContentTypeHandler(
+	IContentTypeRepository repository,
+	IContentTypeSchemaManager schemaManager)
 	: IRequestHandler<RemoveFieldFromContentTypeCommand, ContentFieldDto?>
 {
 	public async Task<ContentFieldDto?> Handle(RemoveFieldFromContentTypeCommand request,
@@ -20,6 +23,8 @@ public class RemoveFieldFromContentTypeHandler(IContentTypeRepository repository
 		if (field is null) return null;
 
 		await repository.SaveChangesAsync(cancellationToken);
+
+		await schemaManager.RemoveFieldFromStructureAsync(contentType, field, cancellationToken);
 
 		return field.ToDto();
 	}

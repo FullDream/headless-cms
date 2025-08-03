@@ -14,11 +14,14 @@ builder.Services.AddDbInfrastructure(builder.Configuration);
 builder.Services.AddMediatR(cfg =>
 	cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly));
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-	options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-});
-;
+
+var enumConverter = new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false);
+
+builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(enumConverter));
+builder.Services.AddControllers()
+	.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(enumConverter));
+
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

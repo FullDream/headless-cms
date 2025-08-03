@@ -1,11 +1,12 @@
-﻿using Application.ContentTypes.Dtos;
+﻿using Application.Abstractions;
+using Application.ContentTypes.Dtos;
 using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
 
 namespace Application.ContentTypes.Commands.AddFieldToContentType;
 
-public class AddFieldToContentTypeHandler(IContentTypeRepository repository)
+public class AddFieldToContentTypeHandler(IContentTypeRepository repository, IContentTypeSchemaManager schemaManager)
 	: IRequestHandler<AddFieldToContentTypeCommand, ContentFieldDto>
 {
 	public async Task<ContentFieldDto> Handle(AddFieldToContentTypeCommand request, CancellationToken cancellationToken)
@@ -26,6 +27,8 @@ public class AddFieldToContentTypeHandler(IContentTypeRepository repository)
 		repository.AddField(field);
 
 		await repository.SaveChangesAsync(cancellationToken);
+
+		await schemaManager.AddFieldToStructureAsync(contentType, field, cancellationToken);
 
 		return field.ToDto();
 	}

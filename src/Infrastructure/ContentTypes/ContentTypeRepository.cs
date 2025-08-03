@@ -11,6 +11,7 @@ public class ContentTypeRepository(AppDbContext dbContext) : IContentTypeReposit
 			.Include(ct => ct.Fields)
 			.AsNoTracking()
 			.Where(ct => kind == null || ct.Kind == kind)
+			.OrderBy(ct => ct.Name)
 			.ToListAsync(cancellationToken);
 
 	public Task<ContentType?> FindByNameAsync(string name, CancellationToken cancellationToken = default) =>
