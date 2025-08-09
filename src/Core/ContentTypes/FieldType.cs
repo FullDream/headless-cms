@@ -2,8 +2,9 @@
 
 public enum FieldType
 {
-	Text,
+	ShortText,
 	LongText,
-	Number,
+	Integer,
+	Decimal,
 	Boolean,
 }
