@@ -69,9 +69,9 @@ internal class SqliteSchemaSqlGenerator(IStorageNameResolver nameResolver) : ISc
 	public string MapFieldType(FieldType type)
 		=> type switch
 		{
-			FieldType.Text => "TEXT",
-			FieldType.Number => "REAL",
-			FieldType.LongText => "TEXT",
+			FieldType.Integer => "INTEGER",
+			FieldType.Decimal => "REAL",
+			FieldType.ShortText or FieldType.LongText => "TEXT",
 			FieldType.Boolean => "INTEGER",
 			_ => throw new NotSupportedException($"Unsupported type: {type}")
 		};

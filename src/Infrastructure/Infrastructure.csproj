@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Application.Abstractions\Application.Abstractions.csproj"/>
+        <ProjectReference Include="..\Application.Abstractions\Application.Abstractions.csproj"/>
       <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 
@@ -26,10 +26,8 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.7"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="ContentEntries\"/>
+        <PackageReference Include="SqlKata" Version="4.0.1"/>
+        <PackageReference Include="SqlKata.Execution" Version="4.0.1"/>
     </ItemGroup>
 
 </Project>
