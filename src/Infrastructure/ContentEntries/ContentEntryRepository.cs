@@ -25,6 +25,7 @@ public class ContentEntryRepository(
 		var rows = await queryFactory.Connection
 			.QueryAsync(compiler.Sql, compiler.NamedBindings);
 
+
 		return rows.Select(row => mapper.Map((IDictionary<string, object?>)row)).ToList().AsReadOnly();
 	}
 
