@@ -3,27 +3,26 @@ using Application.ContentTypes.Dtos;
 using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
+using SharedKernel.Result;
 
 namespace Application.ContentTypes.Commands.Create;
 
 public class CreateContentTypeHandler(IContentTypeRepository repository, IContentTypeSchemaManager schemaManager)
-	: IRequestHandler<CreateContentTypeCommand, ContentTypeDto>
+	: IRequestHandler<CreateContentTypeCommand, Result<ContentTypeDto>>
 {
-	public async Task<ContentTypeDto> Handle(CreateContentTypeCommand request, CancellationToken cancellationToken)
+	public async Task<Result<ContentTypeDto>> Handle(CreateContentTypeCommand request,
+		CancellationToken cancellationToken)
 	{
-		var exists = await repository.FindByNameAsync(request.Name, cancellationToken);
+		var contentType = new ContentType(request.Name, request.Kind);
 
-		if (exists is not null)
-			throw new InvalidOperationException($"ContentType '{request.Name}' already exists.");
+		var fieldsResult = contentType.AddFields(request.Fields.Select(f => (f.Name, f.Label, f.Type, f.IsRequired)));
 
-		var contentType = new ContentType(Guid.NewGuid(), request.Name, request.Kind);
-
-		contentType.AddFields(request.Fields.Select(f => (f.Name, f.Label, f.Type, f.IsRequired)));
-
-		await schemaManager.EnsureStructureCreatedAsync(contentType, cancellationToken);
+		if (fieldsResult.IsFailure) return fieldsResult.Errors;
 
 		repository.Add(contentType);
+
 		await repository.SaveChangesAsync(cancellationToken);
+		await schemaManager.EnsureStructureCreatedAsync(contentType, cancellationToken);
 
 		return contentType.ToDto();
 	}

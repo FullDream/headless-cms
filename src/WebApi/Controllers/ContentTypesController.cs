@@ -24,67 +24,65 @@ public class ContentTypesController(IMediator mediator) : ControllerBase
 	{
 		var result = await mediator.Send(new GetContentTypesQuery(kind), cancellationToken);
 
-		return Ok(result);
+		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
 
 	[HttpGet("{name}")]
 	public async Task<ActionResult<ContentTypeDto>> GetByName(string name, CancellationToken cancellationToken)
 	{
-		var item = await mediator.Send(new GetContentTypeByNameQuery(name), cancellationToken);
+		var result = await mediator.Send(new GetContentTypeByNameQuery(name), cancellationToken);
 
-		return Ok(item);
+		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
 
 	[HttpPost]
 	public async Task<ActionResult<ContentTypeDto>> Create([FromBody] CreateContentTypeCommand command,
 		CancellationToken cancellationToken)
 	{
-		var item = await mediator.Send(command, cancellationToken);
+		var result = await mediator.Send(command, cancellationToken);
 
-		return Ok(item);
+		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
 
 	[HttpPatch("{id:guid}")]
 	public async Task<ActionResult<ContentTypeDto>> Update(Guid id, [FromBody] UpdateContentTypeDto body,
 		CancellationToken cancellationToken)
 	{
-		var item = await mediator.Send(new UpdateContentTypeCommand(id, body.Name, body.Kind), cancellationToken);
+		var result = await mediator.Send(new UpdateContentTypeCommand(id, body.Name, body.Kind), cancellationToken);
 
-		return Ok(item);
+		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
 
 	[HttpDelete("{id:guid}")]
 	public async Task<ActionResult<ContentTypeDto?>> Delete(Guid id, CancellationToken cancellationToken)
 	{
-		var item = await mediator.Send(new RemoveContentTypeCommand(id), cancellationToken);
+		var result = await mediator.Send(new RemoveContentTypeCommand(id), cancellationToken);
 
-		return Ok(item);
+		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
 
 	[HttpPost("{id:guid}/fields")]
 	public async Task<ActionResult<ContentFieldDto>> AddField(Guid id, [FromBody] CreateContentFieldDto field)
 	{
-		var item = await mediator.Send(new AddFieldToContentTypeCommand(id, field));
+		var result = await mediator.Send(new AddFieldToContentTypeCommand(id, field));
 
-		return Ok(item);
+		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
 
 	[HttpPatch("{id:guid}/fields/{fieldId:guid}")]
 	public async Task<ActionResult<ContentFieldDto>> UpdateField(Guid id, Guid fieldId,
 		[FromBody] UpdateContentFieldDto updateDto)
 	{
-		var item = await mediator.Send(new UpdateFieldInContentTypeCommand(id, fieldId, updateDto));
+		var result = await mediator.Send(new UpdateFieldInContentTypeCommand(id, fieldId, updateDto));
 
-		return Ok(item);
+		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
 
 	[HttpDelete("{id:guid}/fields/{fieldId:guid}")]
 	public async Task<ActionResult<ContentFieldDto>> RemoveField(Guid id, Guid fieldId)
 	{
-		var item = await mediator.Send(new RemoveFieldFromContentTypeCommand(id, fieldId));
+		var result = await mediator.Send(new RemoveFieldFromContentTypeCommand(id, fieldId));
 
-		if (item is null) return NotFound();
-
-		return Ok(item);
+		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
 }

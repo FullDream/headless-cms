@@ -1,0 +1,20 @@
+﻿using SharedKernel.Result;
+
+namespace Core.ContentTypes;
+
+public static class ContentTypeErrors
+{
+	public static Error NotFound(string property) =>
+		new Error("ContentType.NotFound", "ContentType is not found", property);
+
+	public static Error AlreadyExist(string name) =>
+		new("ContentType.AlreadyExist", $"ContentType '{name}' already exists.", nameof(ContentType.Name),
+			ErrorType.BusinessRule);
+
+	public static Error ContentFieldNotFound(Guid id) =>
+		new("ContentType.ContentFieldNotFound", $"Field with id {id} not found.", nameof(ContentField.Id));
+
+	public static Error ContentFieldNameIsUnique(string name) =>
+		new("ContentType.ContentFieldIsUnique", $"Field name '{name}' must be unique.", nameof(ContentField.Name),
+			ErrorType.BusinessRule);
+}

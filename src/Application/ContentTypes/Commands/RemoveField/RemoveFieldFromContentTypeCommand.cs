@@ -1,6 +1,6 @@
-﻿using Application.ContentTypes.Dtos;
-using MediatR;
+﻿using Application.Common.Messaging;
+using Application.ContentTypes.Dtos;
 
 namespace Application.ContentTypes.Commands.RemoveField;
 
-public record RemoveFieldFromContentTypeCommand(Guid ContentTypeId, Guid ContentFieldId) : IRequest<ContentFieldDto?>;
+public record RemoveFieldFromContentTypeCommand(Guid ContentTypeId, Guid ContentFieldId) : ICommand<ContentFieldDto>;

@@ -1,7 +1,7 @@
-﻿using Application.ContentTypes.Dtos;
+﻿using Application.Common.Messaging;
+using Application.ContentTypes.Dtos;
 using Core.ContentTypes;
-using MediatR;
 
 namespace Application.ContentTypes.Queries.GetAll;
 
-public record GetContentTypesQuery(ContentTypeKind? Kind) : IRequest<IEnumerable<ContentTypeDto>>;
+public record GetContentTypesQuery(ContentTypeKind? Kind) : IQuery<IEnumerable<ContentTypeDto>>;

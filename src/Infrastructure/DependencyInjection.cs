@@ -31,6 +31,7 @@ public static class DependencyInjection
 				.UseSnakeCaseNamingConvention());
 		services.AddScoped<IContentTypeRepository, ContentTypeRepository>();
 		services.AddScoped<IContentTypeFieldsProvider, ContentTypeFieldsProvider>();
+		services.AddScoped<IContentTypeExistenceChecker, ContentTypeExistenceChecker>();
 
 		services.AddSingleton<IContentEntryDataMapper, ContentEntryDataMapper>();
 		services.AddSingleton<IStorageFieldNameConverter, StorageFieldNameConverter>();

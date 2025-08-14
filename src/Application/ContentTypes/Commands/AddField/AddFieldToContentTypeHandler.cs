@@ -3,33 +3,32 @@ using Application.ContentTypes.Dtos;
 using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
+using SharedKernel.Result;
 
 namespace Application.ContentTypes.Commands.AddField;
 
 public class AddFieldToContentTypeHandler(IContentTypeRepository repository, IContentTypeSchemaManager schemaManager)
-	: IRequestHandler<AddFieldToContentTypeCommand, ContentFieldDto>
+	: IRequestHandler<AddFieldToContentTypeCommand, Result<ContentFieldDto>>
 {
-	public async Task<ContentFieldDto> Handle(AddFieldToContentTypeCommand request, CancellationToken cancellationToken)
+	public async Task<Result<ContentFieldDto>> Handle(AddFieldToContentTypeCommand request,
+		CancellationToken cancellationToken)
 	{
 		var contentType = await repository.FindByIdAsync(request.ContentTypeId, cancellationToken);
 
-		if (contentType is null) throw new InvalidOperationException($"ContentType  is not found");
+		if (contentType is null) return ContentTypeErrors.NotFound(nameof(request.ContentTypeId));
 
 		var fieldRequest = request.Field;
-		var duplicate = contentType.Fields.FirstOrDefault(f => f.Name == fieldRequest.Name);
-
-		if (duplicate is not null)
-			throw new InvalidOperationException($"Field with name {request.Field.Name} already exists");
-
-		var field = contentType.AddField(fieldRequest.Name, fieldRequest.Label, fieldRequest.Type,
+		var result = contentType.AddField(fieldRequest.Name, fieldRequest.Label, fieldRequest.Type,
 			fieldRequest.IsRequired);
 
-		repository.AddField(field);
+		if (result.IsFailure) return result.Errors;
+
+		repository.AddField(result.Value);
 
 		await repository.SaveChangesAsync(cancellationToken);
 
-		await schemaManager.AddFieldToStructureAsync(contentType, field, cancellationToken);
+		await schemaManager.AddFieldToStructureAsync(contentType, result.Value, cancellationToken);
 
-		return field.ToDto();
+		return result.Value.ToDto();
 	}
 }

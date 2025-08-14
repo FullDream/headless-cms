@@ -3,18 +3,19 @@ using Application.ContentTypes.Dtos;
 using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
+using SharedKernel.Result;
 
 namespace Application.ContentTypes.Commands.Update;
 
 public class UpdateContentTypeHandler(IContentTypeRepository repository, IContentTypeSchemaManager schemaManager)
-	: IRequestHandler<UpdateContentTypeCommand, ContentTypeDto>
+	: IRequestHandler<UpdateContentTypeCommand, Result<ContentTypeDto>>
 {
-	public async Task<ContentTypeDto> Handle(UpdateContentTypeCommand request, CancellationToken cancellationToken)
+	public async Task<Result<ContentTypeDto>> Handle(UpdateContentTypeCommand request,
+		CancellationToken cancellationToken)
 	{
 		var contentType = await repository.FindByIdAsync(request.Id, cancellationToken);
 
-		if (contentType is null)
-			throw new InvalidOperationException($"ContentType with id {request.Id}  is not found");
+		if (contentType is null) return ContentTypeErrors.NotFound(nameof(request.Id));
 
 		var oldName = contentType.Name;
 		if (request.Name is { } name && name != oldName)
@@ -22,7 +23,7 @@ public class UpdateContentTypeHandler(IContentTypeRepository repository, IConten
 			var duplicate = await repository.FindByNameAsync(name, cancellationToken);
 
 			if (duplicate is not null)
-				throw new InvalidOperationException($"Content Type '{name}' is already exists");
+				return ContentTypeErrors.AlreadyExist(name);
 
 			contentType.Rename(name);
 

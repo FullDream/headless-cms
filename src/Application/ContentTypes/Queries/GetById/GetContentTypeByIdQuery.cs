@@ -1,6 +1,6 @@
-﻿using Application.ContentTypes.Dtos;
-using MediatR;
+﻿using Application.Common.Messaging;
+using Application.ContentTypes.Dtos;
 
 namespace Application.ContentTypes.Queries.GetById;
 
-public record GetContentTypeByIdQuery(Guid Id) : IRequest<ContentTypeDto?>;
+public record GetContentTypeByIdQuery(Guid Id) : IQuery<ContentTypeDto>;

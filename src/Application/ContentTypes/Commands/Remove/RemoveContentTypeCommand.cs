@@ -1,6 +1,6 @@
-﻿using Application.ContentTypes.Dtos;
-using MediatR;
+﻿using Application.Common.Messaging;
+using Application.ContentTypes.Dtos;
 
 namespace Application.ContentTypes.Commands.Remove;
 
-public record RemoveContentTypeCommand(Guid Id) : IRequest<ContentTypeDto?>;
+public record RemoveContentTypeCommand(Guid Id) : ICommand<ContentTypeDto>;

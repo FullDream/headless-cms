@@ -3,17 +3,19 @@ using Application.ContentTypes.Dtos;
 using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
+using SharedKernel.Result;
 
 namespace Application.ContentTypes.Commands.Remove;
 
 public class RemoveContentTypeHandler(IContentTypeRepository repository, IContentTypeSchemaManager schemaManager)
-	: IRequestHandler<RemoveContentTypeCommand, ContentTypeDto?>
+	: IRequestHandler<RemoveContentTypeCommand, Result<ContentTypeDto>>
 {
-	public async Task<ContentTypeDto?> Handle(RemoveContentTypeCommand request, CancellationToken cancellationToken)
+	public async Task<Result<ContentTypeDto>> Handle(RemoveContentTypeCommand request,
+		CancellationToken cancellationToken)
 	{
 		var contentType = await repository.FindByIdAsync(request.Id, cancellationToken: cancellationToken);
 
-		if (contentType is null) return null;
+		if (contentType is null) return ContentTypeErrors.NotFound(nameof(request.Id));
 
 		await schemaManager.RemoveStructureAsync(contentType, cancellationToken);
 

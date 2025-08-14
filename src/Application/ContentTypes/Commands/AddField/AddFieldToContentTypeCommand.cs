@@ -1,6 +1,6 @@
-﻿using Application.ContentTypes.Dtos;
-using MediatR;
+﻿using Application.Common.Messaging;
+using Application.ContentTypes.Dtos;
 
 namespace Application.ContentTypes.Commands.AddField;
 
-public record AddFieldToContentTypeCommand(Guid ContentTypeId, CreateContentFieldDto Field) : IRequest<ContentFieldDto>;
+public record AddFieldToContentTypeCommand(Guid ContentTypeId, CreateContentFieldDto Field) : ICommand<ContentFieldDto>;

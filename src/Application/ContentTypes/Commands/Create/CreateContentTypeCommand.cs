@@ -1,10 +1,10 @@
-﻿using Application.ContentTypes.Dtos;
+﻿using Application.Common.Messaging;
+using Application.ContentTypes.Dtos;
 using Core.ContentTypes;
-using MediatR;
 
 namespace Application.ContentTypes.Commands.Create;
 
 public record CreateContentTypeCommand(
 	string Name,
 	ContentTypeKind Kind,
-	IReadOnlyCollection<CreateContentFieldDto> Fields) : IRequest<ContentTypeDto>;
+	IReadOnlyCollection<CreateContentFieldDto> Fields) : ICommand<ContentTypeDto>;

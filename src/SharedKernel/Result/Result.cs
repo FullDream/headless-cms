@@ -2,7 +2,7 @@
 
 namespace SharedKernel.Result;
 
-public class Result<T>
+public class Result<T> : IFailureFactory<Result<T>>
 {
 	private Result(T value)
 	{
@@ -27,10 +27,10 @@ public class Result<T>
 
 	public T? Value { get; }
 	public Error[]? Errors { get; } = null;
+	public static Result<T> Failure(params Error[] errors) => new Result<T>(errors);
 
 
 	public static Result<T> Success(T value) => new Result<T>(value);
-	public static Result<T> Failure(params Error[] errors) => new Result<T>(errors);
 
 	public static implicit operator Result<T>(T value) => Success(value);
 	public static implicit operator Result<T>(Error error) => Failure(error);

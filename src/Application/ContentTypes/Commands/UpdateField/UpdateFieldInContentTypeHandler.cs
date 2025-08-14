@@ -2,21 +2,22 @@
 using Application.ContentTypes.Mappers;
 using Core.ContentTypes;
 using MediatR;
+using SharedKernel.Result;
 
 namespace Application.ContentTypes.Commands.UpdateField;
 
 public class UpdateFieldInContentTypeHandler(IContentTypeRepository repository)
-	: IRequestHandler<UpdateFieldInContentTypeCommand, ContentFieldDto?>
+	: IRequestHandler<UpdateFieldInContentTypeCommand, Result<ContentFieldDto>>
 {
-	public async Task<ContentFieldDto?> Handle(UpdateFieldInContentTypeCommand request,
+	public async Task<Result<ContentFieldDto>> Handle(UpdateFieldInContentTypeCommand request,
 		CancellationToken cancellationToken)
 	{
 		var contentType = await repository.FindByIdAsync(request.ContentTypeId, cancellationToken);
 
-		if (contentType is null) throw new InvalidOperationException($"ContentType is not found");
+		if (contentType is null) return ContentTypeErrors.NotFound(nameof(request.ContentTypeId));
 
 
-		var field = contentType.UpdateField(request.ContentFieldId,
+		var fieldRes = contentType.UpdateField(request.ContentFieldId,
 			new ContentFieldPatch(
 				Name: request.UpdateDto.Name,
 				Label: request.UpdateDto.Label,
@@ -25,8 +26,10 @@ public class UpdateFieldInContentTypeHandler(IContentTypeRepository repository)
 			)
 		);
 
+		if (fieldRes.IsFailure) return fieldRes.Errors;
+
 		await repository.SaveChangesAsync(cancellationToken);
 
-		return field.ToDto();
+		return fieldRes.Value.ToDto();
 	}
 }

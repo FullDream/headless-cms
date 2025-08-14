@@ -1,6 +1,6 @@
-﻿using Application.ContentTypes.Dtos;
-using MediatR;
+﻿using Application.Common.Messaging;
+using Application.ContentTypes.Dtos;
 
 namespace Application.ContentTypes.Queries.GetByName;
 
-public record GetContentTypeByNameQuery(string Name) : IRequest<ContentTypeDto?>;
+public record GetContentTypeByNameQuery(string Name) : IQuery<ContentTypeDto>;

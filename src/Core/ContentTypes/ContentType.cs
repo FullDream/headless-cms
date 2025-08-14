@@ -1,9 +1,11 @@
-﻿namespace Core.ContentTypes;
+﻿using SharedKernel.Result;
 
-public class ContentType(Guid id, string name, ContentTypeKind kind)
+namespace Core.ContentTypes;
+
+public class ContentType(string name, ContentTypeKind kind)
 {
 	private readonly List<ContentField> fields = [];
-	public Guid Id { get; private set; } = id;
+	public Guid Id { get; } = Guid.NewGuid();
 	public string Name { get; private set; } = name;
 	public ContentTypeKind Kind { get; private set; } = kind;
 
@@ -13,8 +15,11 @@ public class ContentType(Guid id, string name, ContentTypeKind kind)
 
 	public void ChangeKind(ContentTypeKind kind) => Kind = kind;
 
-	public ContentField AddField(string name, string label, FieldType type, bool isRequired = false)
+	public Result<ContentField> AddField(string name, string label, FieldType type, bool isRequired = false)
 	{
+		if (Fields.Any(f => f.Name == name))
+			return ContentTypeErrors.ContentFieldNameIsUnique(name);
+
 		ContentField field = new(Id, name, label, type, isRequired);
 
 		fields.Add(field);
@@ -22,17 +27,19 @@ public class ContentType(Guid id, string name, ContentTypeKind kind)
 		return field;
 	}
 
-	public ContentField UpdateField(Guid fieldId, ContentFieldPatch patch)
+	public Result<ContentField> UpdateField(Guid fieldId, ContentFieldPatch patch)
 	{
-		ContentField? currentField = fields.FirstOrDefault(f => f.Id == fieldId) ??
-		                             throw new InvalidOperationException($"Field with id {fieldId} not found");
+		ContentField? currentField = fields.FirstOrDefault(f => f.Id == fieldId);
+
+		if (currentField is null)
+			return ContentTypeErrors.ContentFieldNotFound(fieldId);
 
 		if (patch.Name is not null && currentField.Name != patch.Name)
 		{
 			bool isDuplicate = fields.Any(f => f.Id != currentField.Id && f.Name == patch.Name);
 
 			if (isDuplicate)
-				throw new InvalidOperationException($"Field name '{patch.Name}' must be unique.");
+				return ContentTypeErrors.ContentFieldNameIsUnique(patch.Name);
 
 
 			currentField.UpdateName(patch.Name);
@@ -47,18 +54,34 @@ public class ContentType(Guid id, string name, ContentTypeKind kind)
 		return currentField;
 	}
 
-	public IReadOnlyCollection<ContentField> AddFields(
+	public Result<IReadOnlyCollection<ContentField>> AddFields(
 		IEnumerable<(string Name, string Label, FieldType Type, bool IsRequired)> definitions)
 	{
-		return definitions.Select(d => AddField(d.Name, d.Label, d.Type, d.IsRequired)).ToList();
+		var results = definitions
+			.Select(d => AddField(d.Name, d.Label, d.Type, d.IsRequired))
+			.ToList();
+
+		var errors = results
+			.Where(r => r.IsFailure)
+			.SelectMany(r => r.Errors!)
+			.ToArray();
+
+		if (errors.Length != 0)
+			return errors;
+
+		return results
+			.Select(r => r.Value!)
+			.ToList()
+			.AsReadOnly();
 	}
 
-	public ContentField? RemoveField(Guid fieldId)
+	public Result<ContentField> RemoveField(Guid fieldId)
 	{
 		var field = fields.FirstOrDefault(f => f.Id == fieldId);
 
-		if (field is not null)
-			fields.Remove(field);
+		if (field is null) return ContentTypeErrors.ContentFieldNotFound(fieldId);
+
+		fields.Remove(field);
 
 		return field;
 	}
