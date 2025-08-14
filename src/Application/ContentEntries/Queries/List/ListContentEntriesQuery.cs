@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using Application.Common.Messaging;
 
 namespace Application.ContentEntries.Queries.List;
 
 public record ListContentEntriesQuery(string ContentTypeName)
-	: IRequest<IReadOnlyList<IReadOnlyDictionary<string, object?>>>;
+	: IQuery<IReadOnlyList<IReadOnlyDictionary<string, object?>>>;

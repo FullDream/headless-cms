@@ -15,7 +15,7 @@ public class ContentEntriesController(IMediator mediator) : ControllerBase
 	{
 		var items = await mediator.Send(new ListContentEntriesQuery(name));
 
-		return Ok(items);
+		return items.IsSuccess ? Ok(items.Value) : BadRequest(items.Errors);
 	}
 
 	[HttpPost]
@@ -24,6 +24,6 @@ public class ContentEntriesController(IMediator mediator) : ControllerBase
 	{
 		var item = await mediator.Send(new CreateContentEntryCommand(name, body), cancellationToken);
 
-		return Ok(item);
+		return item.IsSuccess ? Ok(item.Value) : BadRequest(item.Errors);
 	}
 }

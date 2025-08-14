@@ -1,20 +1,20 @@
 ﻿using Application.ContentEntries.Mappers;
 using Core.ContentEntries;
 using MediatR;
+using SharedKernel.Result;
 
 namespace Application.ContentEntries.Commands.Create;
 
 internal sealed class CreateContentEntryHandler(IContentEntryRepository repository)
-	: IRequestHandler<CreateContentEntryCommand, IReadOnlyDictionary<string, object?>>
+	: IRequestHandler<CreateContentEntryCommand, Result<IReadOnlyDictionary<string, object?>>>
 {
-	public async Task<IReadOnlyDictionary<string, object?>> Handle(CreateContentEntryCommand request,
+	public async Task<Result<IReadOnlyDictionary<string, object?>>> Handle(CreateContentEntryCommand request,
 		CancellationToken cancellationToken)
 	{
 		var contentEntry = ContentEntry.Create(request.ConvertedFields);
 
 		await repository.AddAsync(request.ContentTypeName, contentEntry, cancellationToken);
 
-
-		return contentEntry.ToDto();
+		return Result<IReadOnlyDictionary<string, object?>>.Success(contentEntry.ToDto());
 	}
 }
