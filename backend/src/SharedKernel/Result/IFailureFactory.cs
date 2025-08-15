@@ -3,5 +3,5 @@
 public interface IFailureFactory<TSelf>
 	where TSelf : IFailureFactory<TSelf>
 {
-	static abstract TSelf Failure(Error[] errors);
+	static abstract TSelf Failure(params Error[] errors);
 }

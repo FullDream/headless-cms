@@ -1,13 +1,16 @@
 ﻿using Application.Abstractions;
+using Application.Common.Validation;
 using FluentValidation;
 
 namespace Application.ContentEntries.Commands.Create;
 
 public class CreateContentEntryCommandValidator : AbstractValidator<CreateContentEntryCommand>
 {
-	public CreateContentEntryCommandValidator(IContentTypeFieldsProvider provider)
+	public CreateContentEntryCommandValidator(IContentTypeFieldsProvider provider, IContentTypeExistenceChecker checker)
 	{
-		RuleFor(command => command.ContentTypeName).NotEmpty();
+		RuleFor(command => command.ContentTypeName).MustBeKebabCase()
+			.MustAsync(async (name, ct) => await checker.ExistsByNameAsync(name!, ct));
+
 
 		RuleFor(command => command).CustomAsync(async (command, context, ct) =>
 		{
