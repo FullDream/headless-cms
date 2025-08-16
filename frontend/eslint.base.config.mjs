@@ -1,9 +1,11 @@
 import nx from '@nx/eslint-plugin'
+import enforceEsPrivate from 'eslint-plugin-enforce-es-private'
 
 export default [
 	...nx.configs['flat/base'],
 	...nx.configs['flat/typescript'],
 	...nx.configs['flat/javascript'],
+	...enforceEsPrivate.configs.recommended,
 	{
 		ignores: ['**/dist'],
 	},
