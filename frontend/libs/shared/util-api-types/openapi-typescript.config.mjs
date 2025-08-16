@@ -1,6 +1,5 @@
 import openApi, { astToString } from 'openapi-typescript'
 import fs from 'node:fs'
-import path from 'node:path'
 
 const ast = await openApi('http://localhost:5139/openapi/v1.json')
 

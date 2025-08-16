@@ -1,5 +1,6 @@
-import { Component } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
+import { ContentTypeDataSource } from '@headless-cms/content-types-data-access'
 
 @Component({
 	imports: [RouterModule],
@@ -8,4 +9,8 @@ import { RouterModule } from '@angular/router'
 })
 export class App {
 	protected title = 'headless-cms'
+
+	#data = inject(ContentTypeDataSource)
+
+	items = this.#data.list.data
 }
