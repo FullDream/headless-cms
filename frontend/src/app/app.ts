@@ -1,16 +1,39 @@
-import { Component, inject } from '@angular/core'
+import { Component, computed, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { ContentTypeDataSource } from '@headless-cms/content-types-data-access'
+import { PanelMenuModule } from 'primeng/panelmenu'
+import { MenuItem } from 'primeng/api'
 
 @Component({
-	imports: [RouterModule],
+	imports: [RouterModule, PanelMenuModule],
 	selector: 'app-root',
 	templateUrl: './app.html',
 })
 export class App {
-	protected title = 'headless-cms'
+	readonly #data = inject(ContentTypeDataSource)
 
-	#data = inject(ContentTypeDataSource)
+	protected readonly menu = computed(() =>
+		this.#buildMenu(
+			this.#data.list.data().map(type => ({
+				label: type.name,
+				icon: `pi pi-${type.kind === 'collection' ? 'list' : 'file'}`,
+				routerLink: `/content-types/${type.id}`,
+			})),
+		),
+	)
 
-	items = this.#data.list.data
+	#buildMenu(items: MenuItem[]): MenuItem[] {
+		return [
+			{
+				label: 'Home',
+				icon: 'pi pi-home',
+				routerLink: '/',
+			},
+			{
+				label: 'Content Type Builder',
+				icon: 'pi pi-database',
+				items,
+			},
+		]
+	}
 }

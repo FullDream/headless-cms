@@ -12,8 +12,9 @@ type UpdateContentType = components['schemas']['UpdateContentTypeDto']
 export class ContentTypeDataSource {
 	#client = inject(HttpClient)
 
-	readonly list = injectQuery(() => ({
+	readonly list = injectQuery<ContentType[]>(() => ({
 		queryKey: ['content-types'],
+		initialData: [],
 		queryFn: () => lastValueFrom(this.#client.get<ContentType[]>('/api/content-types')),
 	}))
 
@@ -28,7 +29,6 @@ export class ContentTypeDataSource {
 	}))
 
 	readonly delete = injectMutation(() => ({
-		mutationFn: (id: string) =>
-			lastValueFrom(this.#client.delete<ContentType[]>(`/api/content-types${id}`)),
+		mutationFn: (id: string) => lastValueFrom(this.#client.delete<ContentType[]>(`/api/content-types${id}`)),
 	}))
 }

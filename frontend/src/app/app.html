@@ -1,6 +1,8 @@
-<router-outlet></router-outlet>
-@for (item of items(); track item.id) {
-    {{ item.id }}
-    {{ item.name }}
-
-}
+<div class="flex min-h-screen">
+	<aside class="w-64 border-r p-3">
+		<p-panelMenu [model]="menu()" class="w-full"/>
+	</aside>
+	<main class="flex-2 p-4">
+		<router-outlet/>
+	</main>
+</div>
