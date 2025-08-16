@@ -9,6 +9,9 @@
             "dom"
         ],
         "paths": {
+            "@shared/util-api-types": [
+                "libs/shared/util-api-types/src/index.ts"
+            ]
         },
         "isolatedModules": true
     },
