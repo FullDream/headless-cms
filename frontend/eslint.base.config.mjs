@@ -19,8 +19,22 @@ export default [
 					allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
 					depConstraints: [
 						{
-							sourceTag: '*',
-							onlyDependOnLibsWithTags: ['*'],
+							sourceTag: 'type:feature',
+							onlyDependOnLibsWithTags: ['type:ui', 'type:data-access', 'type:util'],
+						},
+						{ sourceTag: 'type:ui', onlyDependOnLibsWithTags: ['type:ui', 'type:util'] },
+						{ sourceTag: 'type:data-access', onlyDependOnLibsWithTags: ['type:data-access', 'type:util'] },
+						{ sourceTag: 'type:util', onlyDependOnLibsWithTags: ['type:util'] },
+
+						// bounded contexts
+						{ sourceTag: 'scope:shared', onlyDependOnLibsWithTags: ['scope:shared'] },
+						{
+							sourceTag: 'scope:content-types',
+							onlyDependOnLibsWithTags: ['scope:content-types', 'scope:shared'],
+						},
+						{
+							sourceTag: 'scope:content-entries',
+							onlyDependOnLibsWithTags: ['scope:content-entries', 'scope:shared'],
 						},
 					],
 				},

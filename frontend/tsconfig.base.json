@@ -5,12 +5,25 @@
 		"emitDecoratorMetadata": false,
 		"target": "es2022",
 		"module": "preserve",
-		"lib": ["es2020", "dom"],
+		"lib": [
+			"es2020",
+			"dom"
+		],
 		"baseUrl": ".",
 		"paths": {
-			"@headless-cms/content-types-data-access": ["libs/content-types/data-access/src/index.ts"],
-			"@headless-cms/shared-util-api-types": ["libs/shared/util-api-types/src/index.ts"]
+			"@headless-cms/content-types-data-access": [
+				"libs/content-types/data-access/src/index.ts"
+			],
+			"@headless-cms/content-types-feat-create": [
+				"libs/content-types/feat-create/src/index.ts"
+			],
+			"@headless-cms/shared-util-api-types": [
+				"libs/shared/util-api-types/src/index.ts"
+			]
 		}
 	},
-	"exclude": ["node_modules", "tmp"]
+	"exclude": [
+		"node_modules",
+		"tmp"
+	]
 }

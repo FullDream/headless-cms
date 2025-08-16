@@ -1,12 +1,12 @@
 {
-	"name": "content-types-data-access",
+	"name": "content-types-feat-create",
 	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "libs/content-types/data-access/src",
+	"sourceRoot": "libs/content-types/feat-create/src",
 	"prefix": "ct",
 	"projectType": "library",
 	"tags": [
 		"scope:content-types",
-		"type:data-access"
+		"type:feature"
 	],
 	"targets": {
 		"lint": {

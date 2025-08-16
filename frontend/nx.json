@@ -1,7 +1,10 @@
 {
 	"$schema": "./node_modules/nx/schemas/nx-schema.json",
 	"namedInputs": {
-		"default": ["{projectRoot}/**/*", "sharedGlobals"],
+		"default": [
+			"{projectRoot}/**/*",
+			"sharedGlobals"
+		],
 		"production": [
 			"default",
 			"!{projectRoot}/.eslintrc.json",
@@ -12,11 +15,19 @@
 		],
 		"sharedGlobals": []
 	},
+	"workspaceLayout": {
+		"libsDir": "libs"
+	},
 	"targetDefaults": {
 		"@angular/build:application": {
 			"cache": true,
-			"dependsOn": ["^build"],
-			"inputs": ["production", "^production"]
+			"dependsOn": [
+				"^build"
+			],
+			"inputs": [
+				"production",
+				"^production"
+			]
 		},
 		"@nx/eslint:lint": {
 			"cache": true,
@@ -29,12 +40,20 @@
 		},
 		"@nx/vite:test": {
 			"cache": true,
-			"inputs": ["default", "^production"]
+			"inputs": [
+				"default",
+				"^production"
+			]
 		},
 		"@nx/js:tsc": {
 			"cache": true,
-			"dependsOn": ["^build"],
-			"inputs": ["production", "^production"]
+			"dependsOn": [
+				"^build"
+			],
+			"inputs": [
+				"production",
+				"^production"
+			]
 		}
 	},
 	"plugins": [
