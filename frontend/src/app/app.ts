@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
-import { ContentTypeDataSource } from '@headless-cms/content-types-data-access'
+import { ContentTypeDataSource } from '@headless-cms/content-types/data-access'
 import { PanelMenuModule } from 'primeng/panelmenu'
 import { MenuItem } from 'primeng/api'
 
@@ -32,7 +32,15 @@ export class App {
 			{
 				label: 'Content Type Builder',
 				icon: 'pi pi-database',
-				items,
+				items: [
+					{
+						icon: 'pi pi-plus-circle',
+						styleClass: '[&_div]:bg-blue-500',
+						label: 'Create new',
+						routerLink: `/content-types/new`,
+					},
+					...items,
+				],
 			},
 		]
 	}

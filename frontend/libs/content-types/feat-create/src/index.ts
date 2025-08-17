@@ -1,1 +1,1 @@
-export * from './lib/create/create.component'
+export * from './lib/create/create-content-type'

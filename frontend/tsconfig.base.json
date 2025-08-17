@@ -11,13 +11,13 @@
 		],
 		"baseUrl": ".",
 		"paths": {
-			"@headless-cms/content-types-data-access": [
+			"@headless-cms/content-types/data-access": [
 				"libs/content-types/data-access/src/index.ts"
 			],
-			"@headless-cms/content-types-feat-create": [
+			"@headless-cms/content-types/feat-create": [
 				"libs/content-types/feat-create/src/index.ts"
 			],
-			"@headless-cms/shared-util-api-types": [
+			"@headless-cms/shared/util-api-types": [
 				"libs/shared/util-api-types/src/index.ts"
 			]
 		}

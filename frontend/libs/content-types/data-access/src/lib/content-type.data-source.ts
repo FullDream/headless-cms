@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental'
 import { HttpClient } from '@angular/common/http'
 import { lastValueFrom } from 'rxjs'
-import { components } from '@headless-cms/shared-util-api-types'
+import { components } from '@headless-cms/shared/util-api-types'
 
 type ContentType = components['schemas']['ContentTypeDto']
 type CreateContentType = components['schemas']['CreateContentTypeCommand']
