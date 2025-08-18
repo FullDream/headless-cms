@@ -1,1 +1,46 @@
-<p>ContentTypesFeatCreate works!</p>
+<h1 class="text-2xl font-bold">{{ title() }}</h1>
+
+<form class="mt-8 grid grid-cols-2" [formGroup]="form">
+	<div>
+		@let nameId = 'name' | uniqueId;
+		<p-floatlabel variant="on">
+			<input [formControl]="form.controls.name" pInputText [id]="nameId" autocomplete="off"/>
+			<label [for]="nameId">Name</label>
+		</p-floatlabel>
+	</div>
+	<div class="flex flex-col gap-2">
+		<div class="flex items-center gap-3">
+			<p-radio-button
+				[formControl]="form.controls.kind"
+				[inputId]="'kindCollection' | uniqueId"
+				value="collection"
+			/>
+			<label class="cursor-pointer" [for]="'kindCollection' | uniqueId">Collection type</label>
+		</div>
+		<div class="flex items-center gap-3">
+			<p-radio-button [formControl]="form.controls.kind" [inputId]="'kindSingle'| uniqueId" value="singleton"/>
+			<label class="cursor-pointer" for="'kindSingle'| uniqueId">Single type</label>
+		</div>
+	</div>
+
+	<p-divider class="col-span-full mt-6"/>
+	<div class="col-span-full p-4">
+		<h2>Fields</h2>
+		<div class="mt-4 flex flex-col gap-2">
+			@for (field of fields.controls; track field) {
+			}
+
+			<a
+				[routerLink]="[{ outlets: { field: ['new'] } }]"
+				class="bg-primary-100 hover:bg-emphasis border-primary-500 rounded-border flex cursor-pointer flex-col items-center gap-2 border-1 border-dashed p-4 shadow-md hover:shadow-xl"
+			>
+				<span class="pi pi-plus-circle text-primary-600 text-xl"></span>
+				<span class="text-surface-500">Add field</span>
+			</a>
+		</div>
+	</div>
+</form>
+
+<p-drawer [visible]="outlet.isActivated" header="Field editor" (onHide)="hideOutlet()" position="right">
+	<router-outlet name="field" #outlet="outlet"/>
+</p-drawer>

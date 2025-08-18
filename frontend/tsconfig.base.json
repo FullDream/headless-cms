@@ -17,6 +17,9 @@
 			"@headless-cms/content-types/feat-create": [
 				"libs/content-types/feat-create/src/index.ts"
 			],
+			"@headless-cms/shared/ui": [
+				"libs/shared/ui/src/index.ts"
+			],
 			"@headless-cms/shared/util-api-types": [
 				"libs/shared/util-api-types/src/index.ts"
 			]

@@ -35,7 +35,7 @@ export class App {
 				items: [
 					{
 						icon: 'pi pi-plus-circle',
-						styleClass: '[&_div]:bg-blue-500',
+						styleClass: '[&_div]:bg-primary-500',
 						label: 'Create new',
 						routerLink: `/content-types/new`,
 					},
