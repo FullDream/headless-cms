@@ -6,6 +6,7 @@ using Application.ContentTypes.Commands.Update;
 using Application.ContentTypes.Commands.UpdateField;
 using Application.ContentTypes.Dtos;
 using Application.ContentTypes.Queries.GetAll;
+using Application.ContentTypes.Queries.GetById;
 using Application.ContentTypes.Queries.GetByName;
 using Core.ContentTypes;
 using MediatR;
@@ -27,6 +28,14 @@ public class ContentTypesController(IMediator mediator) : ControllerBase
 		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
 
+	[HttpGet("{id:guid}")]
+	public async Task<ActionResult<ContentTypeDto>> GetById(Guid id, CancellationToken cancellationToken)
+	{
+		var result = await mediator.Send(new GetContentTypeByIdQuery(id), cancellationToken);
+
+		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
+	}
+
 	[HttpGet("{name}")]
 	public async Task<ActionResult<ContentTypeDto>> GetByName(string name, CancellationToken cancellationToken)
 	{
@@ -34,6 +43,7 @@ public class ContentTypesController(IMediator mediator) : ControllerBase
 
 		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
 	}
+
 
 	[HttpPost]
 	public async Task<ActionResult<ContentTypeDto>> Create([FromBody] CreateContentTypeCommand command,
