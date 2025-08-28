@@ -2,4 +2,8 @@
 
 namespace WebApi.Contracts.ContentTypes;
 
-public record UpdateContentTypeDto(string? Name, ContentTypeKind? Kind);
+public record UpdateContentTypeDto
+{
+	public string? Name { get; init; }
+	public ContentTypeKind? Kind { get; init; }
+};
