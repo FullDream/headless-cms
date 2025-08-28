@@ -1,7 +1,7 @@
 {
-	"name": "content-types-feat-create",
+	"name": "content-types-feat-editor",
 	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "libs/content-types/feat-create/src",
+	"sourceRoot": "libs/content-types/feat-editor/src",
 	"prefix": "ct",
 	"projectType": "library",
 	"tags": [

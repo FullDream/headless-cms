@@ -1,47 +1,31 @@
 import { Component, computed, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
-import { ContentTypeDataSource } from '@headless-cms/content-types/data-access'
-import { PanelMenuModule } from 'primeng/panelmenu'
-import { MenuItem } from 'primeng/api'
+import { ContentTypeQueryOptions } from '@headless-cms/content-types/data-access'
+import { injectQuery } from '@tanstack/angular-query-experimental'
+import { FormsModule } from '@angular/forms'
+
+export type NavItem = {
+	label: string
+	id: string
+	icon?: string
+	routerLink?: string
+	items?: NavItem[]
+}
 
 @Component({
-	imports: [RouterModule, PanelMenuModule],
+	imports: [RouterModule, FormsModule],
 	selector: 'app-root',
 	templateUrl: './app.html',
 })
 export class App {
-	readonly #data = inject(ContentTypeDataSource)
-
+	readonly #queryOptions = inject(ContentTypeQueryOptions)
+	readonly queryList = injectQuery(() => this.#queryOptions.list)
 	protected readonly menu = computed(() =>
-		this.#buildMenu(
-			this.#data.list.data().map(type => ({
-				label: type.name,
-				icon: `pi pi-${type.kind === 'collection' ? 'list' : 'file'}`,
-				routerLink: `/content-types/${type.id}`,
-			})),
-		),
+		this.queryList.data()?.map(type => ({
+			label: type.name,
+			id: type.id,
+			icon: `pi pi-${type.kind === 'collection' ? 'list' : 'file'}`,
+			routerLink: `/content-types/${type.id}`,
+		})),
 	)
-
-	#buildMenu(items: MenuItem[]): MenuItem[] {
-		return [
-			{
-				label: 'Home',
-				icon: 'pi pi-home',
-				routerLink: '/',
-			},
-			{
-				label: 'Content Type Builder',
-				icon: 'pi pi-database',
-				items: [
-					{
-						icon: 'pi pi-plus-circle',
-						styleClass: '[&_div]:bg-primary-500',
-						label: 'Create new',
-						routerLink: `/content-types/new`,
-					},
-					...items,
-				],
-			},
-		]
-	}
 }

@@ -9,6 +9,12 @@
 		"type:data-access"
 	],
 	"targets": {
+		"generate-api": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "openapi-ts -f libs/content-types/data-access/open-api.config.ts"
+			}
+		},
 		"lint": {
 			"executor": "@nx/eslint:lint"
 		}

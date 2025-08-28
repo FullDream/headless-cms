@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
-		"isolatedModules": true
+		"isolatedModules": true,
+		"strict": true
 	},
 	"angularCompilerOptions": {
 		"enableI18nLegacyMessageIdFormat": false,
