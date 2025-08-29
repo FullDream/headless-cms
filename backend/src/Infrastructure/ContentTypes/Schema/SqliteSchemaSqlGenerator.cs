@@ -36,6 +36,9 @@ internal class SqliteSchemaSqlGenerator(IStorageNameResolver nameResolver) : ISc
 			.Select(f => $"[{f.Name.Underscore()}]")
 			.ToList();
 
+		quotedNames.Add("id");
+		quotedNames.Add("created_at");
+		quotedNames.Add("updated_at");
 
 		var originalTable = GetTableName(contentType.Name);
 		var tempTable = $"{originalTable}_temp";
@@ -44,18 +47,14 @@ internal class SqliteSchemaSqlGenerator(IStorageNameResolver nameResolver) : ISc
 			.Replace($"[{originalTable}]", $"[{tempTable}]");
 
 		return $"""
-		            BEGIN TRANSACTION;
-		        
 		            {createTempTableSql}
-		        
+
 		            INSERT INTO [{tempTable}] ({string.Join(", ", quotedNames)})
 		            SELECT {string.Join(", ", quotedNames)} FROM [{originalTable}];
-		        
+
 		            DROP TABLE [{originalTable}];
-		        
+
 		            ALTER TABLE [{tempTable}] RENAME TO [{originalTable}];
-		        
-		            COMMIT;
 		        """;
 	}
 
