@@ -23,11 +23,11 @@ import { FieldType } from '@headless-cms/content-types/data-access'
 })
 export default class FieldEditor {
 	protected readonly fieldId = input<string>()
-	protected readonly facade = inject(ContentFieldFacade)
 	protected readonly fieldTypes: FieldType[] = Object.values(FieldType)
 	readonly #fb = inject(FormBuilder)
 	// protected readonly kebabChar = /[a-z0-9-]/
 
+	readonly #facade = inject(ContentFieldFacade)
 	readonly #route = inject(ActivatedRoute)
 	readonly #router = inject(Router)
 
@@ -42,7 +42,7 @@ export default class FieldEditor {
 	})
 
 	constructor() {
-		const currentField = this.facade.state.computed(state => state.fields().find(f => f.id === this.fieldId()))
+		const currentField = this.#facade.state.computed(state => state.fields().find(f => f.id === this.fieldId()))
 
 		effect(() => currentField() && this.form.reset(currentField(), { emitEvent: false }))
 	}
@@ -52,14 +52,14 @@ export default class FieldEditor {
 
 		const id = this.fieldId()
 
-		if (id) this.facade.update(id, this.form.getRawValue())
-		else this.facade.create(this.form.getRawValue())
+		if (id) this.#facade.update(id, this.form.getRawValue())
+		else this.#facade.create(this.form.getRawValue())
 
 		void this.#router.navigate(['../'], { relativeTo: this.#route })
 	}
 
 	protected delete(id: string): void {
-		this.facade.delete(id)
+		this.#facade.delete(id)
 
 		void this.#router.navigate(['../'], { relativeTo: this.#route })
 	}
