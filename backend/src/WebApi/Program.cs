@@ -1,3 +1,9 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Application;
+using Infrastructure;
+using Scalar.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
