@@ -20,6 +20,7 @@ import {
 
 export type UpdateFieldVariables = { contentTypeId: string; fieldId: string; dto: UpdateContentFieldDto }
 export type CreateFieldVariables = { contentTypeId: string; dto: CreateContentFieldDto }
+export type DeleteFieldVariables = { contentTypeId: string; fieldId: string }
 
 @Injectable({ providedIn: 'root' })
 export class ContentTypeQueryOptions {
@@ -108,6 +109,21 @@ export class ContentTypeQueryOptions {
 			this.#queryClient.setQueryData<GetContentTypesByNameResponse>(
 				[this.#contentTypeKey, 'detail', variables.contentTypeId],
 				ct => (ct ? { ...ct, fields: [...ct.fields, data] } : undefined),
+			)
+		},
+	})
+
+	deleteField = mutationOptions({
+		mutationFn: (variables: DeleteFieldVariables) =>
+			lastValueFrom(
+				this.#client.delete<ContentFieldDto>(
+					`${this.#apiUrl}/${variables.contentTypeId}/fields/${variables.fieldId}`,
+				),
+			),
+		onSuccess: (data, variables) => {
+			this.#queryClient.setQueryData<GetContentTypesByNameResponse>(
+				[this.#contentTypeKey, 'detail', variables.contentTypeId],
+				ct => (ct ? { ...ct, fields: ct.fields.filter(field => field.id !== data.id) } : undefined),
 			)
 		},
 	})

@@ -13,6 +13,8 @@ export class RemoteContentFieldFacade extends ContentFieldFacade {
 	readonly #queryOptions = inject(ContentTypeQueryOptions)
 	readonly #createMutation = injectMutation(() => this.#queryOptions.createFieldForContentType)
 	readonly #updateMutation = injectMutation(() => this.#queryOptions.updateFieldForContentType)
+	readonly #deleteMutation = injectMutation(() => this.#queryOptions.deleteField)
+	readonly #contentTypeId = this.writableState.signal('contentTypeId')
 
 	constructor() {
 		super()
@@ -20,9 +22,8 @@ export class RemoteContentFieldFacade extends ContentFieldFacade {
 			'contentTypeId',
 			inject(ActivatedRoute).paramMap.pipe(map(map => map.get('contentTypeId') || undefined)),
 		)
-		const contentTypeId = this.writableState.signal('contentTypeId')
 
-		const contentTypeQuery = injectQuery(() => this.#queryOptions.getById(contentTypeId()))
+		const contentTypeQuery = injectQuery(() => this.#queryOptions.getById(this.#contentTypeId()))
 
 		this.writableState.connect(
 			'fields',
@@ -34,7 +35,7 @@ export class RemoteContentFieldFacade extends ContentFieldFacade {
 		})
 	}
 
-	override create(field: CreateContentFieldDto): void {
+	create(field: CreateContentFieldDto): void {
 		const contentTypeId = this.writableState.get('contentTypeId')
 
 		if (!contentTypeId) return
@@ -42,13 +43,17 @@ export class RemoteContentFieldFacade extends ContentFieldFacade {
 		this.#createMutation.mutate({ contentTypeId, dto: field })
 	}
 
-	override update(id: string, field: UpdateContentFieldDto): void {
-		const contentTypeId = this.writableState.get('contentTypeId')
+	update(id: string, field: UpdateContentFieldDto): void {
+		const contentTypeId = this.#contentTypeId()
 
 		if (!contentTypeId) return
 
 		this.#updateMutation.mutate({ contentTypeId, fieldId: id, dto: field })
 	}
 
-	override delete(id: string): void {}
+	delete(id: string): void {
+		const contentTypeId = this.#contentTypeId()
+
+		if (contentTypeId) this.#deleteMutation.mutate({ fieldId: id, contentTypeId })
+	}
 }

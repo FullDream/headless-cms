@@ -18,12 +18,7 @@
 	@let labelId = 'name' | uniqueId;
 	<div class="flex flex-col gap-2">
 		<p-floatlabel variant="on">
-			<input
-				class="w-full"
-				[formControl]="form.controls.label"
-				pInputText
-				[id]="labelId"
-			/>
+			<input class="w-full" [formControl]="form.controls.label" pInputText [id]="labelId"/>
 			<label [for]="labelId">Label</label>
 		</p-floatlabel>
 		<p class="text-xs text-gray-500">Human-readable label shown in the UI.</p>
@@ -44,7 +39,18 @@
 		<label [for]="isRequiredId">Required</label>
 	</div>
 
-	<div class="flex justify-end pt-2">
-		<button pButton class="min-w-28" [disabled]="form.invalid" type="submit">Save</button>
+	<div class="flex justify-between gap-2 pt-2">
+		@let id = fieldId();
+		@if (id) {
+			<p-button
+				outlined
+				severity="danger"
+				styleClass="min-w-28"
+				label="Delete"
+				type="button"
+				(onClick)="facade.delete(id)"
+			/>
+		}
+		<p-button label="Save" styleClass="min-w-28" [disabled]="form.invalid" type="submit"/>
 	</div>
 </form>
