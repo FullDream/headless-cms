@@ -29,10 +29,10 @@ export type CreateContentFieldDto = {
 	isRequired?: boolean
 }
 
-export type CreateContentTypeCommand = {
+export type CreateContentTypeDto = {
 	name: string
 	kind: ContentTypeKind
-	fields: Array<CreateContentFieldDto>
+	fields?: Array<CreateContentFieldDto>
 }
 
 export const FieldType = {
@@ -64,16 +64,35 @@ export const NullableOfFieldType = {
 
 export type NullableOfFieldType = (typeof NullableOfFieldType)[keyof typeof NullableOfFieldType]
 
+export type ProblemDetails = {
+	type?: string | null
+	title?: string | null
+	status?: number | null
+	detail?: string | null
+	instance?: string | null
+}
+
 export type UpdateContentFieldDto = {
-	name: string | null
-	label: string | null
-	type: NullableOfFieldType
-	isRequired: boolean | null
+	name?: string | null
+	label?: string | null
+	type?: NullableOfFieldType
+	isRequired?: boolean | null
 }
 
 export type UpdateContentTypeDto = {
-	name: string | null
-	kind: NullableOfContentTypeKind
+	name?: string | null
+	kind?: NullableOfContentTypeKind
+}
+
+export type ValidationProblemDetails = {
+	type?: string | null
+	title?: string | null
+	status?: number | null
+	detail?: string | null
+	instance?: string | null
+	errors?: {
+		[key: string]: Array<string>
+	}
 }
 
 export type GetContentEntriesByNameData = {
@@ -128,6 +147,27 @@ export type GetContentTypesData = {
 	url: '/content-types'
 }
 
+export type GetContentTypesErrors = {
+	/**
+	 * Bad Request
+	 */
+	400: ValidationProblemDetails
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails
+	/**
+	 * Forbidden
+	 */
+	403: ProblemDetails
+	/**
+	 * Unprocessable Entity
+	 */
+	422: ValidationProblemDetails
+}
+
+export type GetContentTypesError = GetContentTypesErrors[keyof GetContentTypesErrors]
+
 export type GetContentTypesResponses = {
 	/**
 	 * OK
@@ -138,11 +178,36 @@ export type GetContentTypesResponses = {
 export type GetContentTypesResponse = GetContentTypesResponses[keyof GetContentTypesResponses]
 
 export type PostContentTypesData = {
-	body: CreateContentTypeCommand
+	body: CreateContentTypeDto
 	path?: never
 	query?: never
 	url: '/content-types'
 }
+
+export type PostContentTypesErrors = {
+	/**
+	 * Bad Request
+	 */
+	400: ValidationProblemDetails
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails
+	/**
+	 * Forbidden
+	 */
+	403: ProblemDetails
+	/**
+	 * Conflict
+	 */
+	409: ValidationProblemDetails
+	/**
+	 * Unprocessable Entity
+	 */
+	422: ValidationProblemDetails
+}
+
+export type PostContentTypesError = PostContentTypesErrors[keyof PostContentTypesErrors]
 
 export type PostContentTypesResponses = {
 	/**
@@ -162,6 +227,27 @@ export type DeleteContentTypesByIdData = {
 	url: '/content-types/{id}'
 }
 
+export type DeleteContentTypesByIdErrors = {
+	/**
+	 * Bad Request
+	 */
+	400: ValidationProblemDetails
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails
+	/**
+	 * Forbidden
+	 */
+	403: ProblemDetails
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails
+}
+
+export type DeleteContentTypesByIdError = DeleteContentTypesByIdErrors[keyof DeleteContentTypesByIdErrors]
+
 export type DeleteContentTypesByIdResponses = {
 	/**
 	 * OK
@@ -179,6 +265,31 @@ export type GetContentTypesByIdData = {
 	query?: never
 	url: '/content-types/{id}'
 }
+
+export type GetContentTypesByIdErrors = {
+	/**
+	 * Bad Request
+	 */
+	400: ValidationProblemDetails
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails
+	/**
+	 * Forbidden
+	 */
+	403: ProblemDetails
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails
+	/**
+	 * Unprocessable Entity
+	 */
+	422: ValidationProblemDetails
+}
+
+export type GetContentTypesByIdError = GetContentTypesByIdErrors[keyof GetContentTypesByIdErrors]
 
 export type GetContentTypesByIdResponses = {
 	/**
@@ -198,6 +309,35 @@ export type PatchContentTypesByIdData = {
 	url: '/content-types/{id}'
 }
 
+export type PatchContentTypesByIdErrors = {
+	/**
+	 * Bad Request
+	 */
+	400: ValidationProblemDetails
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails
+	/**
+	 * Forbidden
+	 */
+	403: ProblemDetails
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails
+	/**
+	 * Conflict
+	 */
+	409: ValidationProblemDetails
+	/**
+	 * Unprocessable Entity
+	 */
+	422: ValidationProblemDetails
+}
+
+export type PatchContentTypesByIdError = PatchContentTypesByIdErrors[keyof PatchContentTypesByIdErrors]
+
 export type PatchContentTypesByIdResponses = {
 	/**
 	 * OK
@@ -216,6 +356,31 @@ export type GetContentTypesByNameData = {
 	url: '/content-types/{name}'
 }
 
+export type GetContentTypesByNameErrors = {
+	/**
+	 * Bad Request
+	 */
+	400: ValidationProblemDetails
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails
+	/**
+	 * Forbidden
+	 */
+	403: ProblemDetails
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails
+	/**
+	 * Unprocessable Entity
+	 */
+	422: ValidationProblemDetails
+}
+
+export type GetContentTypesByNameError = GetContentTypesByNameErrors[keyof GetContentTypesByNameErrors]
+
 export type GetContentTypesByNameResponses = {
 	/**
 	 * OK
@@ -233,6 +398,35 @@ export type PostContentTypesByIdFieldsData = {
 	query?: never
 	url: '/content-types/{id}/fields'
 }
+
+export type PostContentTypesByIdFieldsErrors = {
+	/**
+	 * Bad Request
+	 */
+	400: ValidationProblemDetails
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails
+	/**
+	 * Forbidden
+	 */
+	403: ProblemDetails
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails
+	/**
+	 * Conflict
+	 */
+	409: ValidationProblemDetails
+	/**
+	 * Unprocessable Entity
+	 */
+	422: ValidationProblemDetails
+}
+
+export type PostContentTypesByIdFieldsError = PostContentTypesByIdFieldsErrors[keyof PostContentTypesByIdFieldsErrors]
 
 export type PostContentTypesByIdFieldsResponses = {
 	/**
@@ -254,6 +448,28 @@ export type DeleteContentTypesByIdFieldsByFieldIdData = {
 	url: '/content-types/{id}/fields/{fieldId}'
 }
 
+export type DeleteContentTypesByIdFieldsByFieldIdErrors = {
+	/**
+	 * Bad Request
+	 */
+	400: ValidationProblemDetails
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails
+	/**
+	 * Forbidden
+	 */
+	403: ProblemDetails
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails
+}
+
+export type DeleteContentTypesByIdFieldsByFieldIdError =
+	DeleteContentTypesByIdFieldsByFieldIdErrors[keyof DeleteContentTypesByIdFieldsByFieldIdErrors]
+
 export type DeleteContentTypesByIdFieldsByFieldIdResponses = {
 	/**
 	 * OK
@@ -273,6 +489,36 @@ export type PatchContentTypesByIdFieldsByFieldIdData = {
 	query?: never
 	url: '/content-types/{id}/fields/{fieldId}'
 }
+
+export type PatchContentTypesByIdFieldsByFieldIdErrors = {
+	/**
+	 * Bad Request
+	 */
+	400: ValidationProblemDetails
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails
+	/**
+	 * Forbidden
+	 */
+	403: ProblemDetails
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails
+	/**
+	 * Conflict
+	 */
+	409: ValidationProblemDetails
+	/**
+	 * Unprocessable Entity
+	 */
+	422: ValidationProblemDetails
+}
+
+export type PatchContentTypesByIdFieldsByFieldIdError =
+	PatchContentTypesByIdFieldsByFieldIdErrors[keyof PatchContentTypesByIdFieldsByFieldIdErrors]
 
 export type PatchContentTypesByIdFieldsByFieldIdResponses = {
 	/**

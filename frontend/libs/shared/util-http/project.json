@@ -1,0 +1,12 @@
+{
+	"name": "shared-util-http",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/shared/util-http/src",
+	"projectType": "library",
+	"tags": [
+		"scope:shared",
+		"type:util"
+	],
+	"// targets": "to see all targets run: nx show project shared-util-http --web",
+	"targets": {}
+}

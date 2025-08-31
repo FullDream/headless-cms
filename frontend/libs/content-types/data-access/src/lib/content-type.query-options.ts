@@ -7,16 +7,18 @@ import {
 	ContentFieldDto,
 	ContentTypeDto,
 	CreateContentFieldDto,
-	CreateContentTypeCommand,
+	CreateContentTypeDto,
 	DeleteContentTypesByIdResponse,
 	GetContentTypesByNameResponse,
 	GetContentTypesResponse,
 	PatchContentTypesByIdResponse,
 	PostContentTypesByIdFieldsResponse,
+	PostContentTypesErrors,
 	PostContentTypesResponse,
 	UpdateContentFieldDto,
 	UpdateContentTypeDto,
 } from './generated/types.gen'
+import { ApiErrorResponse } from '@headless-cms/shared/util-http'
 
 export type UpdateFieldVariables = { contentTypeId: string; fieldId: string; dto: UpdateContentFieldDto }
 export type CreateFieldVariables = { contentTypeId: string; dto: CreateContentFieldDto }
@@ -37,10 +39,9 @@ export class ContentTypeQueryOptions {
 		queryFn: () => lastValueFrom(this.#client.get<GetContentTypesResponse>(this.#apiUrl)),
 	})
 
-	readonly create = mutationOptions({
+	readonly create = mutationOptions<ContentTypeDto, ApiErrorResponse<PostContentTypesErrors>, CreateContentTypeDto>({
 		mutationKey: [this.#contentTypeKey, 'create'],
-		mutationFn: (item: CreateContentTypeCommand) =>
-			lastValueFrom(this.#client.post<PostContentTypesResponse>(this.#apiUrl, item)),
+		mutationFn: item => lastValueFrom(this.#client.post<PostContentTypesResponse>(this.#apiUrl, item)),
 		onSuccess: data =>
 			this.#queryClient.setQueryData<ContentTypeDto[]>(this.#contentTypesListKey, list =>
 				R.pipe(list ?? [], R.concat([data]), R.sortBy(R.prop('name'))),
