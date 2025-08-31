@@ -11,88 +11,57 @@ using Application.ContentTypes.Queries.GetByName;
 using Core.ContentTypes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebApi.Contracts.ContentTypes;
+using WebApi.Results;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("content-types")]
-public class ContentTypesController(IMediator mediator) : ControllerBase
+public class ContentTypesController(IMediator mediator, ProblemDetailsFactory detailsService) : ControllerBase
 {
 	[HttpGet]
-	public async Task<ActionResult<List<ContentTypeDto>>> Index([FromQuery] ContentTypeKind? kind,
+	public async Task<OutcomeResult<IEnumerable<ContentTypeDto>>> Index(
+		[FromQuery] ContentTypeKind? kind,
 		CancellationToken cancellationToken)
-	{
-		var result = await mediator.Send(new GetContentTypesQuery(kind), cancellationToken);
-
-		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
-	}
+		=> await mediator.Send(new GetContentTypesQuery(kind), cancellationToken);
 
 	[HttpGet("{id:guid}")]
-	public async Task<ActionResult<ContentTypeDto>> GetById(Guid id, CancellationToken cancellationToken)
-	{
-		var result = await mediator.Send(new GetContentTypeByIdQuery(id), cancellationToken);
-
-		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
-	}
+	public async Task<OutcomeResult<ContentTypeDto>> GetById(Guid id, CancellationToken cancellationToken) =>
+		await mediator.Send(new GetContentTypeByIdQuery(id), cancellationToken);
 
 	[HttpGet("{name}")]
-	public async Task<ActionResult<ContentTypeDto>> GetByName(string name, CancellationToken cancellationToken)
-	{
-		var result = await mediator.Send(new GetContentTypeByNameQuery(name), cancellationToken);
-
-		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
-	}
-
+	public async Task<OutcomeResult<ContentTypeDto>> GetByName(string name, CancellationToken cancellationToken) =>
+		await mediator.Send(new GetContentTypeByNameQuery(name), cancellationToken);
 
 	[HttpPost]
-	public async Task<ActionResult<ContentTypeDto>> Create([FromBody] CreateContentTypeCommand command,
+	public async Task<OutcomeResult<ContentTypeDto>> Create(
+		CreateContentTypeCommand command,
 		CancellationToken cancellationToken)
-	{
-		var result = await mediator.Send(command, cancellationToken);
-
-		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
-	}
+		=> await mediator.Send(command, cancellationToken);
 
 	[HttpPatch("{id:guid}")]
-	public async Task<ActionResult<ContentTypeDto>> Update(Guid id, [FromBody] UpdateContentTypeDto body,
-		CancellationToken cancellationToken)
-	{
-		var result = await mediator.Send(new UpdateContentTypeCommand(id, body.Name, body.Kind), cancellationToken);
-
-		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
-	}
+	public async Task<OutcomeResult<ContentTypeDto>> Update(Guid id, UpdateContentTypeDto body,
+		CancellationToken cancellationToken) =>
+		await mediator.Send(new UpdateContentTypeCommand(id, body.Name, body.Kind), cancellationToken);
 
 	[HttpDelete("{id:guid}")]
-	public async Task<ActionResult<ContentTypeDto?>> Delete(Guid id, CancellationToken cancellationToken)
-	{
-		var result = await mediator.Send(new RemoveContentTypeCommand(id), cancellationToken);
-
-		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
-	}
+	public async Task<OutcomeResult<ContentTypeDto>> Delete(Guid id, CancellationToken cancellationToken) =>
+		await mediator.Send(new RemoveContentTypeCommand(id), cancellationToken);
 
 	[HttpPost("{id:guid}/fields")]
-	public async Task<ActionResult<ContentFieldDto>> AddField(Guid id, [FromBody] CreateContentFieldDto field)
-	{
-		var result = await mediator.Send(new AddFieldToContentTypeCommand(id, field));
-
-		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
-	}
+	public async Task<OutcomeResult<ContentFieldDto>> AddField(Guid id, CreateContentFieldDto field,
+		CancellationToken cancellationToken) =>
+		await mediator.Send(new AddFieldToContentTypeCommand(id, field), cancellationToken);
 
 	[HttpPatch("{id:guid}/fields/{fieldId:guid}")]
-	public async Task<ActionResult<ContentFieldDto>> UpdateField(Guid id, Guid fieldId,
-		[FromBody] UpdateContentFieldDto updateDto)
-	{
-		var result = await mediator.Send(new UpdateFieldInContentTypeCommand(id, fieldId, updateDto));
-
-		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
-	}
+	public async Task<OutcomeResult<ContentFieldDto>> UpdateField(Guid id, Guid fieldId,
+		UpdateContentFieldDto updateDto, CancellationToken cancellationToken) =>
+		await mediator.Send(new UpdateFieldInContentTypeCommand(id, fieldId, updateDto), cancellationToken);
 
 	[HttpDelete("{id:guid}/fields/{fieldId:guid}")]
-	public async Task<ActionResult<ContentFieldDto>> RemoveField(Guid id, Guid fieldId)
-	{
-		var result = await mediator.Send(new RemoveFieldFromContentTypeCommand(id, fieldId));
-
-		return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
-	}
+	public async Task<OutcomeResult<ContentFieldDto>> RemoveField(Guid id, Guid fieldId,
+		CancellationToken cancellationToken) =>
+		await mediator.Send(new RemoveFieldFromContentTypeCommand(id, fieldId), cancellationToken);
 }

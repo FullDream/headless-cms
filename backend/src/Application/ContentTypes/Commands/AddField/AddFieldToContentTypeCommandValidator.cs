@@ -1,17 +1,13 @@
-﻿using Application.Abstractions;
-using Application.ContentTypes.Dtos;
+﻿using Application.ContentTypes.Dtos;
 using FluentValidation;
 
 namespace Application.ContentTypes.Commands.AddField;
 
 public class AddFieldToContentTypeCommandValidator : AbstractValidator<AddFieldToContentTypeCommand>
 {
-	public AddFieldToContentTypeCommandValidator(IContentTypeExistenceChecker checker)
+	public AddFieldToContentTypeCommandValidator()
 	{
-		RuleFor(command => command.ContentTypeId)
-			.NotEmpty()
-			.MustAsync(async (id, ct) => await checker.ExistsByIdAsync(id, ct));
-
+		RuleFor(command => command.ContentTypeId).NotEmpty();
 		RuleFor(command => command.Field).SetValidator(new CreateContentFieldDtoValidator());
 	}
 }

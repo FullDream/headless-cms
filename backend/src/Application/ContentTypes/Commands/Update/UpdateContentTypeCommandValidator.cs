@@ -1,16 +1,13 @@
-﻿using Application.Abstractions;
-using Application.Common.Validation;
+﻿using Application.Common.Validation;
 using FluentValidation;
 
 namespace Application.ContentTypes.Commands.Update;
 
 public class UpdateContentTypeCommandValidator : AbstractValidator<UpdateContentTypeCommand>
 {
-	public UpdateContentTypeCommandValidator(IContentTypeExistenceChecker checker)
+	public UpdateContentTypeCommandValidator()
 	{
-		RuleFor(c => c.Id)
-			.NotEmpty()
-			.MustAsync(async (id, ct) => await checker.ExistsByIdAsync(id, ct));
+		RuleFor(c => c.Id).NotEmpty();
 
 		RuleFor(c => c.Name)
 			.MustBeKebabCase()
