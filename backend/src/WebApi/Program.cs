@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using Application;
 using Infrastructure;
 using Scalar.AspNetCore;
-using WebApi.Conventions;
+using WebApi.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 

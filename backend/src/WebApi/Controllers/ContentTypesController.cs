@@ -12,8 +12,8 @@ using Core.ContentTypes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using WebApi.Common;
 using WebApi.Contracts.ContentTypes;
-using WebApi.Results;
 
 namespace WebApi.Controllers;
 

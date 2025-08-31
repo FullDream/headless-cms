@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SharedKernel.Result;
 
-namespace WebApi.Results;
+namespace WebApi.Common;
 
 internal static class ResultProblemDetailsMapper
 {

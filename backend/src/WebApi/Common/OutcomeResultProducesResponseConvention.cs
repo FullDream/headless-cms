@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using WebApi.Results;
 
-namespace WebApi.Conventions;
+namespace WebApi.Common;
 
 public class OutcomeResultProducesResponseConvention : IApplicationModelConvention
 {
