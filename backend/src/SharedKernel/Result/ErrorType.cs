@@ -2,8 +2,11 @@
 
 public enum ErrorType
 {
-	Validation,
 	BusinessRule,
 	Conflict,
-	Failure
+	Failure,
+	Forbidden,
+	NotFound,
+	Unauthenticated,
+	Validation
 }

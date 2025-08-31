@@ -17,7 +17,11 @@ var enumConverter = new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allo
 
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(enumConverter));
 builder.Services.AddControllers()
-	.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(enumConverter));
+	.AddJsonOptions(options =>
+	{
+		options.JsonSerializerOptions.Converters.Add(enumConverter);
+		options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+	});
 
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
