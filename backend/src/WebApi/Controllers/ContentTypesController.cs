@@ -36,10 +36,9 @@ public class ContentTypesController(IMediator mediator, ProblemDetailsFactory de
 		await mediator.Send(new GetContentTypeByNameQuery(name), cancellationToken);
 
 	[HttpPost]
-	public async Task<OutcomeResult<ContentTypeDto>> Create(
-		CreateContentTypeCommand command,
+	public async Task<OutcomeResult<ContentTypeDto>> Create(CreateContentTypeDto body,
 		CancellationToken cancellationToken)
-		=> await mediator.Send(command, cancellationToken);
+		=> await mediator.Send(new CreateContentTypeCommand(body.Name, body.Kind, body.Fields), cancellationToken);
 
 	[HttpPatch("{id:guid}")]
 	public async Task<OutcomeResult<ContentTypeDto>> Update(Guid id, UpdateContentTypeDto body,
