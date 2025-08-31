@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Application;
 using Infrastructure;
 using Scalar.AspNetCore;
+using WebApi.Conventions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddApplication();
 var enumConverter = new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false);
 
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(enumConverter));
-builder.Services.AddControllers()
+builder.Services.AddControllers(options => options.Conventions.Add(new OutcomeResultProducesResponseConvention()))
 	.AddJsonOptions(options =>
 	{
 		options.JsonSerializerOptions.Converters.Add(enumConverter);
