@@ -26,7 +26,8 @@ internal static class ResultProblemDetailsMapper
 
 		if (errorType == ErrorType.Validation)
 			return problemDetailsFactory.CreateValidationProblemDetails(httpContext,
-				BuildValidationErrors(errors));
+				BuildValidationErrors(errors),
+				MapError(errorType));
 
 		var problemDetails = problemDetailsFactory.CreateProblemDetails(httpContext,
 			MapError(errorType),
@@ -48,7 +49,7 @@ internal static class ResultProblemDetailsMapper
 		ErrorType.Unauthenticated => StatusCodes.Status401Unauthorized,
 		ErrorType.Forbidden => StatusCodes.Status403Forbidden,
 		ErrorType.NotFound => StatusCodes.Status404NotFound,
-		ErrorType.BusinessRule => StatusCodes.Status422UnprocessableEntity,
+		ErrorType.BusinessRule or ErrorType.Validation => StatusCodes.Status422UnprocessableEntity,
 		ErrorType.Conflict => StatusCodes.Status409Conflict,
 		_ => StatusCodes.Status400BadRequest
 	};
