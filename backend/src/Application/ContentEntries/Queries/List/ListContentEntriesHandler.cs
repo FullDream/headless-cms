@@ -1,5 +1,4 @@
-﻿using Application.Abstractions;
-using Application.ContentEntries.Mappers;
+﻿using Application.ContentEntries.Mappers;
 using Core.ContentEntries;
 using MediatR;
 using SharedKernel.Result;
@@ -7,8 +6,7 @@ using SharedKernel.Result;
 namespace Application.ContentEntries.Queries.List;
 
 public class ListContentEntriesHandler(
-	IContentEntryRepository repository,
-	IContentTypeFieldsProvider contentTypeFieldsProvider)
+	IContentEntryRepository repository)
 	: IRequestHandler<ListContentEntriesQuery, Result<IReadOnlyList<IReadOnlyDictionary<string, object?>>>>
 {
 	public async Task<Result<IReadOnlyList<IReadOnlyDictionary<string, object?>>>> Handle(
