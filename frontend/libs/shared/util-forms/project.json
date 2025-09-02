@@ -1,0 +1,12 @@
+{
+	"name": "shared-util-forms",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/shared/util-forms/src",
+	"projectType": "library",
+	"tags": [
+		"scope:shared",
+		"type:util"
+	],
+	"// targets": "to see all targets run: nx show project shared-util-forms --web",
+	"targets": {}
+}
