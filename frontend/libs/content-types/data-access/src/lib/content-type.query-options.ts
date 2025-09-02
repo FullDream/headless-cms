@@ -8,10 +8,19 @@ import {
 	ContentTypeDto,
 	CreateContentFieldDto,
 	CreateContentTypeDto,
+	DeleteContentTypesByIdErrors,
+	DeleteContentTypesByIdFieldsByFieldIdErrors,
+	DeleteContentTypesByIdFieldsByFieldIdResponse,
 	DeleteContentTypesByIdResponse,
+	GetContentTypesByIdErrors,
+	GetContentTypesByIdResponse,
 	GetContentTypesByNameResponse,
+	GetContentTypesErrors,
 	GetContentTypesResponse,
+	PatchContentTypesByIdErrors,
+	PatchContentTypesByIdFieldsByFieldIdResponse,
 	PatchContentTypesByIdResponse,
+	PostContentTypesByIdFieldsErrors,
 	PostContentTypesByIdFieldsResponse,
 	PostContentTypesErrors,
 	PostContentTypesResponse,
@@ -23,7 +32,7 @@ import { ApiErrorResponse } from '@headless-cms/shared/util-http'
 export type UpdateFieldVariables = { contentTypeId: string; fieldId: string; dto: UpdateContentFieldDto }
 export type CreateFieldVariables = { contentTypeId: string; dto: CreateContentFieldDto }
 export type DeleteFieldVariables = { contentTypeId: string; fieldId: string }
-
+export type UpdateContentTypeVariables = { id: string; dto: UpdateContentTypeDto }
 @Injectable({ providedIn: 'root' })
 export class ContentTypeQueryOptions {
 	readonly #client = inject(HttpClient)
@@ -33,7 +42,7 @@ export class ContentTypeQueryOptions {
 	readonly #apiUrl = `/api/${this.#contentTypeKey}`
 	readonly #queryClient = inject(QueryClient)
 
-	readonly list = queryOptions({
+	readonly list = queryOptions<GetContentTypesResponse, ApiErrorResponse<GetContentTypesErrors>>({
 		queryKey: this.#contentTypesListKey,
 		placeholderData: [],
 		queryFn: () => lastValueFrom(this.#client.get<GetContentTypesResponse>(this.#apiUrl)),
@@ -48,10 +57,14 @@ export class ContentTypeQueryOptions {
 			),
 	})
 
-	readonly update = mutationOptions({
+	readonly update = mutationOptions<
+		PatchContentTypesByIdResponse,
+		ApiErrorResponse<PatchContentTypesByIdErrors>,
+		UpdateContentTypeVariables
+	>({
 		mutationKey: [this.#contentTypeKey, 'update'],
-		mutationFn: ({ id, item }: { id: string; item: UpdateContentTypeDto }) =>
-			lastValueFrom(this.#client.patch<PatchContentTypesByIdResponse>(`${this.#apiUrl}/${id}`, item)),
+		mutationFn: ({ id, dto }) =>
+			lastValueFrom(this.#client.patch<PatchContentTypesByIdResponse>(`${this.#apiUrl}/${id}`, dto)),
 		onSuccess: data => {
 			this.#queryClient.setQueryData<ContentTypeDto>([...this.#contentTypesDetailKey, data.id], ct =>
 				ct ? { ...ct, ...data } : undefined,
@@ -68,11 +81,13 @@ export class ContentTypeQueryOptions {
 		},
 	})
 
-	readonly delete = mutationOptions({
+	readonly delete = mutationOptions<
+		DeleteContentTypesByIdResponse,
+		ApiErrorResponse<DeleteContentTypesByIdErrors>,
+		string
+	>({
 		mutationKey: [this.#contentTypeKey, 'delete'],
-		mutationFn: (id: string) =>
-			lastValueFrom(this.#client.delete<DeleteContentTypesByIdResponse>(`${this.#apiUrl}/${id}`)),
-
+		mutationFn: id => lastValueFrom(this.#client.delete<DeleteContentTypesByIdResponse>(`${this.#apiUrl}/${id}`)),
 		onSuccess: data => {
 			this.#queryClient.removeQueries({ queryKey: [...this.#contentTypesDetailKey, data.id] })
 
@@ -82,7 +97,31 @@ export class ContentTypeQueryOptions {
 		},
 	})
 
-	readonly updateFieldForContentType = mutationOptions({
+	createFieldForContentType = mutationOptions<
+		PostContentTypesByIdFieldsResponse,
+		ApiErrorResponse<PostContentTypesByIdFieldsErrors>,
+		CreateFieldVariables
+	>({
+		mutationFn: variables =>
+			lastValueFrom(
+				this.#client.post<PostContentTypesByIdFieldsResponse>(
+					`${this.#apiUrl}/${variables.contentTypeId}/fields`,
+					variables.dto,
+				),
+			),
+		onSuccess: (data, variables) => {
+			this.#queryClient.setQueryData<GetContentTypesByNameResponse>(
+				[this.#contentTypeKey, 'detail', variables.contentTypeId],
+				ct => (ct ? { ...ct, fields: [...ct.fields, data] } : undefined),
+			)
+		},
+	})
+
+	readonly updateFieldForContentType = mutationOptions<
+		PatchContentTypesByIdFieldsByFieldIdResponse,
+		ApiErrorResponse<DeleteContentTypesByIdFieldsByFieldIdErrors>,
+		UpdateFieldVariables
+	>({
 		mutationFn: (variables: UpdateFieldVariables) =>
 			lastValueFrom(
 				this.#client.patch<ContentFieldDto>(
@@ -98,26 +137,14 @@ export class ContentTypeQueryOptions {
 		},
 	})
 
-	createFieldForContentType = mutationOptions({
-		mutationFn: (variables: CreateFieldVariables) =>
+	deleteField = mutationOptions<
+		DeleteContentTypesByIdFieldsByFieldIdResponse,
+		ApiErrorResponse<DeleteContentTypesByIdFieldsByFieldIdErrors>,
+		DeleteFieldVariables
+	>({
+		mutationFn: variables =>
 			lastValueFrom(
-				this.#client.post<PostContentTypesByIdFieldsResponse>(
-					`${this.#apiUrl}/${variables.contentTypeId}/fields`,
-					variables.dto,
-				),
-			),
-		onSuccess: (data, variables) => {
-			this.#queryClient.setQueryData<GetContentTypesByNameResponse>(
-				[this.#contentTypeKey, 'detail', variables.contentTypeId],
-				ct => (ct ? { ...ct, fields: [...ct.fields, data] } : undefined),
-			)
-		},
-	})
-
-	deleteField = mutationOptions({
-		mutationFn: (variables: DeleteFieldVariables) =>
-			lastValueFrom(
-				this.#client.delete<ContentFieldDto>(
+				this.#client.delete<DeleteContentTypesByIdFieldsByFieldIdResponse>(
 					`${this.#apiUrl}/${variables.contentTypeId}/fields/${variables.fieldId}`,
 				),
 			),
@@ -134,7 +161,7 @@ export class ContentTypeQueryOptions {
 			.getQueryData<GetContentTypesResponse>(this.#contentTypesListKey)
 			?.find(ct => ct.id === id)
 
-		return queryOptions({
+		return queryOptions<GetContentTypesByIdResponse, ApiErrorResponse<GetContentTypesByIdErrors>>({
 			queryKey: [...this.#contentTypesDetailKey, id],
 			queryFn: () => lastValueFrom(this.#client.get<ContentTypeDto>(`${this.#apiUrl}/${id}`)),
 			enabled: !!id && !cached,
