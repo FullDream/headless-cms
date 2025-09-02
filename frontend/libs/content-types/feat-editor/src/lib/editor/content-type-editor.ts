@@ -2,7 +2,6 @@ import { Component, effect, inject, input } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { FloatLabel } from 'primeng/floatlabel'
 import { InputText } from 'primeng/inputtext'
-
 import { RadioButton } from 'primeng/radiobutton'
 import { Drawer } from 'primeng/drawer'
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router'
@@ -16,6 +15,7 @@ import { injectMutation, injectQuery } from '@tanstack/angular-query-experimenta
 import { ContentFieldFacade } from './field-editor/facade/content-field.facade'
 import { RemoteContentFieldFacade } from './field-editor/facade/remote-content-field.facade'
 import { LocalContentFieldFacade } from './field-editor/facade/local-content-field.facade'
+import { setFormGroupServerErrors } from '@headless-cms/shared/util-forms'
 
 @Component({
 	selector: 'ct-create-content-type',
@@ -75,6 +75,16 @@ export default class ContentTypeEditor {
 
 		effect(() => this.fields.reset(fields()))
 		effect(() => this.form.reset(this.contentType.data()))
+		effect(() => {
+			const error = this.update.error() ?? this.create.error()
+
+			switch (error?.status) {
+				case 400:
+				case 409:
+				case 422:
+					if (error.error.errors) setFormGroupServerErrors(this.form, error.error.errors)
+			}
+		})
 	}
 
 	protected updateContentType(): void {
@@ -85,7 +95,7 @@ export default class ContentTypeEditor {
 
 		if (!id) return
 
-		this.update.mutate({ id, item: { name, kind } })
+		this.update.mutate({ id, dto: { name, kind } })
 	}
 
 	protected createContentType(): void {
@@ -94,7 +104,7 @@ export default class ContentTypeEditor {
 		const id = this.contentTypeId()
 		const { name, fields, kind } = this.form.getRawValue()
 
-		if (id) return this.update.mutate({ id, item: { name, kind } })
+		if (id) return this.update.mutate({ id, dto: { name, kind } })
 
 		this.create
 			.mutateAsync({ name, kind, fields })

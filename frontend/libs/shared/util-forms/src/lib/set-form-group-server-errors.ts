@@ -7,6 +7,5 @@ export function setFormGroupServerErrors<F extends FormGroup>(form: F, errors: R
 		if (!control) continue
 
 		control.setErrors({ server: messages })
-		control.updateValueAndValidity({ onlySelf: true, emitEvent: false })
 	}
 }
