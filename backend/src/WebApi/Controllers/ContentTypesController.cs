@@ -12,7 +12,7 @@ using Core.ContentTypes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using WebApi.Common;
+using WebApi.Common.Results;
 using WebApi.Contracts.ContentTypes;
 
 namespace WebApi.Controllers;

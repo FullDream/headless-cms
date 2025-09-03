@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace WebApi.Common;
+namespace WebApi.Common.Results;
 
 public class OutcomeResultProducesResponseConvention : IApplicationModelConvention
 {

@@ -3,7 +3,9 @@ using System.Text.Json.Serialization;
 using Application;
 using Infrastructure;
 using Scalar.AspNetCore;
-using WebApi.Common;
+using WebApi.Common.OpenApi;
+using WebApi.Common.Results;
+using WebApi.Common.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +23,12 @@ builder.Services.AddControllers(options => options.Conventions.Add(new OutcomeRe
 	.AddJsonOptions(options =>
 	{
 		options.JsonSerializerOptions.Converters.Add(enumConverter);
-		options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+		options.JsonSerializerOptions.DictionaryKeyPolicy = new SegmentedNamingPolicy(JsonNamingPolicy.CamelCase);
 	});
 
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(o => o.AddSchemaTransformer<FluentValidationSchemaTransformer>());
 
 
 var app = builder.Build();
