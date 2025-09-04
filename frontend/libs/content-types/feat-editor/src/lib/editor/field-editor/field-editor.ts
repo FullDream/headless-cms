@@ -1,16 +1,17 @@
-import { Component, effect, inject, input } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { FloatLabel } from 'primeng/floatlabel'
-import { InputText } from 'primeng/inputtext'
-import { UniqueIdPipe, UniqueIdScopeDirective } from '@headless-cms/shared/ui'
-import { Select } from 'primeng/select'
-import { Checkbox } from 'primeng/checkbox'
-import { Button } from 'primeng/button'
-import { AutoFocus } from 'primeng/autofocus'
-import { fieldUniqueNameValidator } from './field-unique-name.validator'
-import { ActivatedRoute, Router } from '@angular/router'
-import { ContentFieldFacade } from './facade/content-field.facade'
-import { FieldType } from '@headless-cms/content-types/data-access'
+import {Component, effect, inject, input} from '@angular/core'
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
+import {FloatLabel} from 'primeng/floatlabel'
+import {InputText} from 'primeng/inputtext'
+import {UniqueIdPipe, UniqueIdScopeDirective} from '@headless-cms/shared/ui'
+import {Select} from 'primeng/select'
+import {Checkbox} from 'primeng/checkbox'
+import {Button} from 'primeng/button'
+import {AutoFocus} from 'primeng/autofocus'
+import {fieldUniqueNameValidator} from './field-unique-name.validator'
+import {ActivatedRoute, Router} from '@angular/router'
+import {ContentFieldFacade} from './facade/content-field.facade'
+import {FieldType} from '@headless-cms/content-types/data-access'
+import {getDirtyValuesForPatch} from '@headless-cms/shared/util-forms'
 
 @Component({
 	selector: 'ct-edit-field',
@@ -52,7 +53,7 @@ export default class FieldEditor {
 
 		const id = this.fieldId()
 
-		if (id) this.#facade.update(id, this.form.getRawValue())
+		if (id) this.#facade.update(id, getDirtyValuesForPatch(this.form))
 		else this.#facade.create(this.form.getRawValue())
 
 		void this.#router.navigate(['../'], { relativeTo: this.#route })

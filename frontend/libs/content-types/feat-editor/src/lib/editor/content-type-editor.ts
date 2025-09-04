@@ -15,7 +15,7 @@ import { injectMutation, injectQuery } from '@tanstack/angular-query-experimenta
 import { ContentFieldFacade } from './field-editor/facade/content-field.facade'
 import { RemoteContentFieldFacade } from './field-editor/facade/remote-content-field.facade'
 import { LocalContentFieldFacade } from './field-editor/facade/local-content-field.facade'
-import { setFormGroupServerErrors } from '@headless-cms/shared/util-forms'
+import { getDirtyValuesForPatch, setFormGroupServerErrors } from '@headless-cms/shared/util-forms'
 
 @Component({
 	selector: 'ct-create-content-type',
@@ -91,11 +91,10 @@ export default class ContentTypeEditor {
 		if (this.form.invalid) return
 
 		const id = this.contentTypeId()
-		const { name, kind } = this.form.getRawValue()
 
 		if (!id) return
 
-		this.update.mutate({ id, dto: { name, kind } })
+		this.update.mutate({ id, dto: getDirtyValuesForPatch(this.form) })
 	}
 
 	protected createContentType(): void {
