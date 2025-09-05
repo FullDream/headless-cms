@@ -17,14 +17,14 @@
 			"@headless-cms/content-types/feat-editor": [
 				"libs/content-types/feat-editor/src/index.ts"
 			],
+			"@headless-cms/shared/ui": [
+				"libs/shared/ui/src/index.ts"
+			],
 			"@headless-cms/shared/util-forms": [
 				"libs/shared/util-forms/src/index.ts"
 			],
 			"@headless-cms/shared/util-http": [
 				"libs/shared/util-http/src/index.ts"
-			],
-			"@headless-cms/shared/ui": [
-				"libs/shared/ui/src/index.ts"
 			]
 		}
 	},

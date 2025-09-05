@@ -96,7 +96,12 @@
 			"unitTestRunner": "vitest"
 		},
 		"@nx/angular:component": {
-			"style": "css"
+			"style": "none",
+			"changeDetection": "OnPush",
+			"skipTests": true
+		},
+		"@nx/angular:directive": {
+			"skipTests": true
 		}
 	},
 	"defaultProject": "headless-cms"

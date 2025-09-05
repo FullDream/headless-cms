@@ -1,0 +1,19 @@
+@if (firstMessage()) {
+	<p-message severity="error" variant="simple" size="small">
+		<div class=" mt-1 grid grid-cols-[1fr_auto] items-center  overflow-hidden gap-1.5">
+			<span [pTooltip]="firstMessage()" tooltipPosition="bottom" class="truncate">{{ firstMessage() }}</span>
+			@if (otherMessages().length; as length) {
+				<p-badge [pTooltip]="tooltipContent" tooltipPosition="bottom" [value]="length" badgeSize="small"
+				         severity="danger"/>
+
+				<ng-template #tooltipContent>
+					<ul class="flex flex-col gap-0.5 text-sm">
+						@for (message of otherMessages(); track message) {
+							<li>{{ message }}</li>
+						}
+					</ul>
+				</ng-template>
+			}
+		</div>
+	</p-message>
+}

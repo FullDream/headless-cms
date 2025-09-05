@@ -1,12 +1,11 @@
 import { Component, effect, inject, input } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { FloatLabel } from 'primeng/floatlabel'
 import { InputText } from 'primeng/inputtext'
 import { RadioButton } from 'primeng/radiobutton'
 import { Drawer } from 'primeng/drawer'
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router'
 import { toSignal } from '@angular/core/rxjs-interop'
-import { UniqueIdPipe, UniqueIdScopeDirective } from '@headless-cms/shared/ui'
+import { FormField, UniqueIdPipe } from '@headless-cms/shared/ui'
 import { ContentFieldDto, ContentTypeKind, ContentTypeQueryOptions } from '@headless-cms/content-types/data-access'
 import { Button } from 'primeng/button'
 import { ConfirmationService } from 'primeng/api'
@@ -16,13 +15,13 @@ import { ContentFieldFacade } from './field-editor/facade/content-field.facade'
 import { RemoteContentFieldFacade } from './field-editor/facade/remote-content-field.facade'
 import { LocalContentFieldFacade } from './field-editor/facade/local-content-field.facade'
 import { getDirtyValuesForPatch, setFormGroupServerErrors } from '@headless-cms/shared/util-forms'
+import { IdScope } from '../../../../../shared/ui/src/lib/id-scope/id-scope'
 
 @Component({
 	selector: 'ct-create-content-type',
 	templateUrl: './content-type-editor.html',
 	imports: [
 		ReactiveFormsModule,
-		FloatLabel,
 		InputText,
 		RadioButton,
 		Drawer,
@@ -31,8 +30,9 @@ import { getDirtyValuesForPatch, setFormGroupServerErrors } from '@headless-cms/
 		UniqueIdPipe,
 		ConfirmDialog,
 		Button,
+		FormField,
 	],
-	hostDirectives: [UniqueIdScopeDirective],
+	hostDirectives: [IdScope],
 	providers: [
 		ConfirmationService,
 		{

@@ -19,13 +19,10 @@
 		</div>
 	</fieldset>
 
-	<div>
-		@let nameId = 'name' | uniqueId;
-		<p-floatlabel variant="on">
-			<input class="w-2xs" [formControl]="form.controls.name" pInputText [id]="nameId" autocomplete="off"/>
-			<label [for]="nameId">Name</label>
-		</p-floatlabel>
-	</div>
+
+	<ui-form-field class="block w-2xs" label="Name">
+		<input class="w-2xs" formControlName="name" pInputText autocomplete="off"/>
+	</ui-form-field>
 
 	@if (contentTypeId()) {
 		<p-button

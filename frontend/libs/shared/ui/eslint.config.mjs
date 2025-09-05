@@ -12,7 +12,7 @@ export default [
 				'error',
 				{
 					type: 'attribute',
-					prefix: 'shared',
+					prefix: 'ui',
 					style: 'camelCase',
 				},
 			],
@@ -20,7 +20,7 @@ export default [
 				'error',
 				{
 					type: 'element',
-					prefix: 'shared',
+					prefix: 'ui',
 					style: 'kebab-case',
 				},
 			],

@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"isolatedModules": true,
 		"strict": true,
+		"noImplicitAny": true,
 		"noImplicitOverride": true
 	},
 	"angularCompilerOptions": {
