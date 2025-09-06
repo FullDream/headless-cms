@@ -1,8 +1,7 @@
 import { Component, effect, inject, input } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { FloatLabel } from 'primeng/floatlabel'
 import { InputText } from 'primeng/inputtext'
-import { UniqueIdPipe, UniqueIdScopeDirective } from '@headless-cms/shared/ui'
+import { FormField, IdScope } from '@headless-cms/shared/ui'
 import { Select } from 'primeng/select'
 import { Checkbox } from 'primeng/checkbox'
 import { Button } from 'primeng/button'
@@ -12,15 +11,14 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { ContentFieldFacade } from './facade/content-field.facade'
 import { FieldType } from '@headless-cms/content-types/data-access'
 import { getDirtyValuesForPatch } from '@headless-cms/shared/util-forms'
+import { toObservable } from '@angular/core/rxjs-interop'
 
 @Component({
 	selector: 'ct-edit-field',
 	templateUrl: './field-editor.html',
-	imports: [ReactiveFormsModule, FloatLabel, InputText, UniqueIdPipe, Select, Checkbox, AutoFocus, Button],
-	hostDirectives: [UniqueIdScopeDirective],
-	host: {
-		class: 'p-2',
-	},
+	imports: [ReactiveFormsModule, InputText, Select, Checkbox, AutoFocus, Button, FormField],
+	hostDirectives: [IdScope],
+	host: { class: 'p-2' },
 })
 export default class FieldEditor {
 	protected readonly fieldId = input<string>()
@@ -35,7 +33,7 @@ export default class FieldEditor {
 	protected readonly form = this.#fb.nonNullable.group({
 		name: this.#fb.nonNullable.control('', {
 			validators: [Validators.required],
-			asyncValidators: [fieldUniqueNameValidator(this.fieldId())],
+			asyncValidators: [fieldUniqueNameValidator(toObservable(this.fieldId))],
 		}),
 		label: ['', Validators.required],
 		type: this.#fb.nonNullable.control<FieldType>('shortText', Validators.required),
@@ -45,7 +43,7 @@ export default class FieldEditor {
 	constructor() {
 		const currentField = this.#facade.state.computed(state => state.fields().find(f => f.id === this.fieldId()))
 
-		effect(() => currentField() && this.form.reset(currentField(), { emitEvent: false }))
+		effect(() => currentField() && this.form.reset(currentField()))
 	}
 
 	protected submit(): void {

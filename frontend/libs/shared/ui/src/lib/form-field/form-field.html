@@ -1,6 +1,18 @@
-<p-floatlabel variant="on">
+@if (floatingLabel()) {
+	<p-float-label variant="on">
+		<ng-template [ngTemplateOutlet]="fieldContent"/>
+	</p-float-label>
+} @else {
+	<div class="has-[label]:flex has-[label]:items-center has-[label]:gap-2">
+		<ng-template [ngTemplateOutlet]="fieldContent"/>
+	</div>
+}
+
+<ng-template #fieldContent>
 	<ng-content/>
-	<label [for]="id()">{{ label() }}</label>
-</p-floatlabel>
+	@if (label()) {
+		<label [for]="id()">{{ label() }}</label>
+	}
+</ng-template>
 
 <ui-error-message [messages]="messages()"/>

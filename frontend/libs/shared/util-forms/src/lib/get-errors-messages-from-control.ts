@@ -11,9 +11,11 @@ type errorPayloads = {
 	min: { min: number; actual: number }
 	max: { max: number; actual: number }
 	pattern: { requiredPattern: string; actualValue: string }
+	server: string[]
+	unique: boolean
 }
 
-type MsgFn<T> = T extends true ? () => string : (payload: T) => string
+type MsgFn<T> = T extends true ? () => string : (payload: T) => string | string[]
 
 type ErrorMessages<E extends object> = {
 	[K in keyof E]-?: MsgFn<NonNullable<E[K]>>
@@ -30,6 +32,8 @@ const messages: ErrorMessages<errorPayloads> = {
 	min: ({ min, actual }) => `Value must be greater than or equal to ${min} (current: ${actual}).`,
 	max: ({ max, actual }) => `Value must be less than or equal to ${max} (current: ${actual}).`,
 	pattern: () => 'Invalid format.',
+	server: messages => messages,
+	unique: () => 'This field must be unique.',
 }
 
 export function getErrorsMessagesFromControl<TControl extends AbstractControl>(

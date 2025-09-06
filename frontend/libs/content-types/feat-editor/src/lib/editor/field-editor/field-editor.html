@@ -1,43 +1,19 @@
 <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-6">
-	@let nameId = 'name' | uniqueId;
-	<div class="flex flex-col gap-2">
-		<p-floatlabel variant="on">
-			<input
-				[pAutoFocus]="true"
-				class="w-full"
-				[formControl]="form.controls.name"
-				pInputText
-				[id]="nameId"
-				autocomplete="off"
-			/>
-			<label [for]="nameId">Name</label>
-		</p-floatlabel>
-	</div>
+	<ui-form-field floatingLabel label="Name">
+		<input [pAutoFocus]="true" class="w-full" formControlName="name" pInputText/>
+	</ui-form-field>
 
-	<!-- Label field -->
-	@let labelId = 'name' | uniqueId;
-	<div class="flex flex-col gap-2">
-		<p-floatlabel variant="on">
-			<input class="w-full" [formControl]="form.controls.label" pInputText [id]="labelId"/>
-			<label [for]="labelId">Label</label>
-		</p-floatlabel>
-		<p class="text-xs text-gray-500">Human-readable label shown in the UI.</p>
-	</div>
+	<ui-form-field floatingLabel label="Label">
+		<input class="w-full" formControlName="label" pInputText/>
+	</ui-form-field>
 
-	@let typeId = 'type' | uniqueId;
-	<div class="flex flex-col gap-2">
-		<p-floatlabel variant="on">
-			<p-select class="w-full" [formControl]="form.controls.type" [inputId]="typeId" [options]="fieldTypes"/>
-			<label [for]="typeId">Type</label>
-		</p-floatlabel>
-		<p class="text-xs text-gray-500">Select how this field stores data.</p>
-	</div>
+	<ui-form-field floatingLabel label="Type">
+		<p-select class="w-full" formControlName="type" [options]="fieldTypes"/>
+	</ui-form-field>
 
-	@let isRequiredId = 'isRequired' | uniqueId;
-	<div class="flex items-center gap-2">
-		<p-checkbox [formControl]="form.controls.isRequired" binary [inputId]="isRequiredId"/>
-		<label [for]="isRequiredId">Required</label>
-	</div>
+	<ui-form-field label="Required">
+		<p-checkbox formControlName="isRequired" binary/>
+	</ui-form-field>
 
 	<div class="flex justify-between gap-2 pt-2">
 		@let id = fieldId();
@@ -51,6 +27,6 @@
 				(onClick)="delete(id)"
 			/>
 		}
-		<p-button label="Save" styleClass="min-w-28" [disabled]="form.invalid" type="submit"/>
+		<p-button label="Save" styleClass="min-w-28" [disabled]="form.invalid || form.pristine" type="submit"/>
 	</div>
 </form>

@@ -1,4 +1,5 @@
 import {
+	booleanAttribute,
 	ChangeDetectionStrategy,
 	Component,
 	computed,
@@ -27,10 +28,10 @@ import { ID_HASH } from '../id-scope/id-hash.token'
 })
 export class FormField {
 	readonly label = input<string>('')
-
-	readonly id = computed(() => this.ngControl()?.path?.join('-') + this.#hash)
+	readonly floatingLabel = input(false, { transform: booleanAttribute })
 
 	protected readonly controlEl = contentChild(NgControl, { read: ElementRef })
+	protected readonly id = computed(() => (this.ngControl()?.path ?? [randomString(4)])?.join('-') + '-' + this.#hash)
 	protected readonly messages: Signal<string[]>
 	protected readonly ngControl = contentChild(NgControl)
 	protected readonly tooltip = input<string>()
@@ -47,8 +48,10 @@ export class FormField {
 
 		effect(() => {
 			const el = this.controlEl()?.nativeElement
+			const accessor = this.ngControl()?.valueAccessor
 
-			if (el instanceof HTMLInputElement) el.id = this.id()
+			if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) el.id = this.id()
+			else if (accessor && 'inputId' in accessor) accessor.inputId = this.id()
 		})
 	}
 }
