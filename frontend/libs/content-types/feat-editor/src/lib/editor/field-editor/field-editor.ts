@@ -12,19 +12,22 @@ import { ContentFieldFacade } from './facade/content-field.facade'
 import { FieldType } from '@headless-cms/content-types/data-access'
 import { getDirtyValuesForPatch } from '@headless-cms/shared/util-forms'
 import { toObservable } from '@angular/core/rxjs-interop'
+import { KeyValuePipe } from '@angular/common'
+import { fieldTypeNames } from '../field-type-names'
+import { KeyFilter } from 'primeng/keyfilter'
 
 @Component({
 	selector: 'ct-edit-field',
 	templateUrl: './field-editor.html',
-	imports: [ReactiveFormsModule, InputText, Select, Checkbox, AutoFocus, Button, FormField],
+	imports: [ReactiveFormsModule, InputText, Select, Checkbox, AutoFocus, Button, FormField, KeyValuePipe, KeyFilter],
 	hostDirectives: [IdScope],
 	host: { class: 'p-2' },
 })
 export default class FieldEditor {
 	protected readonly fieldId = input<string>()
-	protected readonly fieldTypes: FieldType[] = Object.values(FieldType)
+	protected readonly fieldTypes = fieldTypeNames
 	readonly #fb = inject(FormBuilder)
-	// protected readonly kebabChar = /[a-z0-9-]/
+	protected readonly camelChar = /[a-z0-9-]/
 
 	readonly #facade = inject(ContentFieldFacade)
 	readonly #route = inject(ActivatedRoute)

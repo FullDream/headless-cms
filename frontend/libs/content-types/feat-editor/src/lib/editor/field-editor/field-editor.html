@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-6">
 	<ui-form-field floatingLabel label="Name">
-		<input [pAutoFocus]="true" class="w-full" formControlName="name" pInputText/>
+		<input [pAutoFocus]="true" [pKeyFilter]="camelChar" class="w-full" formControlName="name" pInputText/>
 	</ui-form-field>
 
 	<ui-form-field floatingLabel label="Label">
@@ -8,7 +8,7 @@
 	</ui-form-field>
 
 	<ui-form-field floatingLabel label="Type">
-		<p-select class="w-full" formControlName="type" [options]="fieldTypes"/>
+		<p-select class="w-full" formControlName="type" optionValue="key" optionLabel="value" [options]="fieldTypes | keyvalue"/>
 	</ui-form-field>
 
 	<ui-form-field label="Required">

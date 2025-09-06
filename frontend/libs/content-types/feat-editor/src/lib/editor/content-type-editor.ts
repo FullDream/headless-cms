@@ -15,6 +15,8 @@ import { ContentFieldFacade } from './field-editor/facade/content-field.facade'
 import { RemoteContentFieldFacade } from './field-editor/facade/remote-content-field.facade'
 import { LocalContentFieldFacade } from './field-editor/facade/local-content-field.facade'
 import { getDirtyValuesForPatch, setFormGroupServerErrors } from '@headless-cms/shared/util-forms'
+import { fieldTypeNames } from './field-type-names'
+import { KeyFilter } from 'primeng/keyfilter'
 
 @Component({
 	selector: 'ct-create-content-type',
@@ -30,6 +32,7 @@ import { getDirtyValuesForPatch, setFormGroupServerErrors } from '@headless-cms/
 		ConfirmDialog,
 		Button,
 		FormField,
+		KeyFilter,
 	],
 	hostDirectives: [IdScope, UniqueIdScopeDirective],
 	providers: [
@@ -63,6 +66,8 @@ export default class ContentTypeEditor {
 		fields: this.#fb.nonNullable.control<ContentFieldDto[]>([]),
 	})
 
+	protected readonly kebabChar = /[a-z0-9-]/
+	protected readonly fieldTypeNames = fieldTypeNames
 	protected readonly fields = this.form.controls.fields
 	protected readonly create = injectMutation(() => this.#data.create)
 	protected readonly remove = injectMutation(() => this.#data.delete)

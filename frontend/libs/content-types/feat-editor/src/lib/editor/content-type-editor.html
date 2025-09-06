@@ -21,7 +21,7 @@
 
 
 	<ui-form-field floatingLabel class="block w-2xs" label="Name">
-		<input class="w-2xs" formControlName="name" pInputText autocomplete="off"/>
+		<input class="w-2xs" [pKeyFilter]="kebabChar"  formControlName="name" pInputText autocomplete="off"/>
 	</ui-form-field>
 
 	@if (contentTypeId()) {
@@ -55,7 +55,7 @@
 							<span class="text-surface-900 font-medium">{{ field.label || field.name }}</span>
 							<span
 								class="bg-primary-50 text-primary-700 border-primary-200 rounded-full border px-2 py-1 text-xs"
-							>{{ field.type }}</span
+							>{{ fieldTypeNames[field.type] }}</span
 							>
 						</div>
 						<div class="text-surface-500 mt-2 text-xs">
