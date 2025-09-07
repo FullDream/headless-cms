@@ -1,0 +1,19 @@
+{
+	"name": "content-entries-data-access",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/content-entries/data-access/src",
+	"prefix": "lib",
+	"projectType": "library",
+	"tags": ["scope:content-entries", "type:data-access"],
+	"targets": {
+		"generate-api": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "openapi-ts -f libs/content-entries/data-access/open-api.config.ts"
+			}
+		},
+		"lint": {
+			"executor": "@nx/eslint:lint"
+		}
+	}
+}

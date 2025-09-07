@@ -8,6 +8,7 @@
 		"lib": ["es2020", "dom"],
 		"baseUrl": ".",
 		"paths": {
+			"@headless-cms/content-entries/data-access": ["libs/content-entries/data-access/src/index.ts"],
 			"@headless-cms/content-types/data-access": ["libs/content-types/data-access/src/index.ts"],
 			"@headless-cms/content-types/feat-editor": ["libs/content-types/feat-editor/src/index.ts"],
 			"@headless-cms/shared/ui": ["libs/shared/ui/src/index.ts"],

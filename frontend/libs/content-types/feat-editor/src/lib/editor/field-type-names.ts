@@ -1,4 +1,4 @@
-import {FieldType} from '@headless-cms/content-types/data-access'
+import { FieldType } from '@headless-cms/content-types/data-access'
 
 export const fieldTypeNames: Record<FieldType, string> = {
 	[FieldType.Boolean]: 'Boolean',
