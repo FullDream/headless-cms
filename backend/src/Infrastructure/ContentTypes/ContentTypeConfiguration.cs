@@ -22,5 +22,7 @@ public class ContentTypeConfiguration : IEntityTypeConfiguration<ContentType>
 
 		builder.Navigation(ct => ct.Fields)
 			.UsePropertyAccessMode(PropertyAccessMode.Field);
+
+		builder.Ignore(ct => ct.DomainEvents);
 	}
 }

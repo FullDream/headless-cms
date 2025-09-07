@@ -1,11 +1,14 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application;
+using Application.Abstractions;
 using Infrastructure;
 using Scalar.AspNetCore;
 using WebApi.Common.OpenApi;
 using WebApi.Common.Results;
 using WebApi.Common.Serialization;
+using WebApi.Dispatchers;
+using WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,10 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 // Application
 builder.Services.AddApplication();
+
+builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<IEventDispatcher, ContentTypeDispatcher>();
 
 var enumConverter = new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false);
 
@@ -45,5 +52,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ContentTypesHub>("/hubs/content-types");
 
 app.Run();

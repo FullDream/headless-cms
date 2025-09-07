@@ -20,7 +20,7 @@ public class CreateContentTypeHandler(
 
 		if (isExist) return ContentTypeErrors.AlreadyExist(request.Name);
 
-		var contentType = new ContentType(request.Name, request.Kind);
+		var contentType = ContentType.Create(request.Name, request.Kind);
 
 		var fieldsResult = contentType.AddFields(request.Fields.Select(f => (f.Name, f.Label, f.Type, f.IsRequired)));
 

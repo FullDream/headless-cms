@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Application.Abstractions;
+using Application.Common.Messaging;
 using Application.Common.Validation;
 using Application.ContentEntries.Behaviors;
 using FluentValidation;
@@ -17,6 +19,7 @@ public static class DependencyInjection
 		services.AddMediatR(cfg =>
 			cfg.RegisterServicesFromAssembly(assembly));
 
+		services.AddSingleton<IDomainEventPublisher, MediatorDomainEventPublisher>();
 		services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ContentEntryConversionBehavior<,>));
 		services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 

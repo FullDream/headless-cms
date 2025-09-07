@@ -1,8 +1,10 @@
-﻿using SharedKernel.Result;
+﻿using Core.ContentTypes.Events;
+using SharedKernel;
+using SharedKernel.Result;
 
 namespace Core.ContentTypes;
 
-public class ContentType(string name, ContentTypeKind kind)
+public class ContentType(string name, ContentTypeKind kind) : AggregateRoot
 {
 	private readonly List<ContentField> fields = [];
 	public Guid Id { get; } = Guid.NewGuid();
@@ -11,7 +13,23 @@ public class ContentType(string name, ContentTypeKind kind)
 
 	public IReadOnlyCollection<ContentField> Fields => fields.AsReadOnly();
 
-	public void Rename(string name) => Name = name;
+	public static ContentType Create(string name, ContentTypeKind kind)
+	{
+		ContentType contentType = new(name, kind);
+
+		contentType.AddDomainEvent(new ContentTypeCreatedEvent(contentType.Id, contentType.Name, contentType.Kind));
+
+		return contentType;
+	}
+
+	public void Rename(string name)
+	{
+		if (Name == name) return;
+
+		Name = name;
+
+		AddDomainEvent(new ContentTypeRenamedEvent(Id, Name));
+	}
 
 	public void ChangeKind(ContentTypeKind kind) => Kind = kind;
 
