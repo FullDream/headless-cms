@@ -3,6 +3,7 @@ using Application.ContentEntries.Commands.Create;
 using Application.ContentEntries.Queries.List;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Common.Results;
 
 namespace WebApi.Controllers;
 
@@ -11,19 +12,11 @@ namespace WebApi.Controllers;
 public class ContentEntriesController(IMediator mediator) : ControllerBase
 {
 	[HttpGet]
-	public async Task<ActionResult<IReadOnlyList<Dictionary<string, object>>>> Index(string name)
-	{
-		var items = await mediator.Send(new ListContentEntriesQuery(name));
-
-		return items.IsSuccess ? Ok(items.Value) : BadRequest(items.Errors);
-	}
+	public async Task<OutcomeResult<IReadOnlyList<IReadOnlyDictionary<string, object?>>>> Index(string name) =>
+		await mediator.Send(new ListContentEntriesQuery(name));
 
 	[HttpPost]
-	public async Task<ActionResult<Dictionary<string, object?>>> CreateEntry(string name,
-		[FromBody] Dictionary<string, JsonElement> body, CancellationToken cancellationToken)
-	{
-		var item = await mediator.Send(new CreateContentEntryCommand(name, body), cancellationToken);
-
-		return item.IsSuccess ? Ok(item.Value) : BadRequest(item.Errors);
-	}
+	public async Task<OutcomeResult<IReadOnlyDictionary<string, object?>>> CreateEntry(string name,
+		Dictionary<string, JsonElement> body, CancellationToken cancellationToken) =>
+		await mediator.Send(new CreateContentEntryCommand(name, body), cancellationToken);
 }
