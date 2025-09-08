@@ -1,0 +1,19 @@
+{
+	"name": "shared-data-access",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/shared/data-access/src",
+	"prefix": "lib",
+	"projectType": "library",
+	"tags": ["scope:shared", "type:data-access"],
+	"targets": {
+		"generate-api": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "openapi-ts -f libs/shared/data-access/open-api.config.ts"
+			}
+		},
+		"lint": {
+			"executor": "@nx/eslint:lint"
+		}
+	}
+}

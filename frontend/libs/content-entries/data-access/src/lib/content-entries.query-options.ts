@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { MutationOptions, mutationOptions, QueryOptions, queryOptions } from '@tanstack/angular-query-experimental'
+import { MutationOptions, mutationOptions, queryOptions } from '@tanstack/angular-query-experimental'
 
 import { ApiErrorResponse } from '@headless-cms/shared/util-http'
 import { lastValueFrom } from 'rxjs'
@@ -22,16 +22,14 @@ export class ContentEntriesQueryOptions {
 		return [this.#contentEntriesKey, 'list', name] as const
 	}
 
-	getList(
-		name: string,
-	): QueryOptions<GetContentEntriesByNameResponse, ApiErrorResponse<GetContentEntriesByNameErrors>> {
+	getList(name: string) {
 		return queryOptions<GetContentEntriesByNameResponse, ApiErrorResponse<GetContentEntriesByNameErrors>>({
 			queryKey: this.getListKey(name),
 			placeholderData: [],
 			enabled: !!name,
 			queryFn: () =>
 				lastValueFrom(
-					this.#httpClient.get<GetContentEntriesByNameResponse>(`${this.#contentEntriesKey}/${name}`),
+					this.#httpClient.get<GetContentEntriesByNameResponse>(`api/${this.#contentEntriesKey}/${name}`),
 				),
 		})
 	}

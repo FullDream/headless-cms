@@ -6,3 +6,4 @@ export type {
 	UpdateContentFieldDto,
 } from './lib/generated/types.gen'
 export { ContentTypeKind, FieldType } from './lib/generated/types.gen'
+export * from './lib/content-type.schema'

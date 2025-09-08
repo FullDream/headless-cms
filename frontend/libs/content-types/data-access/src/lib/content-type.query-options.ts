@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-query-experimental'
+import { CreateQueryOptions, mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-query-experimental'
 import { HttpClient } from '@angular/common/http'
 import { lastValueFrom } from 'rxjs'
 import * as R from 'remeda'
@@ -156,13 +156,15 @@ export class ContentTypeQueryOptions {
 		},
 	})
 
-	getById(id?: string | null) {
+	getById(
+		id?: string | null,
+	): CreateQueryOptions<GetContentTypesByIdResponse, ApiErrorResponse<GetContentTypesByIdErrors>> {
 		const cached = this.#queryClient
 			.getQueryData<GetContentTypesResponse>(this.#contentTypesListKey)
 			?.find(ct => ct.id === id)
 
 		return queryOptions<GetContentTypesByIdResponse, ApiErrorResponse<GetContentTypesByIdErrors>>({
-			queryKey: [...this.#contentTypesDetailKey, id],
+			queryKey: [...this.#contentTypesDetailKey, id] as const,
 			queryFn: () => lastValueFrom(this.#client.get<ContentTypeDto>(`${this.#apiUrl}/${id}`)),
 			enabled: !!id && !cached,
 			initialData: cached,

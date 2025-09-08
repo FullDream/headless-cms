@@ -4,7 +4,7 @@
 	"sourceRoot": "libs/content-entries/feat-list/src",
 	"prefix": "ce",
 	"projectType": "library",
-	"tags": ["scope:content-entries", "type:feat"],
+	"tags": ["scope:content-entries", "type:feature"],
 	"targets": {
 		"lint": {
 			"executor": "@nx/eslint:lint"
