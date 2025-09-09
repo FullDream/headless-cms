@@ -19,7 +19,7 @@ import { fieldTypeNames } from './field-type-names'
 import { KeyFilter } from 'primeng/keyfilter'
 
 @Component({
-	selector: 'ct-create-content-type',
+	selector: 'ct-editor',
 	templateUrl: './content-type-editor.html',
 	imports: [
 		ReactiveFormsModule,

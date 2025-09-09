@@ -28,4 +28,13 @@ export class App {
 			routerLink: `/content-types/${type.id}`,
 		})),
 	)
+
+	protected readonly contentManagerMenu = computed(() =>
+		this.queryList.data()?.map(type => ({
+			label: type.name,
+			id: type.id,
+			icon: `pi pi-${type.kind === 'collection' ? 'list' : 'file'}`,
+			routerLink: `/content-entries/${type.name}`,
+		})),
+	)
 }

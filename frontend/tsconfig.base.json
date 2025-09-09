@@ -9,9 +9,11 @@
 		"baseUrl": ".",
 		"paths": {
 			"@headless-cms/content-entries/data-access": ["libs/content-entries/data-access/src/index.ts"],
+			"@headless-cms/content-entries/feat-editor": ["libs/content-entries/feat-editor/src/index.ts"],
 			"@headless-cms/content-entries/feat-list": ["libs/content-entries/feat-list/src/index.ts"],
 			"@headless-cms/content-types/data-access": ["libs/content-types/data-access/src/index.ts"],
 			"@headless-cms/content-types/feat-editor": ["libs/content-types/feat-editor/src/index.ts"],
+			"@headless-cms/shared/ui-dynamic-form": ["libs/shared/ui-dynamic-form/src/index.ts"],
 			"@headless-cms/shared/data-access": ["libs/shared/data-access/src/index.ts"],
 			"@headless-cms/shared/ui": ["libs/shared/ui/src/index.ts"],
 			"@headless-cms/shared/ui-dynamic-table": ["libs/shared/ui-dynamic-table/src/index.ts"],

@@ -1,0 +1,13 @@
+{
+	"name": "content-entries-feat-editor",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/content-entries/feat-editor/src",
+	"prefix": "ce",
+	"projectType": "library",
+	"tags": ["scope:content-entries", "type:feature"],
+	"targets": {
+		"lint": {
+			"executor": "@nx/eslint:lint"
+		}
+	}
+}
