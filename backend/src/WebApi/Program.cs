@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Application;
 using Application.Abstractions;
 using Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Scalar.AspNetCore;
 using WebApi.Common.OpenApi;
 using WebApi.Common.Results;
@@ -15,6 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// auth
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+	.AddEntityFrameworkStores<AppDbContext>();
+
 
 // Application
 builder.Services.AddApplication();
@@ -52,6 +59,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapIdentityApi<IdentityUser>();
 app.MapHub<ContentTypesHub>("/hubs/content-types");
 
 app.Run();

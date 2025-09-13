@@ -10,6 +10,7 @@ using Application.ContentTypes.Queries.GetById;
 using Application.ContentTypes.Queries.GetByName;
 using Core.ContentTypes;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebApi.Common.Results;
@@ -36,6 +37,7 @@ public class ContentTypesController(IMediator mediator, ProblemDetailsFactory de
 		await mediator.Send(new GetContentTypeByNameQuery(name), cancellationToken);
 
 	[HttpPost]
+	[Authorize]
 	public async Task<OutcomeResult<ContentTypeDto>> Create(CreateContentTypeDto body,
 		CancellationToken cancellationToken)
 		=> await mediator.Send(new CreateContentTypeCommand(body.Name, body.Kind, body.Fields), cancellationToken);
