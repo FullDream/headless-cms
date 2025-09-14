@@ -18,17 +18,19 @@ public class AddFieldToContentTypeHandler(IContentTypeRepository repository, ICo
 		if (contentType is null) return ContentTypeErrors.NotFound(nameof(request.ContentTypeId));
 
 		var fieldRequest = request.Field;
-		var result = contentType.AddField(fieldRequest.Name, fieldRequest.Label, fieldRequest.Type,
-			fieldRequest.IsRequired);
+		var result = contentType.AddFields((fieldRequest.Name, fieldRequest.Label, fieldRequest.Type,
+			fieldRequest.IsRequired));
 
 		if (result.IsFailure) return result.Errors;
 
-		repository.AddField(result.Value);
+		var field = result.Value.First();
+
+		repository.AddField(result.Value.First());
 
 		await repository.SaveChangesAsync(cancellationToken);
 
-		await schemaManager.AddFieldToStructureAsync(contentType, result.Value, cancellationToken);
+		await schemaManager.AddFieldToStructureAsync(contentType, field, cancellationToken);
 
-		return result.Value.ToDto();
+		return field.ToDto();
 	}
 }

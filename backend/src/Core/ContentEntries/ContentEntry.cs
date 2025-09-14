@@ -1,6 +1,9 @@
-﻿namespace Core.ContentEntries;
+﻿using Core.ContentEntries.Events;
+using SharedKernel;
 
-public class ContentEntry
+namespace Core.ContentEntries;
+
+public class ContentEntry : AggregateRoot
 {
 	private ContentEntry()
 	{
@@ -17,13 +20,17 @@ public class ContentEntry
 	{
 		var now = DateTime.UtcNow;
 
-		return new ContentEntry
+		ContentEntry entry = new ContentEntry
 		{
 			Id = Guid.NewGuid(),
 			CreatedAt = now,
 			UpdatedAt = now,
 			FieldValues = values
 		};
+
+		entry.AddDomainEvent(new ContentEntryCreatedEvent(entry));
+
+		return entry;
 	}
 
 	public static ContentEntry Hydrate(Guid id, DateTime createdAt, DateTime updatedAt,

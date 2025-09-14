@@ -2,5 +2,4 @@
 
 namespace Core.ContentTypes.Events;
 
-public record ContentTypeCreatedEvent(Guid Id, string SystemName, ContentTypeKind Kind)
-	: IDomainEvent;
+public record ContentTypeCreatedEvent(ContentType AggregateRoot) : IDomainEvent<ContentType>;

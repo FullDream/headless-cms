@@ -1,23 +1,30 @@
-﻿using Core.ContentTypes.Events;
+﻿using System.Collections.ObjectModel;
+using Core.ContentTypes.Events;
 using SharedKernel;
 using SharedKernel.Result;
 
 namespace Core.ContentTypes;
 
-public class ContentType(string name, ContentTypeKind kind) : AggregateRoot
+public class ContentType() : AggregateRoot
 {
 	private readonly List<ContentField> fields = [];
-	public Guid Id { get; } = Guid.NewGuid();
-	public string Name { get; private set; } = name;
-	public ContentTypeKind Kind { get; private set; } = kind;
 
+	private ContentType(string name, ContentTypeKind kind) : this()
+	{
+		Name = name;
+		Kind = kind;
+	}
+
+	public Guid Id { get; } = Guid.NewGuid();
+	public string Name { get; private set; }
+	public ContentTypeKind Kind { get; private set; }
 	public IReadOnlyCollection<ContentField> Fields => fields.AsReadOnly();
 
 	public static ContentType Create(string name, ContentTypeKind kind)
 	{
 		ContentType contentType = new(name, kind);
 
-		contentType.AddDomainEvent(new ContentTypeCreatedEvent(contentType.Id, contentType.Name, contentType.Kind));
+		contentType.AddDomainEvent(new ContentTypeCreatedEvent(contentType));
 
 		return contentType;
 	}
@@ -28,22 +35,19 @@ public class ContentType(string name, ContentTypeKind kind) : AggregateRoot
 
 		Name = name;
 
-		AddDomainEvent(new ContentTypeRenamedEvent(Id, Name));
+		AddDomainEvent(new ContentTypeRenamedEvent(this));
 	}
 
-	public void ChangeKind(ContentTypeKind kind) => Kind = kind;
-
-	public Result<ContentField> AddField(string name, string label, FieldType type, bool isRequired = false)
+	public void ChangeKind(ContentTypeKind kind)
 	{
-		if (Fields.Any(f => f.Name == name))
-			return ContentTypeErrors.ContentFieldNameIsUnique(name);
+		if (Kind == kind) return;
 
-		ContentField field = new(Id, name, label, type, isRequired);
+		Kind = kind;
 
-		fields.Add(field);
-
-		return field;
+		AddDomainEvent(new ContentTypeKindChangedEvent(this));
 	}
+
+	public void Remove() => AddDomainEvent(new ContentTypeRemovedEvent(this));
 
 	public Result<ContentField> UpdateField(Guid fieldId, ContentFieldPatch patch)
 	{
@@ -73,24 +77,27 @@ public class ContentType(string name, ContentTypeKind kind) : AggregateRoot
 	}
 
 	public Result<IReadOnlyCollection<ContentField>> AddFields(
-		IEnumerable<(string Name, string Label, FieldType Type, bool IsRequired)> definitions)
+		params IReadOnlyCollection<(string Name, string Label, FieldType Type, bool IsRequired)> definitions)
 	{
-		var results = definitions
-			.Select(d => AddField(d.Name, d.Label, d.Type, d.IsRequired))
+		var duplicate = definitions
+			.IntersectBy(Fields.Select(f => f.Name), d => d.Name)
+			.FirstOrDefault();
+
+		if (duplicate != default)
+			return ContentTypeErrors.ContentFieldNameIsUnique(duplicate.Name);
+
+		var newFields = definitions
+			.Select(d => new ContentField(Id, d.Name, d.Label, d.Type, d.IsRequired))
 			.ToList();
 
-		var errors = results
-			.Where(r => r.IsFailure)
-			.SelectMany(r => r.Errors!)
-			.ToArray();
 
-		if (errors.Length != 0)
-			return errors;
+		if (newFields.Count == 0) return ReadOnlyCollection<ContentField>.Empty;
 
-		return results
-			.Select(r => r.Value!)
-			.ToList()
-			.AsReadOnly();
+		fields.AddRange(newFields);
+
+		AddDomainEvent(new ContentFieldsAddedEvent(this));
+
+		return newFields.AsReadOnly();
 	}
 
 	public Result<ContentField> RemoveField(Guid fieldId)
@@ -100,6 +107,8 @@ public class ContentType(string name, ContentTypeKind kind) : AggregateRoot
 		if (field is null) return ContentTypeErrors.ContentFieldNotFound(fieldId);
 
 		fields.Remove(field);
+
+		AddDomainEvent(new ContentFieldsRemovedEvent(this));
 
 		return field;
 	}

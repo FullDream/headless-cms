@@ -22,7 +22,8 @@ public class CreateContentTypeHandler(
 
 		var contentType = ContentType.Create(request.Name, request.Kind);
 
-		var fieldsResult = contentType.AddFields(request.Fields.Select(f => (f.Name, f.Label, f.Type, f.IsRequired)));
+		var fieldsResult =
+			contentType.AddFields(request.Fields.Select(f => (f.Name, f.Label, f.Type, f.IsRequired)).ToArray());
 
 		if (fieldsResult.IsFailure) return fieldsResult.Errors;
 

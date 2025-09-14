@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application;
 using Application.Abstractions;
+using Application.Abstractions.IntegrationEvents.Tags;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Scalar.AspNetCore;
@@ -28,7 +29,7 @@ builder.Services.AddApplication();
 
 builder.Services.AddSignalR();
 
-builder.Services.AddSingleton<IEventDispatcher, ContentTypeDispatcher>();
+builder.Services.AddSingleton<IEventDispatcher<ContentTypeEventTag>, ContentTypeDispatcher>();
 
 var enumConverter = new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false);
 

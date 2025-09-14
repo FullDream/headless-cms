@@ -19,6 +19,7 @@ public class RemoveContentTypeHandler(IContentTypeRepository repository, IConten
 
 		await schemaManager.RemoveStructureAsync(contentType, cancellationToken);
 
+		contentType.Remove();
 		repository.Remove(contentType);
 		await repository.SaveChangesAsync(cancellationToken);
 

@@ -2,4 +2,4 @@
 
 namespace Core.ContentTypes.Events;
 
-public record ContentTypeRenamedEvent(Guid Id, string Name) : IDomainEvent;
+public record ContentTypeRenamedEvent(ContentType AggregateRoot) : IDomainEvent<ContentType>;
