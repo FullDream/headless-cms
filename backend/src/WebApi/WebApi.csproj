@@ -10,7 +10,7 @@
     <ItemGroup>
         <PackageReference Include="MediatR" Version="13.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -24,9 +24,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application\Application.csproj" />
-      <ProjectReference Include="..\Core\Core.csproj" />
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+        <ProjectReference Include="..\ContentEntries\ ContentEntries.Infrastructure\ContentEntries.Infrastructure.csproj"/>
+        <ProjectReference Include="..\ContentEntries\ContentEntries.Application\ContentEntries.Application.csproj"/>
+        <ProjectReference Include="..\ContentTypes\ContentTypes.Application\ContentTypes.Application.csproj"/>
+        <ProjectReference Include="..\ContentTypes\ContentTypes.Infrastructure\ContentTypes.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-﻿using Application.ContentTypes.Dtos;
-using Core.ContentTypes;
+﻿using ContentTypes.Application.Dtos;
+using ContentTypes.Core;
 
 namespace WebApi.Contracts.ContentTypes;
 

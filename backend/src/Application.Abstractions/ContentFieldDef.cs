@@ -1,4 +1,4 @@
-﻿using Core.ContentTypes;
+﻿using SharedKernel;
 
 namespace Application.Abstractions;
 

@@ -1,4 +1,4 @@
-﻿using Core.ContentTypes;
+﻿using ContentTypes.Core;
 
 namespace WebApi.Contracts.ContentTypes;
 

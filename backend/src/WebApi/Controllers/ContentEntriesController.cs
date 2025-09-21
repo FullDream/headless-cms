@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
-using Application.ContentEntries.Commands.Create;
-using Application.ContentEntries.Queries.List;
+using ContentEntries.Application.Commands.Create;
+using ContentEntries.Application.Queries.List;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Common.Results;

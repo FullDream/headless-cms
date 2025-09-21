@@ -1,10 +1,11 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Application;
 using Application.Abstractions;
 using Application.Abstractions.IntegrationEvents.Tags;
-using Infrastructure;
-using Microsoft.AspNetCore.Identity;
+using ContentEntries.Application;
+using ContentEntries.Infrastructure;
+using ContentTypes.Application;
+using ContentTypes.Infrastructure;
 using Scalar.AspNetCore;
 using WebApi.Common.OpenApi;
 using WebApi.Common.Results;
@@ -15,17 +16,15 @@ using WebApi.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Infrastructure
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddContentTypesInfrastructure(builder.Configuration);
+builder.Services.AddContentTypesApplication();
+
+builder.Services.AddContentEntriesInfrastructure(builder.Configuration);
+builder.Services.AddContentEntriesApplication();
+
 
 // auth
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-	.AddEntityFrameworkStores<AppDbContext>();
-
-
-// Application
-builder.Services.AddApplication();
 
 builder.Services.AddSignalR();
 
@@ -60,7 +59,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapIdentityApi<IdentityUser>();
 app.MapHub<ContentTypesHub>("/hubs/content-types");
 
 app.Run();

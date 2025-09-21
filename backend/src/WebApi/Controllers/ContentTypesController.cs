@@ -1,16 +1,15 @@
-using Application.ContentTypes.Commands.AddField;
-using Application.ContentTypes.Commands.Create;
-using Application.ContentTypes.Commands.Remove;
-using Application.ContentTypes.Commands.RemoveField;
-using Application.ContentTypes.Commands.Update;
-using Application.ContentTypes.Commands.UpdateField;
-using Application.ContentTypes.Dtos;
-using Application.ContentTypes.Queries.GetAll;
-using Application.ContentTypes.Queries.GetById;
-using Application.ContentTypes.Queries.GetByName;
-using Core.ContentTypes;
+using ContentTypes.Application.Commands.AddField;
+using ContentTypes.Application.Commands.Create;
+using ContentTypes.Application.Commands.Remove;
+using ContentTypes.Application.Commands.RemoveField;
+using ContentTypes.Application.Commands.Update;
+using ContentTypes.Application.Commands.UpdateField;
+using ContentTypes.Application.Dtos;
+using ContentTypes.Application.Queries.GetAll;
+using ContentTypes.Application.Queries.GetById;
+using ContentTypes.Application.Queries.GetByName;
+using ContentTypes.Core;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebApi.Common.Results;
@@ -37,7 +36,6 @@ public class ContentTypesController(IMediator mediator, ProblemDetailsFactory de
 		await mediator.Send(new GetContentTypeByNameQuery(name), cancellationToken);
 
 	[HttpPost]
-	[Authorize]
 	public async Task<OutcomeResult<ContentTypeDto>> Create(CreateContentTypeDto body,
 		CancellationToken cancellationToken)
 		=> await mediator.Send(new CreateContentTypeCommand(body.Name, body.Kind, body.Fields), cancellationToken);
