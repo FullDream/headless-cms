@@ -2,10 +2,12 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application.Abstractions;
 using Application.Abstractions.IntegrationEvents.Tags;
+using Application.Abstractions.Validation;
 using ContentEntries.Application;
 using ContentEntries.Infrastructure;
 using ContentTypes.Application;
 using ContentTypes.Infrastructure;
+using MediatR;
 using Scalar.AspNetCore;
 using WebApi.Common.OpenApi;
 using WebApi.Common.Results;
@@ -21,6 +23,9 @@ builder.Services.AddContentTypesApplication();
 
 builder.Services.AddContentEntriesInfrastructure(builder.Configuration);
 builder.Services.AddContentEntriesApplication();
+
+// MediatR
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
 // auth

@@ -2,10 +2,8 @@
 using Application.Abstractions;
 using Application.Abstractions.IntegrationEvents;
 using Application.Abstractions.Messaging;
-using Application.Abstractions.Validation;
 using ContentTypes.Application.Integration;
 using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ContentTypes.Application;
@@ -22,8 +20,6 @@ public static class DependencyInjection
 
 		services.AddSingleton<IDomainEventPublisher, MediatorDomainEventPublisher>();
 		services.AddScoped<IIntegrationEventCollector, ContentTypeIntegrationEventCollector>();
-
-		services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 		return services;
 	}
