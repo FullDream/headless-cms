@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
-using Application.Abstractions;
-using Application.Abstractions.IntegrationEvents;
-using Application.Abstractions.Messaging;
 using ContentTypes.Application.Integration;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using IDomainEventPublisher = Application.Abstractions.IntegrationEvents.IDomainEventPublisher;
 
 namespace ContentTypes.Application;
 
@@ -18,8 +16,8 @@ public static class DependencyInjection
 		services.AddMediatR(cfg =>
 			cfg.RegisterServicesFromAssembly(assembly));
 
-		services.AddSingleton<IDomainEventPublisher, MediatorDomainEventPublisher>();
-		services.AddScoped<IIntegrationEventCollector, ContentTypeIntegrationEventCollector>();
+		services.AddScoped<IDomainEventPublisher, ContentTypeMediatorDomainEventPublisher>();
+		services.AddScoped<IDomainEventPublisher, ContentTypeDomainEventPublisher>();
 
 		return services;
 	}

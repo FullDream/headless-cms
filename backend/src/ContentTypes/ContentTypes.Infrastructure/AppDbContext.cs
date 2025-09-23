@@ -1,15 +1,13 @@
-﻿using Application.Abstractions;
-using Application.Abstractions.IntegrationEvents;
-using ContentTypes.Core;
+﻿using ContentTypes.Core;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
+using IDomainEventPublisher = Application.Abstractions.IntegrationEvents.IDomainEventPublisher;
 
 namespace ContentTypes.Infrastructure;
 
 public class AppDbContext(
 	DbContextOptions<AppDbContext> options,
-	IDomainEventPublisher publisher,
-	IEnumerable<IIntegrationEventCollector> collectors)
+	IEnumerable<IDomainEventPublisher> collectors)
 	: DbContext(options)
 {
 	public DbSet<ContentType> ContentTypes => Set<ContentType>();
@@ -37,12 +35,9 @@ public class AppDbContext(
 		if (domainEvents.Count == 0)
 			return result;
 
-
-		await publisher.PublishAsync(domainEvents, cancellationToken);
-
 		var dispatchTasks = collectors
 			.SelectMany(c => c.Collect(domainEvents)
-				.Select(ev => c.DispatchAsync(ev.EventName, ev.Payload, cancellationToken)));
+				.Select(@event => c.DispatchAsync(@event, cancellationToken)));
 
 		await Task.WhenAll(dispatchTasks);
 

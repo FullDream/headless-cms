@@ -1,4 +1,5 @@
-﻿using ContentTypes.Application.Dtos;
+﻿using Application.Abstractions;
+using ContentTypes.Application.Dtos;
 using ContentTypes.Core;
 
 namespace ContentTypes.Application.Mappers;
@@ -10,4 +11,14 @@ public static class ContentTypeMapper
 			contentType.Name,
 			contentType.Kind,
 			contentType.Fields.Select(f => f.ToDto()).ToArray());
+
+	internal static ContentFieldsSnapshot ToSnapshot(this ContentType ct)
+	{
+		var dict = ct.Fields.ToDictionary(
+			f => f.Name,
+			f => new ContentFieldDef(f.Name, f.Type, f.IsRequired, f.Order),
+			StringComparer.OrdinalIgnoreCase);
+
+		return new ContentFieldsSnapshot(ct.Id, ct.Name, dict);
+	}
 }

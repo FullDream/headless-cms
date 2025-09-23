@@ -33,9 +33,11 @@ public class ContentType() : AggregateRoot
 	{
 		if (Name == name) return;
 
+		var oldName = Name;
+
 		Name = name;
 
-		AddDomainEvent(new ContentTypeRenamedEvent(this));
+		AddDomainEvent(new ContentTypeRenamedEvent(this, oldName));
 	}
 
 	public void ChangeKind(ContentTypeKind kind)
