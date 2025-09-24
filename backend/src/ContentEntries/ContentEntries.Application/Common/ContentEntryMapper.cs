@@ -3,7 +3,7 @@ using ContentEntries.Core;
 
 namespace ContentEntries.Application.Common;
 
-public static class ContentEntryMapper
+internal static class ContentEntryMapper
 {
 	public static IReadOnlyDictionary<string, object?> ToDto(this ContentEntry contentEntry)
 	{

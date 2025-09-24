@@ -2,5 +2,5 @@
 
 namespace ContentEntries.Application.List;
 
-public record ListContentEntriesQuery(string ContentTypeName)
+public sealed record ListContentEntriesQuery(string ContentTypeName)
 	: IQuery<IReadOnlyList<IReadOnlyDictionary<string, object?>>>;

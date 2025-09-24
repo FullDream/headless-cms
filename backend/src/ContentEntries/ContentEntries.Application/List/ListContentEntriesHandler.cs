@@ -5,7 +5,7 @@ using SharedKernel.Result;
 
 namespace ContentEntries.Application.List;
 
-public class ListContentEntriesHandler(
+internal sealed class ListContentEntriesHandler(
 	IContentEntryRepository repository)
 	: IRequestHandler<ListContentEntriesQuery, Result<IReadOnlyList<IReadOnlyDictionary<string, object?>>>>
 {

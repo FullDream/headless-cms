@@ -4,7 +4,7 @@ using SharedKernel.Result;
 
 namespace ContentEntries.Application.Common.Conversion;
 
-public sealed class ContentEntryConversionBehavior<TRequest, TResponse>(
+internal sealed class ContentEntryConversionBehavior<TRequest, TResponse>(
 	IContentTypeFieldsProvider schema) : IPipelineBehavior<TRequest, TResponse>
 	where TRequest : ContentEntryCommandBase
 	where TResponse : IFailureFactory<TResponse>

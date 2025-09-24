@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace ContentEntries.Application.Create;
 
-public class CreateContentEntryCommandValidator : AbstractValidator<CreateContentEntryCommand>
+internal sealed class CreateContentEntryCommandValidator : AbstractValidator<CreateContentEntryCommand>
 {
 	public CreateContentEntryCommandValidator(IContentTypeFieldsProvider provider, IContentTypeExistenceChecker checker)
 	{

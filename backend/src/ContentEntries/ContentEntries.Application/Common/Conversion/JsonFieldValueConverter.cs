@@ -4,7 +4,7 @@ using SharedKernel;
 
 namespace ContentEntries.Application.Common.Conversion;
 
-public static class JsonFieldValueConverter
+internal static class JsonFieldValueConverter
 {
 	public static object? Convert(JsonElement jsonElement, ContentFieldDef def)
 	{
