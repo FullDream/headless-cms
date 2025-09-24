@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using Application.Abstractions;
+using BuildingBlocks;
 using Dapper;
 
 namespace ContentEntries.Infrastructure.Schema;

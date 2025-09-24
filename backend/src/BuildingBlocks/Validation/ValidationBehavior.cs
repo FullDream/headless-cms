@@ -2,7 +2,7 @@
 using MediatR;
 using SharedKernel.Result;
 
-namespace Application.Abstractions.Validation;
+namespace BuildingBlocks.Validation;
 
 public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
 	: IPipelineBehavior<TRequest, TResponse>

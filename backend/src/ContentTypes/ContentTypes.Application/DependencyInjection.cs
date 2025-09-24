@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
+using BuildingBlocks.IntegrationEvents;
 using ContentTypes.Application.Integration;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using IDomainEventPublisher = Application.Abstractions.IntegrationEvents.IDomainEventPublisher;
 
 namespace ContentTypes.Application;
 

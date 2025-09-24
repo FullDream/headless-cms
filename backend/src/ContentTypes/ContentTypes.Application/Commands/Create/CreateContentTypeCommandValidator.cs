@@ -1,4 +1,4 @@
-﻿using Application.Abstractions.Validation;
+﻿using BuildingBlocks.Validation;
 using ContentTypes.Application.Dtos;
 using FluentValidation;
 

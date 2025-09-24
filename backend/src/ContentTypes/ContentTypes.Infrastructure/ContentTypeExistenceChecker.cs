@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using BuildingBlocks;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContentTypes.Infrastructure;

@@ -1,7 +1,7 @@
-﻿using ContentTypes.Core;
+﻿using BuildingBlocks.IntegrationEvents;
+using ContentTypes.Core;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
-using IDomainEventPublisher = Application.Abstractions.IntegrationEvents.IDomainEventPublisher;
 
 namespace ContentTypes.Infrastructure;
 

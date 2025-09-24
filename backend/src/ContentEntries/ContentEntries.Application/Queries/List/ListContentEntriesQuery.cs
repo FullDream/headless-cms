@@ -1,4 +1,4 @@
-﻿using Application.Abstractions.Messaging;
+﻿using BuildingBlocks.Messaging;
 
 namespace ContentEntries.Application.Queries.List;
 

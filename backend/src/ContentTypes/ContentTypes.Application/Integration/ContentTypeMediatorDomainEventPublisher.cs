@@ -1,5 +1,5 @@
-﻿using Application.Abstractions.IntegrationEvents;
-using Application.Abstractions.Notifications;
+﻿using BuildingBlocks.IntegrationEvents;
+using BuildingBlocks.Notifications;
 using ContentTypes.Application.Mappers;
 using ContentTypes.Core;
 using ContentTypes.Core.Events;

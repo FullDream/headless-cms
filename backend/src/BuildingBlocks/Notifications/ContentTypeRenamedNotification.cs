@@ -1,5 +1,5 @@
 ﻿using MediatR;
 
-namespace Application.Abstractions.Notifications;
+namespace BuildingBlocks.Notifications;
 
 public record ContentTypeRenamedNotification(string OldName, string NewName) : INotification;

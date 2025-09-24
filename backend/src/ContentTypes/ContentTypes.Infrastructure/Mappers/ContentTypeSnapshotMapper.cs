@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using BuildingBlocks;
 using ContentTypes.Core;
 
 namespace ContentTypes.Infrastructure.Mappers;

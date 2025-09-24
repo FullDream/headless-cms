@@ -1,6 +1,6 @@
-﻿using Application.Abstractions;
-using Application.Abstractions.IntegrationEvents;
-using Application.Abstractions.IntegrationEvents.Tags;
+﻿using BuildingBlocks;
+using BuildingBlocks.IntegrationEvents;
+using BuildingBlocks.IntegrationEvents.Tags;
 using ContentTypes.Application.Dtos;
 using ContentTypes.Application.Mappers;
 using ContentTypes.Core;

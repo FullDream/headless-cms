@@ -1,5 +1,5 @@
-﻿using Application.Abstractions;
-using Application.Abstractions.Notifications;
+﻿using BuildingBlocks;
+using BuildingBlocks.Notifications;
 using MediatR;
 
 namespace ContentEntries.Application.ContentTypeCreated;

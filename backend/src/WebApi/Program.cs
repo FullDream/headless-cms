@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Application.Abstractions;
-using Application.Abstractions.IntegrationEvents.Tags;
-using Application.Abstractions.Validation;
+using BuildingBlocks;
+using BuildingBlocks.IntegrationEvents.Tags;
+using BuildingBlocks.Validation;
 using ContentEntries.Application;
 using ContentEntries.Infrastructure;
 using ContentTypes.Application;

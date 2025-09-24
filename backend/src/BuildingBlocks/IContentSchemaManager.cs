@@ -1,4 +1,4 @@
-﻿namespace Application.Abstractions;
+﻿namespace BuildingBlocks;
 
 public interface IContentSchemaManager
 {

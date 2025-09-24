@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using Application.Abstractions;
+using BuildingBlocks;
 using SharedKernel;
 
 namespace ContentEntries.Application.Conversion;

@@ -1,5 +1,5 @@
-﻿using Application.Abstractions;
-using Application.Abstractions.IntegrationEvents.Tags;
+﻿using BuildingBlocks;
+using BuildingBlocks.IntegrationEvents.Tags;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Hubs;
 

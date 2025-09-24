@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using BuildingBlocks;
 using ContentEntries.Application.Commands;
 using ContentEntries.Application.Conversion;
 using MediatR;

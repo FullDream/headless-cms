@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Abstractions.Validation;
+namespace BuildingBlocks.Validation;
 
 public static class CasingValidationRules
 {

@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using BuildingBlocks;
 using ContentTypes.Application.Dtos;
 using ContentTypes.Core;
 

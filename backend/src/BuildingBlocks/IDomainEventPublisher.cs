@@ -1,6 +1,6 @@
 ﻿using SharedKernel.Events;
 
-namespace Application.Abstractions;
+namespace BuildingBlocks;
 
 public interface IDomainEventPublisher
 {

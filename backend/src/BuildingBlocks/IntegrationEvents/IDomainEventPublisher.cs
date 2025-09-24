@@ -1,6 +1,6 @@
 ﻿using SharedKernel.Events;
 
-namespace Application.Abstractions.IntegrationEvents;
+namespace BuildingBlocks.IntegrationEvents;
 
 public abstract record IntegrationEvent(string EventName);
 

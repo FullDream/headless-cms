@@ -1,4 +1,4 @@
-﻿using Application.Abstractions.Messaging;
+﻿using BuildingBlocks.Messaging;
 using ContentTypes.Application.Dtos;
 
 namespace ContentTypes.Application.Queries.GetByName;

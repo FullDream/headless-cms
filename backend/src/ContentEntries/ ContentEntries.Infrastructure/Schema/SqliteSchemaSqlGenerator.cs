@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using BuildingBlocks;
 using ContentEntries.Infrastructure.Common.Naming;
 using Humanizer;
 using SharedKernel;

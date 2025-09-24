@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using Application.Abstractions.Messaging;
+using BuildingBlocks.Messaging;
 
 namespace ContentEntries.Application.Commands.Create;
 

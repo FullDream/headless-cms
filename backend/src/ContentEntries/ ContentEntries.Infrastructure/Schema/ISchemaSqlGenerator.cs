@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using BuildingBlocks;
 using SharedKernel;
 
 namespace ContentEntries.Infrastructure.Schema;

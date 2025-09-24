@@ -1,5 +1,5 @@
-﻿using Application.Abstractions;
-using Application.Abstractions.Validation;
+﻿using BuildingBlocks;
+using BuildingBlocks.Validation;
 using FluentValidation;
 
 namespace ContentEntries.Application.Commands.Create;

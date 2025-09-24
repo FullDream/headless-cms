@@ -1,6 +1,6 @@
 ﻿using SharedKernel;
 
-namespace Application.Abstractions;
+namespace BuildingBlocks;
 
 public sealed record ContentFieldDef(
 	string Name,
