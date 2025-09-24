@@ -1,4 +1,4 @@
-﻿using ContentTypes.Application.Dtos;
+﻿using ContentTypes.Application.Create;
 using ContentTypes.Core;
 
 namespace WebApi.Contracts.ContentTypes;

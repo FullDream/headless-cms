@@ -1,15 +1,14 @@
 ﻿using BuildingBlocks;
 using BuildingBlocks.IntegrationEvents;
 using BuildingBlocks.IntegrationEvents.Tags;
-using ContentTypes.Application.Dtos;
-using ContentTypes.Application.Mappers;
+using ContentTypes.Application.Common.ContentType;
 using ContentTypes.Core;
 using ContentTypes.Core.Events;
 using SharedKernel.Events;
 
 namespace ContentTypes.Application.Integration;
 
-public class ContentTypeDomainEventPublisher(IEventDispatcher<ContentTypeEventTag> dispatcher)
+internal sealed class ContentTypeDomainEventPublisher(IEventDispatcher<ContentTypeEventTag> dispatcher)
 	: DomainEventPublisherBase<ContentType, ContentTypeDto>
 {
 	private static readonly (string EventName, Func<ContentType, ContentTypeDto> ToPayload, Func<IDomainEvent, bool>

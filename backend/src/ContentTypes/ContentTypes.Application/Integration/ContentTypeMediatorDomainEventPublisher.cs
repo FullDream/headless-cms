@@ -1,5 +1,5 @@
 ﻿using BuildingBlocks.IntegrationEvents;
-using ContentTypes.Application.Mappers;
+using ContentTypes.Application.Common.ContentType;
 using ContentTypes.Core;
 using ContentTypes.Core.Events;
 using Contracts;
@@ -8,7 +8,7 @@ using SharedKernel.Events;
 
 namespace ContentTypes.Application.Integration;
 
-public class ContentTypeMediatorDomainEventPublisher(IMediator mediator)
+internal sealed class ContentTypeMediatorDomainEventPublisher(IMediator mediator)
 	: DomainEventPublisherBase<ContentType, INotification>
 {
 	protected override IEnumerable<IntegrationEvent<INotification>> CollectTyped(
