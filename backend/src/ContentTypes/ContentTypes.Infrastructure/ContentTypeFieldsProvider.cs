@@ -8,7 +8,7 @@ namespace ContentTypes.Infrastructure;
 internal sealed class ContentTypeFieldsProvider(IContentTypeRepository contentTypeRepository)
 	: IContentTypeFieldsProvider
 {
-	public async Task<ContentFieldsSnapshot?> FindByNameAsync(string typeName, CancellationToken ct)
+	public async Task<ContentTypeSchemaSnapshot?> FindByNameAsync(string typeName, CancellationToken ct)
 	{
 		var schema = await contentTypeRepository.FindByNameAsync(typeName, ct);
 

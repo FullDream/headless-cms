@@ -2,4 +2,4 @@
 
 namespace Contracts;
 
-public record ContentTypeCreatedNotification(ContentFieldsSnapshot Schema) : INotification;
+public record ContentTypeCreatedNotification(ContentTypeSchemaSnapshot Schema) : INotification;

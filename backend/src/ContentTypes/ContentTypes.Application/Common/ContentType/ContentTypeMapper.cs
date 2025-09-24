@@ -11,13 +11,13 @@ internal static class ContentTypeMapper
 			contentType.Kind,
 			contentType.Fields.Select(f => f.ToDto()).ToArray());
 
-	public static ContentFieldsSnapshot ToSnapshot(this Core.ContentType ct)
+	public static ContentTypeSchemaSnapshot ToSnapshot(this Core.ContentType ct)
 	{
 		var dict = ct.Fields.ToDictionary(
 			f => f.Name,
 			f => new ContentFieldDef(f.Name, f.Type, f.IsRequired, f.Order),
 			StringComparer.OrdinalIgnoreCase);
 
-		return new ContentFieldsSnapshot(ct.Id, ct.Name, dict);
+		return new ContentTypeSchemaSnapshot(ct.Id, ct.Name, dict);
 	}
 }

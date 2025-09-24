@@ -7,7 +7,7 @@ namespace ContentEntries.Infrastructure.Schema;
 
 internal class SqliteSchemaSqlGenerator(IStorageNameResolver nameResolver) : ISchemaSqlGenerator
 {
-	public string GenerateCreateTableSql(ContentFieldsSnapshot schema)
+	public string GenerateCreateTableSql(ContentTypeSchemaSnapshot schema)
 	{
 		var fields = schema.Fields
 			.Select(f =>
@@ -28,11 +28,11 @@ internal class SqliteSchemaSqlGenerator(IStorageNameResolver nameResolver) : ISc
 	public string GenerateRenameTableSql(string oldName, string newName) =>
 		$"ALTER TABLE [{GetTableName(oldName)}] RENAME TO [{GetTableName(newName)}];";
 
-	public string GenerateAddColumnSql(ContentFieldsSnapshot schema, ContentFieldDef field)
+	public string GenerateAddColumnSql(ContentTypeSchemaSnapshot schema, ContentFieldDef field)
 		=>
 			$"ALTER TABLE [{GetTableName(schema.ContentTypeName)}] ADD COLUMN [{field.Name.Underscore()}] {MapFieldType(field.Type)};";
 
-	public string GenerateDropColumnSql(ContentFieldsSnapshot schema, ContentFieldDef removedField)
+	public string GenerateDropColumnSql(ContentTypeSchemaSnapshot schema, ContentFieldDef removedField)
 	{
 		var quotedNames = schema.Fields
 			.Select(f => $"[{f.Value.Name.Underscore()}]")
@@ -60,11 +60,11 @@ internal class SqliteSchemaSqlGenerator(IStorageNameResolver nameResolver) : ISc
 		        """;
 	}
 
-	public string GenerateRenameColumnSql(ContentFieldsSnapshot schema, string oldName, string newName)
+	public string GenerateRenameColumnSql(ContentTypeSchemaSnapshot schema, string oldName, string newName)
 		=>
 			$"ALTER TABLE [{GetTableName(schema.ContentTypeName)}] RENAME COLUMN [{oldName.Underscore()}] TO [{newName.Underscore()}];";
 
-	public string GenerateDropTableSql(ContentFieldsSnapshot schema)
+	public string GenerateDropTableSql(ContentTypeSchemaSnapshot schema)
 		=> $"DROP TABLE IF EXISTS [{GetTableName(schema.ContentTypeName)}];";
 
 	public string MapFieldType(FieldType type)

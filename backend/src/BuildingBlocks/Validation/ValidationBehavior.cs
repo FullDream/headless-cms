@@ -4,7 +4,7 @@ using SharedKernel.Result;
 
 namespace BuildingBlocks.Validation;
 
-public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
 	: IPipelineBehavior<TRequest, TResponse>
 	where TRequest : notnull
 	where TResponse : IFailureFactory<TResponse>

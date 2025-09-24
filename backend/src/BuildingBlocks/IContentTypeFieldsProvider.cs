@@ -4,5 +4,5 @@ namespace BuildingBlocks;
 
 public interface IContentTypeFieldsProvider
 {
-	Task<ContentFieldsSnapshot?> FindByNameAsync(string typeName, CancellationToken ct);
+	Task<ContentTypeSchemaSnapshot?> FindByNameAsync(string typeName, CancellationToken ct);
 }

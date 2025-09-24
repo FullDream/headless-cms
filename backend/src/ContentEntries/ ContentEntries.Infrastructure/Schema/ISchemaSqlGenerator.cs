@@ -5,11 +5,11 @@ namespace ContentEntries.Infrastructure.Schema;
 
 public interface ISchemaSqlGenerator
 {
-	string GenerateCreateTableSql(ContentFieldsSnapshot schema);
+	string GenerateCreateTableSql(ContentTypeSchemaSnapshot schema);
 	string GenerateRenameTableSql(string oldName, string newName);
-	string GenerateAddColumnSql(ContentFieldsSnapshot schema, ContentFieldDef field);
-	string GenerateDropColumnSql(ContentFieldsSnapshot schema, ContentFieldDef field);
-	string GenerateRenameColumnSql(ContentFieldsSnapshot schema, string oldName, string newName);
-	string GenerateDropTableSql(ContentFieldsSnapshot schema);
+	string GenerateAddColumnSql(ContentTypeSchemaSnapshot schema, ContentFieldDef field);
+	string GenerateDropColumnSql(ContentTypeSchemaSnapshot schema, ContentFieldDef field);
+	string GenerateRenameColumnSql(ContentTypeSchemaSnapshot schema, string oldName, string newName);
+	string GenerateDropTableSql(ContentTypeSchemaSnapshot schema);
 	string MapFieldType(FieldType type);
 }
