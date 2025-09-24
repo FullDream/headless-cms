@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using BuildingBlocks;
+using Contracts;
 using Dapper;
 
 namespace ContentEntries.Infrastructure.Schema;

@@ -1,6 +1,6 @@
-﻿using BuildingBlocks;
-using ContentTypes.Application.Dtos;
+﻿using ContentTypes.Application.Dtos;
 using ContentTypes.Core;
+using Contracts;
 
 namespace ContentTypes.Application.Mappers;
 

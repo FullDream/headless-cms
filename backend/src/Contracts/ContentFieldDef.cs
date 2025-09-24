@@ -1,6 +1,6 @@
 ﻿using SharedKernel;
 
-namespace BuildingBlocks;
+namespace Contracts;
 
 public sealed record ContentFieldDef(
 	string Name,

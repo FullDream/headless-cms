@@ -1,4 +1,6 @@
-﻿namespace BuildingBlocks;
+﻿using Contracts;
+
+namespace BuildingBlocks;
 
 public interface IContentSchemaManager
 {

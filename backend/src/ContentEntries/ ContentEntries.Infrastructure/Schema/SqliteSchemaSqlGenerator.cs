@@ -1,5 +1,5 @@
-﻿using BuildingBlocks;
-using ContentEntries.Infrastructure.Common.Naming;
+﻿using ContentEntries.Infrastructure.Common.Naming;
+using Contracts;
 using Humanizer;
 using SharedKernel;
 

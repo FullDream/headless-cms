@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks;
 using ContentTypes.Core;
 using ContentTypes.Infrastructure.Mappers;
+using Contracts;
 
 namespace ContentTypes.Infrastructure;
 

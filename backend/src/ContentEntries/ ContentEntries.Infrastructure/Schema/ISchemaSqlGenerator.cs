@@ -1,4 +1,4 @@
-﻿using BuildingBlocks;
+﻿using Contracts;
 using SharedKernel;
 
 namespace ContentEntries.Infrastructure.Schema;

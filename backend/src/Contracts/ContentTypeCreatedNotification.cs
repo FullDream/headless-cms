@@ -1,5 +1,5 @@
 ﻿using MediatR;
 
-namespace BuildingBlocks.Notifications;
+namespace Contracts;
 
 public record ContentTypeCreatedNotification(ContentFieldsSnapshot Schema) : INotification;

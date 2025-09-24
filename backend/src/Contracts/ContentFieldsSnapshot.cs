@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks;
+﻿namespace Contracts;
 
 public sealed record ContentFieldsSnapshot(
 	Guid ContentTypeId,

@@ -1,5 +1,5 @@
-﻿using BuildingBlocks;
-using ContentTypes.Core;
+﻿using ContentTypes.Core;
+using Contracts;
 
 namespace ContentTypes.Infrastructure.Mappers;
 
