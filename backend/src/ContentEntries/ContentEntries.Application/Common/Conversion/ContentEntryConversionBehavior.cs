@@ -1,10 +1,8 @@
 ﻿using BuildingBlocks;
-using ContentEntries.Application.Commands;
-using ContentEntries.Application.Conversion;
 using MediatR;
 using SharedKernel.Result;
 
-namespace ContentEntries.Application.Behaviors;
+namespace ContentEntries.Application.Common.Conversion;
 
 public sealed class ContentEntryConversionBehavior<TRequest, TResponse>(
 	IContentTypeFieldsProvider schema) : IPipelineBehavior<TRequest, TResponse>

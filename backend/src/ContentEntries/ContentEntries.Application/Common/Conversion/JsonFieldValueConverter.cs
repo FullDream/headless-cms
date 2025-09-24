@@ -2,7 +2,7 @@
 using Contracts;
 using SharedKernel;
 
-namespace ContentEntries.Application.Conversion;
+namespace ContentEntries.Application.Common.Conversion;
 
 public static class JsonFieldValueConverter
 {

@@ -1,9 +1,9 @@
-﻿using ContentEntries.Application.Mappers;
+﻿using ContentEntries.Application.Common;
 using ContentEntries.Core;
 using MediatR;
 using SharedKernel.Result;
 
-namespace ContentEntries.Application.Commands.Create;
+namespace ContentEntries.Application.Create;
 
 internal sealed class CreateContentEntryHandler(IContentEntryRepository repository)
 	: IRequestHandler<CreateContentEntryCommand, Result<IReadOnlyDictionary<string, object?>>>

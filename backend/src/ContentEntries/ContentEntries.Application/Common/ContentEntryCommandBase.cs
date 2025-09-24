@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace ContentEntries.Application.Commands;
+namespace ContentEntries.Application.Common;
 
 public abstract record ContentEntryCommandBase(
 	string ContentTypeName,

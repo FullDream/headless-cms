@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ContentEntries.Core;
 
-namespace ContentEntries.Application.Mappers;
+namespace ContentEntries.Application.Common;
 
 public static class ContentEntryMapper
 {

@@ -2,7 +2,7 @@
 using BuildingBlocks.Validation;
 using FluentValidation;
 
-namespace ContentEntries.Application.Commands.Create;
+namespace ContentEntries.Application.Create;
 
 public class CreateContentEntryCommandValidator : AbstractValidator<CreateContentEntryCommand>
 {

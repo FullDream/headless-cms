@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
 using BuildingBlocks.Messaging;
+using ContentEntries.Application.Common;
 
-namespace ContentEntries.Application.Commands.Create;
+namespace ContentEntries.Application.Create;
 
 public sealed record CreateContentEntryCommand(
 	string ContentTypeName,

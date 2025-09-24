@@ -1,9 +1,9 @@
-﻿using ContentEntries.Application.Mappers;
+﻿using ContentEntries.Application.Common;
 using ContentEntries.Core;
 using MediatR;
 using SharedKernel.Result;
 
-namespace ContentEntries.Application.Queries.List;
+namespace ContentEntries.Application.List;
 
 public class ListContentEntriesHandler(
 	IContentEntryRepository repository)
