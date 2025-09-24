@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.IntegrationEvents;
+﻿using BuildingBlocks.Events;
 using ContentTypes.Application.Common.ContentType;
 using ContentTypes.Core;
 using ContentTypes.Core.Events;

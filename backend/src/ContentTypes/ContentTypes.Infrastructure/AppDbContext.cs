@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.IntegrationEvents;
+﻿using BuildingBlocks.Events;
 using ContentTypes.Core;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;

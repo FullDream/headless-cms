@@ -1,6 +1,6 @@
-﻿using BuildingBlocks;
-using BuildingBlocks.IntegrationEvents;
-using BuildingBlocks.IntegrationEvents.Tags;
+﻿using BuildingBlocks.Events;
+using BuildingBlocks.Messaging;
+using BuildingBlocks.Messaging.Tags;
 using ContentTypes.Application.Common.ContentType;
 using ContentTypes.Core;
 using ContentTypes.Core.Events;

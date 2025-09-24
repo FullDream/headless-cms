@@ -1,3 +1,3 @@
-﻿namespace BuildingBlocks.IntegrationEvents.Tags;
+﻿namespace BuildingBlocks.Messaging.Tags;
 
 public sealed class ContentTypeEventTag;

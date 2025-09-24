@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using BuildingBlocks.IntegrationEvents;
+using BuildingBlocks.Events;
 using ContentTypes.Application.Integration;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

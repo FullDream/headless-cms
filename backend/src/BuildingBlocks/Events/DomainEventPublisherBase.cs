@@ -1,7 +1,7 @@
 ﻿using SharedKernel;
 using SharedKernel.Events;
 
-namespace BuildingBlocks.IntegrationEvents;
+namespace BuildingBlocks.Events;
 
 public abstract class DomainEventPublisherBase<TRoot, TPayload>
 	: IDomainEventPublisher

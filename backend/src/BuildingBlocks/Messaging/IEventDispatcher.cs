@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks;
+﻿namespace BuildingBlocks.Messaging;
 
 public interface IEventDispatcher<TTag>
 {

@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BuildingBlocks;
-using BuildingBlocks.IntegrationEvents.Tags;
+using BuildingBlocks.Messaging;
+using BuildingBlocks.Messaging.Tags;
 using BuildingBlocks.Validation;
 using ContentEntries.Application;
 using ContentEntries.Infrastructure;
