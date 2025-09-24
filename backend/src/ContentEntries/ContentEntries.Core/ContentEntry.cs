@@ -3,7 +3,7 @@ using SharedKernel;
 
 namespace ContentEntries.Core
 {
-	public class ContentEntry : AggregateRoot
+	public sealed class ContentEntry : AggregateRoot
 	{
 		private ContentEntry()
 		{

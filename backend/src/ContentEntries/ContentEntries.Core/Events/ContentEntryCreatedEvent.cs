@@ -2,5 +2,5 @@
 
 namespace ContentEntries.Core.Events
 {
-	public record ContentEntryCreatedEvent(ContentEntry AggregateRoot) : IDomainEvent<ContentEntry>;
+	public sealed record ContentEntryCreatedEvent(ContentEntry AggregateRoot) : IDomainEvent<ContentEntry>;
 }
