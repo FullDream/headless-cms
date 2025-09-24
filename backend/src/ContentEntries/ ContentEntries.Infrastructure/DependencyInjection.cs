@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using BuildingBlocks;
+using ContentEntries.Application.Abstractions;
 using ContentEntries.Core;
 using ContentEntries.Infrastructure.Common.Configuration;
 using ContentEntries.Infrastructure.Common.Naming;

@@ -1,6 +1,6 @@
 ﻿using Contracts;
 
-namespace BuildingBlocks;
+namespace ContentEntries.Application.Abstractions;
 
 public interface IContentSchemaManager
 {

@@ -1,4 +1,4 @@
-﻿using BuildingBlocks;
+﻿using ContentEntries.Application.Abstractions;
 using Contracts;
 using MediatR;
 
