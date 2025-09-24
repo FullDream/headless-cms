@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Messaging;
+using ContentTypes.Application.AddField;
 using ContentTypes.Application.Common.ContentType;
 using ContentTypes.Core;
 

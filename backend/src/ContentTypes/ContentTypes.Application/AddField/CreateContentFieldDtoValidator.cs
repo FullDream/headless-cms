@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.Validation;
 using FluentValidation;
 
-namespace ContentTypes.Application.Create;
+namespace ContentTypes.Application.AddField;
 
 internal sealed class CreateContentFieldDtoValidator : AbstractValidator<CreateContentFieldDto>
 {

@@ -1,4 +1,4 @@
-﻿using ContentTypes.Application.Create;
+﻿using ContentTypes.Application.AddField;
 using ContentTypes.Core;
 
 namespace WebApi.Contracts.ContentTypes;
