@@ -2,4 +2,4 @@
 
 namespace ContentTypes.Core.Events;
 
-public record ContentTypeRenamedEvent(ContentType AggregateRoot, string OldName) : IDomainEvent<ContentType>;
+public sealed record ContentTypeRenamedEvent(ContentType AggregateRoot, string OldName) : IDomainEvent<ContentType>;

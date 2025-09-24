@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks;
+using ContentTypes.Application.AddField;
 using ContentTypes.Application.Common.ContentType;
 using ContentTypes.Core;
 using MediatR;
@@ -18,18 +19,18 @@ internal sealed class CreateContentTypeHandler(
 
 		if (isExist) return ContentTypeErrors.AlreadyExist(request.Name);
 
-		var contentType = ContentType.Create(request.Name, request.Kind);
+		var contentType = ContentType.Create(request.Name,
+			request.Kind,
+			request.Fields.Select(field => field.ToDefinition()).ToArray());
 
-		var fieldsResult =
-			contentType.AddFields(request.Fields.Select(f => (f.Name, f.Label, f.Type, f.IsRequired)).ToArray());
 
-		if (fieldsResult.IsFailure) return fieldsResult.Errors;
+		if (contentType.IsFailure) return contentType.Errors;
 
-		repository.Add(contentType);
+		repository.Add(contentType.Value);
 
 		await repository.SaveChangesAsync(cancellationToken);
 		// await schemaManager.EnsureStructureCreatedAsync(contentType, cancellationToken);
 
-		return contentType.ToDto();
+		return contentType.Value.ToDto();
 	}
 }

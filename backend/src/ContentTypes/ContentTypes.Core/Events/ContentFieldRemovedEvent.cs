@@ -2,4 +2,5 @@
 
 namespace ContentTypes.Core.Events;
 
-public record ContentFieldsRemovedEvent(ContentType AggregateRoot) : IDomainEvent<ContentType>;
+public sealed record ContentFieldsRemovedEvent(ContentType AggregateRoot, ContentField Field)
+	: IDomainEvent<ContentType>;

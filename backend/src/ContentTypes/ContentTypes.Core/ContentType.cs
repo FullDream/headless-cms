@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using ContentTypes.Core.Events;
+﻿using ContentTypes.Core.Events;
 using SharedKernel;
 using SharedKernel.Result;
 
@@ -20,9 +19,23 @@ public class ContentType() : AggregateRoot
 	public ContentTypeKind Kind { get; private set; }
 	public IReadOnlyCollection<ContentField> Fields => fields.AsReadOnly();
 
-	public static ContentType Create(string name, ContentTypeKind kind)
+	public static Result<ContentType> Create(string name, ContentTypeKind kind,
+		IReadOnlyCollection<ContentFieldDefinition> fieldDefinitions)
 	{
 		ContentType contentType = new(name, kind);
+
+		var duplicate = fieldDefinitions
+			.GroupBy(f => f.Name)
+			.FirstOrDefault(g => g.Count() > 1);
+
+		if (duplicate is not null)
+			return ContentTypeErrors.ContentFieldNameIsUnique(duplicate.Key);
+
+		contentType.fields.AddRange(fieldDefinitions.Select(f => new ContentField(contentType.Id,
+			f.Name,
+			f.Label,
+			f.Type,
+			f.IsRequired)));
 
 		contentType.AddDomainEvent(new ContentTypeCreatedEvent(contentType));
 
@@ -51,6 +64,25 @@ public class ContentType() : AggregateRoot
 
 	public void Remove() => AddDomainEvent(new ContentTypeRemovedEvent(this));
 
+
+	public Result<ContentField> AddField(ContentFieldDefinition fieldDefinition)
+	{
+		if (fields.Any(f => f.Name == fieldDefinition.Name))
+			return ContentTypeErrors.ContentFieldNameIsUnique(fieldDefinition.Name);
+
+		var field = new ContentField(Id,
+			fieldDefinition.Name,
+			fieldDefinition.Label,
+			fieldDefinition.Type,
+			fieldDefinition.IsRequired);
+
+		fields.Add(field);
+
+		AddDomainEvent(new ContentFieldAddedEvent(this, field));
+
+		return field;
+	}
+
 	public Result<ContentField> UpdateField(Guid fieldId, ContentFieldPatch patch)
 	{
 		ContentField? currentField = fields.FirstOrDefault(f => f.Id == fieldId);
@@ -78,30 +110,6 @@ public class ContentType() : AggregateRoot
 		return currentField;
 	}
 
-	public Result<IReadOnlyCollection<ContentField>> AddFields(
-		params IReadOnlyCollection<(string Name, string Label, FieldType Type, bool IsRequired)> definitions)
-	{
-		var duplicate = definitions
-			.IntersectBy(Fields.Select(f => f.Name), d => d.Name)
-			.FirstOrDefault();
-
-		if (duplicate != default)
-			return ContentTypeErrors.ContentFieldNameIsUnique(duplicate.Name);
-
-		var newFields = definitions
-			.Select(d => new ContentField(Id, d.Name, d.Label, d.Type, d.IsRequired))
-			.ToList();
-
-
-		if (newFields.Count == 0) return ReadOnlyCollection<ContentField>.Empty;
-
-		fields.AddRange(newFields);
-
-		AddDomainEvent(new ContentFieldsAddedEvent(this));
-
-		return newFields.AsReadOnly();
-	}
-
 	public Result<ContentField> RemoveField(Guid fieldId)
 	{
 		var field = fields.FirstOrDefault(f => f.Id == fieldId);
@@ -110,7 +118,7 @@ public class ContentType() : AggregateRoot
 
 		fields.Remove(field);
 
-		AddDomainEvent(new ContentFieldsRemovedEvent(this));
+		AddDomainEvent(new ContentFieldsRemovedEvent(this, field));
 
 		return field;
 	}

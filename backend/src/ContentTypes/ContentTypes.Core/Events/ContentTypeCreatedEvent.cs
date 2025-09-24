@@ -2,4 +2,4 @@
 
 namespace ContentTypes.Core.Events;
 
-public record ContentTypeCreatedEvent(ContentType AggregateRoot) : IDomainEvent<ContentType>;
+public sealed record ContentTypeCreatedEvent(ContentType AggregateRoot) : IDomainEvent<ContentType>;

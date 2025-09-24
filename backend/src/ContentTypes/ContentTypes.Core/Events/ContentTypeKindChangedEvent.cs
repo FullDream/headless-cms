@@ -2,4 +2,4 @@
 
 namespace ContentTypes.Core.Events;
 
-public record ContentTypeKindChangedEvent(ContentType AggregateRoot) : IDomainEvent<ContentType>;
+public sealed record ContentTypeKindChangedEvent(ContentType AggregateRoot) : IDomainEvent<ContentType>;

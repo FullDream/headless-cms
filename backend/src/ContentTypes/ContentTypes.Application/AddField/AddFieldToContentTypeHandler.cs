@@ -15,15 +15,13 @@ internal sealed class AddFieldToContentTypeHandler(IContentTypeRepository reposi
 
 		if (contentType is null) return ContentTypeErrors.NotFound(nameof(request.ContentTypeId));
 
-		var fieldRequest = request.Field;
-		var result = contentType.AddFields((fieldRequest.Name, fieldRequest.Label, fieldRequest.Type,
-			fieldRequest.IsRequired));
+		var result = contentType.AddField(request.Field.ToDefinition());
 
 		if (result.IsFailure) return result.Errors;
 
-		var field = result.Value.First();
+		var field = result.Value;
 
-		repository.AddField(result.Value.First());
+		repository.AddField(field);
 
 		await repository.SaveChangesAsync(cancellationToken);
 
