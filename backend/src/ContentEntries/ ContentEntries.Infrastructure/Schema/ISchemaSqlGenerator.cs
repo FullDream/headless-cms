@@ -10,6 +10,6 @@ public interface ISchemaSqlGenerator
 	string GenerateAddColumnSql(ContentTypeSchemaSnapshot schema, ContentFieldDef field);
 	string GenerateDropColumnSql(ContentTypeSchemaSnapshot schema, ContentFieldDef field);
 	string GenerateRenameColumnSql(ContentTypeSchemaSnapshot schema, string oldName, string newName);
-	string GenerateDropTableSql(ContentTypeSchemaSnapshot schema);
+	string GenerateDropTableSql(string contentTypeName);
 	string MapFieldType(FieldType type);
 }

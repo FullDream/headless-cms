@@ -20,9 +20,9 @@ public class SqlContentSchemaManager(IDbConnection db, ISchemaSqlGenerator sql) 
 	}
 
 
-	public Task RemoveStructureAsync(ContentTypeSchemaSnapshot schema, CancellationToken ct = default)
+	public Task RemoveStructureAsync(string contentTypeName, CancellationToken ct = default)
 	{
-		var sqlString = sql.GenerateDropTableSql(schema);
+		var sqlString = sql.GenerateDropTableSql(contentTypeName);
 		return db.ExecuteAsync(new CommandDefinition(sqlString, ct));
 	}
 

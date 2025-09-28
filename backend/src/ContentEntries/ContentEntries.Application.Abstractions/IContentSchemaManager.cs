@@ -7,7 +7,7 @@ public interface IContentSchemaManager
 	Task EnsureStructureCreatedAsync(ContentTypeSchemaSnapshot schema, CancellationToken ct = default);
 
 	Task RenameStructureAsync(string oldName, string newName, CancellationToken ct = default);
-	Task RemoveStructureAsync(ContentTypeSchemaSnapshot schema, CancellationToken ct = default);
+	Task RemoveStructureAsync(string contentTypeName, CancellationToken ct = default);
 
 	Task AddFieldToStructureAsync(ContentTypeSchemaSnapshot schema, ContentFieldDef field,
 		CancellationToken ct = default);

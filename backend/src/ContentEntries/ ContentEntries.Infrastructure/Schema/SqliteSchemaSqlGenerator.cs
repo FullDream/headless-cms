@@ -64,8 +64,8 @@ internal class SqliteSchemaSqlGenerator(IStorageNameResolver nameResolver) : ISc
 		=>
 			$"ALTER TABLE [{GetTableName(schema.ContentTypeName)}] RENAME COLUMN [{oldName.Underscore()}] TO [{newName.Underscore()}];";
 
-	public string GenerateDropTableSql(ContentTypeSchemaSnapshot schema)
-		=> $"DROP TABLE IF EXISTS [{GetTableName(schema.ContentTypeName)}];";
+	public string GenerateDropTableSql(string contentTypeName)
+		=> $"DROP TABLE IF EXISTS [{GetTableName(contentTypeName)}];";
 
 	public string MapFieldType(FieldType type)
 		=> type switch
