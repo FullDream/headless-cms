@@ -1,5 +1,5 @@
 ﻿using ContentEntries.Application.Abstractions;
-using Contracts;
+using Contracts.Notifications;
 using MediatR;
 
 namespace ContentEntries.Application.ContentTypeCreated;

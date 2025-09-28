@@ -2,7 +2,7 @@
 using ContentTypes.Application.Common.ContentType;
 using ContentTypes.Core;
 using ContentTypes.Core.Events;
-using Contracts;
+using Contracts.Notifications;
 using MediatR;
 using SharedKernel.Events;
 
