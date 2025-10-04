@@ -7,8 +7,6 @@ namespace ContentEntries.Application.ContentTypeCreated;
 internal sealed class ContentTypeCreatedHandler(IContentSchemaManager schemaManager)
 	: INotificationHandler<ContentTypeCreatedNotification>
 {
-	public async Task Handle(ContentTypeCreatedNotification notification, CancellationToken cancellationToken)
-	{
-		await schemaManager.EnsureStructureCreatedAsync(notification.Schema, cancellationToken);
-	}
+	public Task Handle(ContentTypeCreatedNotification notification, CancellationToken cancellationToken) =>
+		schemaManager.EnsureStructureCreatedAsync(notification.Schema, cancellationToken);
 }
