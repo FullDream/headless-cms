@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Events;
+using ContentTypes.Application.Common.ContentField;
 using ContentTypes.Application.Common.ContentType;
 using ContentTypes.Core;
 using ContentTypes.Core.Events;
@@ -14,18 +15,36 @@ internal sealed class ContentTypeMediatorDomainEventPublisher(IMediator mediator
 	protected override IEnumerable<IntegrationEvent<INotification>> CollectTyped(
 		IEnumerable<IDomainEvent<ContentType>> events)
 	{
-		foreach (var ev in events)
+		foreach (var @event in events)
 		{
-			if (ev is ContentTypeRenamedEvent renamed)
-				yield return new IntegrationEvent<INotification>(
-					"renamed",
-					new ContentTypeRenamedNotification(renamed.OldName, renamed.AggregateRoot.Name));
+			switch (@event)
+			{
+				case ContentTypeCreatedEvent created:
+					yield return new IntegrationEvent<INotification>(
+						"created",
+						new ContentTypeCreatedNotification(created.AggregateRoot.ToSnapshot()));
+					break;
+				case ContentTypeRenamedEvent renamed:
+					yield return new IntegrationEvent<INotification>(
+						"renamed",
+						new ContentTypeRenamedNotification(renamed.OldName, renamed.AggregateRoot.Name));
+					break;
+				case ContentTypeRemovedEvent removed:
+					yield return new IntegrationEvent<INotification>("removed",
+						new ContentTypeRemovedNotification(removed.AggregateRoot.Name));
+					break;
+				case ContentFieldAddedEvent addedField:
+					yield return new IntegrationEvent<INotification>("addedField",
+						new ContentFieldAddedNotification(addedField.AggregateRoot.ToSnapshot(),
+							addedField.Field.ToDef()));
+					break;
 
-			if (ev is ContentTypeCreatedEvent created)
-				yield return new IntegrationEvent<INotification>(
-					"created",
-					new ContentTypeCreatedNotification(created.AggregateRoot.ToSnapshot()));
-			;
+				case ContentFieldsRemovedEvent removedField:
+					yield return new IntegrationEvent<INotification>("removedField",
+						new ContentFieldsRemovedNotification(removedField.AggregateRoot.ToSnapshot(),
+							removedField.Field.ToDef()));
+					break;
+			}
 		}
 	}
 
