@@ -22,8 +22,6 @@ internal sealed class RemoveFieldFromContentTypeHandler(
 
 		await repository.SaveChangesAsync(cancellationToken);
 
-		// await schemaManager.RemoveFieldFromStructureAsync(contentType, fieldResult.Value, cancellationToken);
-
 		return fieldResult.Value.ToDto();
 	}
 }

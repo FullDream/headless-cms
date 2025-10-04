@@ -25,8 +25,6 @@ internal sealed class AddFieldToContentTypeHandler(IContentTypeRepository reposi
 
 		await repository.SaveChangesAsync(cancellationToken);
 
-		// await schemaManager.AddFieldToStructureAsync(contentType, field, cancellationToken);
-
 		return field.ToDto();
 	}
 }

@@ -29,7 +29,6 @@ internal sealed class CreateContentTypeHandler(
 		repository.Add(contentType.Value);
 
 		await repository.SaveChangesAsync(cancellationToken);
-		// await schemaManager.EnsureStructureCreatedAsync(contentType, cancellationToken);
 
 		return contentType.Value.ToDto();
 	}

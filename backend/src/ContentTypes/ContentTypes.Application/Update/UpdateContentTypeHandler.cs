@@ -24,8 +24,6 @@ internal sealed class UpdateContentTypeHandler(IContentTypeRepository repository
 				return ContentTypeErrors.AlreadyExist(name);
 
 			contentType.Rename(name);
-
-			// await schemaManager.RenameStructureAsync(oldName, name, cancellationToken);
 		}
 
 		if (request.Kind is { } kind && kind != contentType.Kind)

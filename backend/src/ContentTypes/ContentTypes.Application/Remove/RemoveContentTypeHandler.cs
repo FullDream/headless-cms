@@ -15,8 +15,6 @@ internal sealed class RemoveContentTypeHandler(IContentTypeRepository repository
 
 		if (contentType is null) return ContentTypeErrors.NotFound(nameof(request.Id));
 
-		// await schemaManager.RemoveStructureAsync(contentType, cancellationToken);
-
 		contentType.Remove();
 		repository.Remove(contentType);
 		await repository.SaveChangesAsync(cancellationToken);
