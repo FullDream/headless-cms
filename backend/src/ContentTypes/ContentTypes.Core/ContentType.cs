@@ -97,15 +97,23 @@ public class ContentType() : AggregateRoot
 			if (isDuplicate)
 				return ContentTypeErrors.ContentFieldNameIsUnique(patch.Name);
 
-
+			AddDomainEvent(new ContentFieldRenamedEvent(this, patch.Name, currentField.Name));
 			currentField.UpdateName(patch.Name);
 		}
 
 		if (patch.Label is not null) currentField.UpdateLabel(patch.Label);
 
-		if (patch.IsRequired is not null) currentField.UpdateRequired(patch.IsRequired.Value);
+		if (patch.IsRequired is bool isRequired && isRequired != currentField.IsRequired)
+		{
+			AddDomainEvent(new ContentFieldRequiredChangedEvent(this, currentField.Name, isRequired));
+			currentField.UpdateRequired(isRequired);
+		}
 
-		if (patch.Type is not null) currentField.UpdateType(patch.Type.Value);
+		if (patch.Type is FieldType type && type != currentField.Type)
+		{
+			AddDomainEvent(new ContentFieldTypeChangedEvent(this, currentField.Name, type));
+			currentField.UpdateType(patch.Type.Value);
+		}
 
 		return currentField;
 	}

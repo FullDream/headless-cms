@@ -38,7 +38,19 @@ internal sealed class ContentTypeMediatorDomainEventPublisher(IMediator mediator
 						new ContentFieldAddedNotification(addedField.AggregateRoot.ToSnapshot(),
 							addedField.Field.ToDef()));
 					break;
-
+				case ContentFieldRenamedEvent renamedField:
+					yield return new IntegrationEvent<INotification>("renamedField",
+						new ContentFieldRenamedNotification(renamedField.OldName, renamedField.Name));
+					break;
+				case ContentFieldRequiredChangedEvent requiredChanged:
+					yield return new IntegrationEvent<INotification>("fieldRequiredChanged",
+						new ContentFieldRequiredChangedNotification(requiredChanged.FieldName,
+							requiredChanged.IsRequired));
+					break;
+				case ContentFieldTypeChangedEvent typeChanged:
+					yield return new IntegrationEvent<INotification>("fieldTypeChanged",
+						new ContentFieldTypeChangedNotification(typeChanged.Name, typeChanged.Type));
+					break;
 				case ContentFieldsRemovedEvent removedField:
 					yield return new IntegrationEvent<INotification>("removedField",
 						new ContentFieldsRemovedNotification(removedField.AggregateRoot.ToSnapshot(),
