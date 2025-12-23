@@ -1,5 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core'
-import { CommonModule } from '@angular/common'
+
 import { ColumnDef, DynamicTable } from '@headless-cms/shared/ui-dynamic-table'
 import { injectQuery } from '@tanstack/angular-query-experimental'
 import { ContentEntriesQueryOptions } from '@headless-cms/content-entries/data-access'
@@ -12,7 +12,7 @@ const mapSchemaToColumnDefs = (schema?: ContentSchema): ColumnDef[] =>
 	}))
 @Component({
 	selector: 'ce-feat-list',
-	imports: [CommonModule, DynamicTable],
+	imports: [DynamicTable],
 	templateUrl: './content-entries-feat-list.html',
 })
 export class ContentEntriesFeatList {

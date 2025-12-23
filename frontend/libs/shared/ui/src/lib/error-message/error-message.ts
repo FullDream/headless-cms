@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core'
-import { CommonModule } from '@angular/common'
+
 import { Badge } from 'primeng/badge'
 import { Message } from 'primeng/message'
 import { Tooltip } from 'primeng/tooltip'
 
 @Component({
 	selector: 'ui-error-message',
-	imports: [CommonModule, Badge, Message, Tooltip],
+	imports: [Badge, Message, Tooltip],
 	templateUrl: './error-message.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })

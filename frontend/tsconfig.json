@@ -3,7 +3,8 @@
 		"isolatedModules": true,
 		"strict": true,
 		"noImplicitAny": true,
-		"noImplicitOverride": true
+		"noImplicitOverride": true,
+		"lib": ["dom", "es2022"]
 	},
 	"angularCompilerOptions": {
 		"enableI18nLegacyMessageIdFormat": false,
