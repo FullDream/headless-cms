@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { CreateQueryOptions, mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-query-experimental'
+import { mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-query-experimental'
 import { HttpClient } from '@angular/common/http'
 import { lastValueFrom } from 'rxjs'
 import * as R from 'remeda'
@@ -28,6 +28,7 @@ import {
 	UpdateContentTypeDto,
 } from './generated/types.gen'
 import { ApiErrorResponse } from '@headless-cms/shared/util-http'
+import { CreateQueryOptionsWithRealtime } from '@headless-cms/shared/data-access'
 
 export type UpdateFieldVariables = { contentTypeId: string; fieldId: string; dto: UpdateContentFieldDto }
 export type CreateFieldVariables = { contentTypeId: string; dto: CreateContentFieldDto }
@@ -42,11 +43,30 @@ export class ContentTypeQueryOptions {
 	readonly #apiUrl = `/api/${this.#contentTypeKey}`
 	readonly #queryClient = inject(QueryClient)
 
-	readonly list = queryOptions<GetContentTypesResponse, ApiErrorResponse<GetContentTypesErrors>>({
-		queryKey: this.#contentTypesListKey,
-		placeholderData: [],
-		queryFn: () => lastValueFrom(this.#client.get<GetContentTypesResponse>(this.#apiUrl)),
-	})
+	readonly list: CreateQueryOptionsWithRealtime<GetContentTypesResponse, ApiErrorResponse<GetContentTypesErrors>> = {
+		...queryOptions<GetContentTypesResponse, ApiErrorResponse<GetContentTypesErrors>>({
+			queryKey: this.#contentTypesListKey,
+			placeholderData: [],
+			queryFn: () => lastValueFrom(this.#client.get<GetContentTypesResponse>(this.#apiUrl)),
+		}),
+		connectionKey: this.#contentTypeKey,
+		realtimeHandlers: {
+			updated: (payload: ContentTypeDto) => {
+				this.#queryClient.setQueryData<ContentTypeDto>([...this.#contentTypesDetailKey, payload.id], ct =>
+					ct ? { ...ct, ...payload } : undefined,
+				)
+				this.#queryClient.setQueryData<ContentTypeDto[]>(this.#contentTypesListKey, list =>
+					list
+						? R.pipe(
+								list,
+								R.map(ct => (ct.id === payload.id ? { ...ct, ...payload } : ct)),
+								R.sortBy(R.prop('name')),
+							)
+						: undefined,
+				)
+			},
+		},
+	}
 
 	readonly create = mutationOptions<ContentTypeDto, ApiErrorResponse<PostContentTypesErrors>, CreateContentTypeDto>({
 		mutationKey: [this.#contentTypeKey, 'create'],
@@ -65,20 +85,20 @@ export class ContentTypeQueryOptions {
 		mutationKey: [this.#contentTypeKey, 'update'],
 		mutationFn: ({ id, dto }) =>
 			lastValueFrom(this.#client.patch<PatchContentTypesByIdResponse>(`${this.#apiUrl}/${id}`, dto)),
-		onSuccess: data => {
-			this.#queryClient.setQueryData<ContentTypeDto>([...this.#contentTypesDetailKey, data.id], ct =>
-				ct ? { ...ct, ...data } : undefined,
-			)
-			this.#queryClient.setQueryData<ContentTypeDto[]>(this.#contentTypesListKey, list =>
-				list
-					? R.pipe(
-							list,
-							R.map(ct => (ct.id === data.id ? { ...ct, ...data } : ct)),
-							R.sortBy(R.prop('name')),
-						)
-					: undefined,
-			)
-		},
+		// onSuccess: data => {
+		// 	this.#queryClient.setQueryData<ContentTypeDto>([...this.#contentTypesDetailKey, data.id], ct =>
+		// 		ct ? { ...ct, ...data } : undefined,
+		// 	)
+		// 	this.#queryClient.setQueryData<ContentTypeDto[]>(this.#contentTypesListKey, list =>
+		// 		list
+		// 			? R.pipe(
+		// 					list,
+		// 					R.map(ct => (ct.id === data.id ? { ...ct, ...data } : ct)),
+		// 					R.sortBy(R.prop('name')),
+		// 				)
+		// 			: undefined,
+		// 	)
+		// },
 	})
 
 	readonly delete = mutationOptions<
@@ -158,16 +178,39 @@ export class ContentTypeQueryOptions {
 
 	getById(
 		id?: string | null,
-	): CreateQueryOptions<GetContentTypesByIdResponse, ApiErrorResponse<GetContentTypesByIdErrors>> {
+	): CreateQueryOptionsWithRealtime<GetContentTypesByIdResponse, ApiErrorResponse<GetContentTypesByIdErrors>, any> {
 		const cached = this.#queryClient
 			.getQueryData<GetContentTypesResponse>(this.#contentTypesListKey)
 			?.find(ct => ct.id === id)
 
-		return queryOptions<GetContentTypesByIdResponse, ApiErrorResponse<GetContentTypesByIdErrors>>({
-			queryKey: [...this.#contentTypesDetailKey, id] as const,
-			queryFn: () => lastValueFrom(this.#client.get<ContentTypeDto>(`${this.#apiUrl}/${id}`)),
-			enabled: !!id && !cached,
-			initialData: cached,
-		})
+		return {
+			...queryOptions<GetContentTypesByIdResponse, ApiErrorResponse<GetContentTypesByIdErrors>>({
+				queryKey: [...this.#contentTypesDetailKey, id] as const,
+				queryFn: () => lastValueFrom(this.#client.get<ContentTypeDto>(`${this.#apiUrl}/${id}`)),
+				enabled: !!id,
+				initialData: cached,
+				staleTime: 600000,
+				initialDataUpdatedAt: this.#queryClient.getQueryState(this.#contentTypesListKey)?.dataUpdatedAt,
+			}),
+			connectionKey: this.#contentTypeKey,
+			realtimeHandlers: {
+				updated: (payload: ContentTypeDto) => {
+					this.#queryClient.setQueryData<ContentTypeDto>([...this.#contentTypesDetailKey, payload.id], ct =>
+						ct ? { ...ct, ...payload } : undefined,
+					)
+
+					console.log('updated', payload)
+					this.#queryClient.setQueryData<ContentTypeDto[]>(this.#contentTypesListKey, list =>
+						list
+							? R.pipe(
+									list,
+									R.map(ct => (ct.id === payload.id ? { ...ct, ...payload } : ct)),
+									R.sortBy(R.prop('name')),
+								)
+							: undefined,
+					)
+				},
+			},
+		}
 	}
 }

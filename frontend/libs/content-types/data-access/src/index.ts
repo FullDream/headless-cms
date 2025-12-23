@@ -7,3 +7,4 @@ export type {
 } from './lib/generated/types.gen'
 export { ContentTypeKind, FieldType } from './lib/generated/types.gen'
 export * from './lib/content-type.schema'
+export * from './lib/content-types.hub'

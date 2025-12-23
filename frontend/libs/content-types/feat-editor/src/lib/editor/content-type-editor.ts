@@ -10,13 +10,14 @@ import { ContentFieldDto, ContentTypeKind, ContentTypeQueryOptions } from '@head
 import { Button } from 'primeng/button'
 import { ConfirmationService } from 'primeng/api'
 import { ConfirmDialog } from 'primeng/confirmdialog'
-import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental'
+import { injectMutation } from '@tanstack/angular-query-experimental'
 import { ContentFieldFacade } from './field-editor/facade/content-field.facade'
 import { RemoteContentFieldFacade } from './field-editor/facade/remote-content-field.facade'
 import { LocalContentFieldFacade } from './field-editor/facade/local-content-field.facade'
 import { getDirtyValuesForPatch, setFormGroupServerErrors } from '@headless-cms/shared/util-forms'
 import { fieldTypeNames } from './field-type-names'
 import { KeyFilter } from 'primeng/keyfilter'
+import { injectQueryWithRealtime } from '@headless-cms/shared/data-access'
 
 @Component({
 	selector: 'ct-editor',
@@ -71,7 +72,7 @@ export default class ContentTypeEditor {
 	protected readonly fields = this.form.controls.fields
 	protected readonly create = injectMutation(() => this.#data.create)
 	protected readonly remove = injectMutation(() => this.#data.delete)
-	protected readonly contentType = injectQuery(() => this.#data.getById(this.contentTypeId()))
+	protected readonly contentType = injectQueryWithRealtime(() => this.#data.getById(this.contentTypeId()))
 	protected readonly update = injectMutation(() => this.#data.update)
 
 	constructor() {

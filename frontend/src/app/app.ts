@@ -1,8 +1,8 @@
 import { Component, computed, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { ContentTypeQueryOptions } from '@headless-cms/content-types/data-access'
-import { injectQuery } from '@tanstack/angular-query-experimental'
 import { FormsModule } from '@angular/forms'
+import { injectQuery } from '@tanstack/angular-query-experimental'
 
 export type NavItem = {
 	label: string
@@ -37,4 +37,26 @@ export class App {
 			routerLink: `/content-entries/${type.name}`,
 		})),
 	)
+
+	constructor() {
+		// const hub = inject(HubConnectionFactory).get<ContentTypesHub>('content-types')
+		//
+		// hub.connect().pipe(takeUntilDestroyed()).subscribe()
+		//
+		// hub.on<ContentTypeDto>('created')
+		// 	.pipe(takeUntilDestroyed())
+		// 	.subscribe(dto => {
+		// 		console.log('created', dto)
+		// 	})
+		// hub.on<ContentTypeDto>('updated')
+		// 	.pipe(takeUntilDestroyed())
+		// 	.subscribe(dto => {
+		// 		console.log('updated', dto)
+		// 	})
+		// hub.on<ContentTypeDto>('removed')
+		// 	.pipe(takeUntilDestroyed())
+		// 	.subscribe(dto => {
+		// 		console.log('removed', dto)
+		// 	})
+	}
 }

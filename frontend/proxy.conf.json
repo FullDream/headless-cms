@@ -13,9 +13,6 @@
 		"secure": false,
 		"ws": true,
 		"changeOrigin": true,
-		"logLevel": "debug",
-		"pathRewrite": {
-			"^/hubs": ""
-		}
+		"logLevel": "debug"
 	}
 }
