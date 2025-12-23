@@ -4,7 +4,6 @@ import { appRoutes } from './app.routes'
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental'
 import { provideHttpClient, withFetch } from '@angular/common/http'
 import { providePrimeNG } from 'primeng/config'
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { createThemeConfig } from './theme.config'
 import { HubConnectionFactory } from '@ssv/signalr-client'
 import { withDevtools } from '@tanstack/angular-query-experimental/devtools'
@@ -16,7 +15,6 @@ export const appConfig: ApplicationConfig = {
 		provideRouter(appRoutes, withComponentInputBinding()),
 		provideHttpClient(withFetch()),
 		provideTanStackQuery(new QueryClient(), withDevtools()),
-		provideAnimationsAsync(),
 		HubConnectionFactory,
 		providePrimeNG({
 			ripple: true,
