@@ -1,0 +1,13 @@
+{
+	"name": "feat-auth",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/iam/feat-auth/src",
+	"prefix": "iam",
+	"projectType": "library",
+	"tags": ["scope:iam", "type:feature"],
+	"targets": {
+		"lint": {
+			"executor": "@nx/eslint:lint"
+		}
+	}
+}

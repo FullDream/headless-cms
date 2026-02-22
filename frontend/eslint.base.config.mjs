@@ -33,6 +33,10 @@ export default [
 						// bounded contexts
 						{ sourceTag: 'scope:shared', onlyDependOnLibsWithTags: ['scope:shared'] },
 						{
+							sourceTag: 'scope:iam',
+							onlyDependOnLibsWithTags: ['scope:iam', 'scope:shared'],
+						},
+						{
 							sourceTag: 'scope:content-types',
 							onlyDependOnLibsWithTags: ['scope:content-types', 'scope:shared'],
 						},
