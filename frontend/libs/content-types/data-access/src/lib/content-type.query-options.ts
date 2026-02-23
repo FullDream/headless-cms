@@ -99,6 +99,9 @@ export class ContentTypeQueryOptions {
 		// 			: undefined,
 		// 	)
 		// },
+		onSuccess: () => 
+			this.#queryClient.invalidateQueries({ queryKey: [this.#contentTypesListKey] })
+
 	})
 
 	readonly delete = mutationOptions<

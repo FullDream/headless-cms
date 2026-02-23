@@ -18,6 +18,7 @@ import { getDirtyValuesForPatch, setFormGroupServerErrors } from '@headless-cms/
 import { fieldTypeNames } from './field-type-names'
 import { KeyFilter } from 'primeng/keyfilter'
 import { injectQueryWithRealtime } from '@headless-cms/shared/data-access'
+import { SelectButton } from 'primeng/selectbutton'
 
 @Component({
 	selector: 'ct-editor',
@@ -34,6 +35,7 @@ import { injectQueryWithRealtime } from '@headless-cms/shared/data-access'
 		Button,
 		FormField,
 		KeyFilter,
+		SelectButton,
 	],
 	hostDirectives: [IdScope, UniqueIdScopeDirective],
 	providers: [
@@ -60,6 +62,10 @@ export default class ContentTypeEditor {
 	readonly #confirmationService = inject(ConfirmationService)
 
 	protected readonly title = toSignal(this.#route.title)
+	protected readonly kindList = [
+		{ label: 'Collection type', value: 'collection' },
+		{ label: 'Single type', value: 'singleton' },
+	]
 
 	readonly form = this.#fb.nonNullable.group({
 		name: ['', [Validators.required]],

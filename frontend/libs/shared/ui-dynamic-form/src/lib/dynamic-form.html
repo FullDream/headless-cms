@@ -1,0 +1,6 @@
+@for (item of config(); track $index) {
+	<p-float-label variant="on">
+		<input pInputText [formField]="form[item.name]"/>
+		<label for="email">{{ item.label }}</label>
+	</p-float-label>
+}

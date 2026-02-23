@@ -4,12 +4,30 @@
 			@for (col of columns; track col.field) {
 				<th>{{ col.header }}</th>
 			}
+
+			@if (actions()?.length) {
+				<th pFrozenColumn></th>
+			}
 		</tr>
 	</ng-template>
 	<ng-template #body let-rowData let-columns="columns">
 		<tr>
 			@for (col of columns; track col.field) {
 				<td>{{ rowData[col.field] }}</td>
+			}
+
+			@if (actions()?.length) {
+				<td>
+					@for (action of actions(); track $index) {
+						@if (action.command) {
+							<p-button [icon]="action.icon" (click)="action.command(rowData)" />
+						} @else {
+							<a [routerLink]="action.routerLink" pButton  >
+								<i [class]="action.icon" pButtonIcon></i>
+							</a>
+						}
+					}
+				</td>
 			}
 		</tr>
 	</ng-template>

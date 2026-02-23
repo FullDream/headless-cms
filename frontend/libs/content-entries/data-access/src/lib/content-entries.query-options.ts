@@ -43,7 +43,7 @@ export class ContentEntriesQueryOptions {
 			mutationFn: variables =>
 				lastValueFrom(
 					this.#httpClient.post<PostContentEntriesByNameResponse>(
-						`${this.#contentEntriesKey}/${variables.typeName}`,
+						`api/${this.#contentEntriesKey}/${variables.typeName}`,
 						variables.dto,
 					),
 				),

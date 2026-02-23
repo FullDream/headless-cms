@@ -17,8 +17,23 @@ export const appRoutes: Route[] = [
 			{
 				path: 'content-entries/:typeName',
 				providers: [{ provide: ContentSchemaProvider, useClass: ContentTypeSchema }],
-				loadComponent: () =>
-					import('@headless-cms/content-entries/feat-list').then(m => m.ContentEntriesFeatList),
+				children: [
+					{
+						path: '',
+						loadComponent: () =>
+							import('@headless-cms/content-entries/feat-list').then(m => m.ContentEntriesFeatList),
+					},
+					{
+						path: 'new',
+						loadComponent: () =>
+							import('@headless-cms/content-entries/feat-editor').then(m => m.ContentEntryEditor),
+					},
+					{
+						path: ':contentEntryId',
+						loadComponent: () =>
+							import('@headless-cms/content-entries/feat-editor').then(m => m.ContentEntryEditor),
+					},
+				],
 			},
 		],
 	},

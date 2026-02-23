@@ -1,1 +1,6 @@
-<ui-dynamic-table [columnDefs]="columnDefs()"  [data]="listQuery.data() ?? []" />
+<a pButton [routerLink]="['new']">
+	<i class="pi pi-plus" pButtonIcon></i>
+	<span pButtonLabel>Add</span>
+</a>
+
+<ui-dynamic-table [columnDefs]="columnDefs()" [actions]="actions"  [data]="listQuery.data() ?? []" />

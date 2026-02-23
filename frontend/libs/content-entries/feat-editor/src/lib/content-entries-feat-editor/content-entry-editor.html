@@ -1,1 +1,8 @@
-<p>ContentEntriesFeatEditor works!</p>
+
+<form (submit)="submit($event, df.form)">
+
+
+<ui-dynamic-form #df="dynamicForm" [config]="dynamicFormConfig()" />
+
+	<button pButton type="submit">Save</button>
+</form>
