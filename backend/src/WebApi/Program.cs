@@ -7,6 +7,8 @@ using ContentEntries.Application;
 using ContentEntries.Infrastructure;
 using ContentTypes.Application;
 using ContentTypes.Infrastructure;
+using Iam.Application;
+using Iam.Infrastructure;
 using MediatR;
 using Scalar.AspNetCore;
 using WebApi.Common.OpenApi;
@@ -17,6 +19,10 @@ using WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// iam
+builder.Services.AddIamInfrastructure(builder.Configuration);
+builder.Services.AddIamApplication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddContentTypesInfrastructure(builder.Configuration);
 builder.Services.AddContentTypesApplication();
@@ -27,9 +33,6 @@ builder.Services.AddContentEntriesApplication();
 // MediatR
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-
-// auth
-builder.Services.AddAuthorization();
 
 builder.Services.AddSignalR();
 
@@ -61,6 +64,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

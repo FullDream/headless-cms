@@ -11,6 +11,7 @@ using ContentTypes.Application.Update;
 using ContentTypes.Application.UpdateField;
 using ContentTypes.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebApi.Common.Results;
@@ -18,6 +19,7 @@ using WebApi.Contracts.ContentTypes;
 
 namespace WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("content-types")]
 public class ContentTypesController(IMediator mediator, ProblemDetailsFactory detailsService) : ControllerBase

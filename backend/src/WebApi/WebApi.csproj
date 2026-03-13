@@ -28,6 +28,8 @@
         <ProjectReference Include="..\ContentEntries\ContentEntries.Application\ContentEntries.Application.csproj"/>
         <ProjectReference Include="..\ContentTypes\ContentTypes.Application\ContentTypes.Application.csproj"/>
         <ProjectReference Include="..\ContentTypes\ContentTypes.Infrastructure\ContentTypes.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Iam\Iam.Application\Iam.Application.csproj"/>
+        <ProjectReference Include="..\Iam\Iam.Infrastructure\Iam.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>
