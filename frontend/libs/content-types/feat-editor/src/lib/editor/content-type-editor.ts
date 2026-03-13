@@ -1,11 +1,10 @@
 import { Component, effect, inject, input } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { InputText } from 'primeng/inputtext'
-import { RadioButton } from 'primeng/radiobutton'
 import { Drawer } from 'primeng/drawer'
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router'
 import { toSignal } from '@angular/core/rxjs-interop'
-import { FormField, IdScope, UniqueIdPipe, UniqueIdScopeDirective } from '@headless-cms/shared/ui'
+import { FormField, IdScope, UniqueIdScopeDirective } from '@headless-cms/shared/ui'
 import { ContentFieldDto, ContentTypeKind, ContentTypeQueryOptions } from '@headless-cms/content-types/data-access'
 import { Button } from 'primeng/button'
 import { ConfirmationService } from 'primeng/api'
@@ -26,11 +25,9 @@ import { SelectButton } from 'primeng/selectbutton'
 	imports: [
 		ReactiveFormsModule,
 		InputText,
-		RadioButton,
 		Drawer,
 		RouterOutlet,
 		RouterLink,
-		UniqueIdPipe,
 		ConfirmDialog,
 		Button,
 		FormField,

@@ -1,0 +1,6 @@
+@let fieldValue = field();
+
+<p-float-label variant="on" class="block w-full">
+	<textarea pTextarea class="min-h-32 w-full" [id]="fieldValue().name()" [formField]="fieldValue" autoResize></textarea>
+	<label [for]="fieldValue().name()">{{ label() }}</label>
+</p-float-label>

@@ -7,11 +7,10 @@ import { ButtonDirective } from 'primeng/button'
 import { injectQueryParams } from 'ngxtension/inject-query-params'
 import { Router } from '@angular/router'
 import { FloatLabel } from 'primeng/floatlabel'
-import { Password } from 'primeng/password'
 
 @Component({
 	selector: 'iam-auth-login',
-	imports: [InputText, FormField, ButtonDirective, FloatLabel, Password],
+	imports: [InputText, FormField, ButtonDirective, FloatLabel],
 	templateUrl: './login.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { class: 'block h-dvh w-dvw flex items-center justify-center bg-gray-50 px-4' },

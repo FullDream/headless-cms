@@ -1,6 +1,5 @@
-@for (item of config(); track $index) {
-	<p-float-label variant="on">
-		<input pInputText [formField]="form[item.name]"/>
-		<label for="email">{{ item.label }}</label>
-	</p-float-label>
+@for (item of config(); track item.name) {
+	<div class="min-w-0" [class.lg:col-span-2]="item.type === 'textarea' || item.type === 'checkbox'">
+		<ng-container *ngComponentOutlet="$any(controls[item.type]); inputs: { label: item.label, field: $any(form())[item.name] }" />
+	</div>
 }

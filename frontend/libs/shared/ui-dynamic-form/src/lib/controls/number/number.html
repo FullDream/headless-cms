@@ -1,0 +1,6 @@
+@let fieldValue = field();
+
+<p-float-label variant="on" class="block w-full">
+	<input pInputText class="w-full" [id]="fieldValue().name()" type="number" [formField]="fieldValue" />
+	<label [for]="fieldValue().name()">{{ label() }}</label>
+</p-float-label>
