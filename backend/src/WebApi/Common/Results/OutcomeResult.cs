@@ -1,15 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Result;
 
 namespace WebApi.Common.Results;
 
-public class OutcomeResult<T>(Result<T> result) : ActionResult
+public class OutcomeResult(Result result) : ActionResult
 {
+	protected Result InnerResult { get; } = result;
+
 	public override Task ExecuteResultAsync(ActionContext context)
 	{
-		if (result.IsSuccess) return new OkObjectResult(result.Value).ExecuteResultAsync(context);
+		if (InnerResult.IsSuccess) return new NoContentResult().ExecuteResultAsync(context);
 
-		var errors = result.Errors;
+		return ExecuteFailure(context, InnerResult.Errors!);
+	}
+
+	protected static Task ExecuteFailure(ActionContext context, Error[] errors)
+	{
 		var winner =
 			ResultProblemDetailsMapper.PriorityErrorTypes.First(errorType =>
 				errors.Any(error => error.Type == errorType));
@@ -19,5 +25,5 @@ public class OutcomeResult<T>(Result<T> result) : ActionResult
 		return new ObjectResult(problemDetails).ExecuteResultAsync(context);
 	}
 
-	public static implicit operator OutcomeResult<T>(Result<T> innerResult) => new(innerResult);
+	public static implicit operator OutcomeResult(Result innerResult) => new(innerResult);
 }

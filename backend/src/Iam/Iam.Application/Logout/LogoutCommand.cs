@@ -1,5 +1,5 @@
-﻿using MediatR;
+﻿using BuildingBlocks.Messaging;
 
 namespace Iam.Application.Logout;
 
-public sealed record LogoutCommand : IRequest;
+public sealed record LogoutCommand : ICommand;

@@ -25,16 +25,30 @@ public class OutcomeResultProducesResponseConvention : IApplicationModelConventi
 		foreach (var action in app.Controllers.SelectMany(c => c.Actions))
 		{
 			var returnType = UnwrapTask(action.ActionMethod.ReturnType);
-			if (returnType?.IsGenericType == false || returnType?.GetGenericTypeDefinition() != typeof(OutcomeResult<>))
+			if (returnType is null)
 				continue;
 
-			var payloadType = returnType.GetGenericArguments()[0];
+			var isGenericOutcome = returnType.IsGenericType &&
+			                       returnType.GetGenericTypeDefinition() == typeof(OutcomeResult<>);
+			var isNoContentOutcome = returnType == typeof(OutcomeResult);
 
-			if (NeedsProduces(action, StatusCodes.Status200OK))
-				action.Filters.Add(new ProducesResponseTypeAttribute(
-					payloadType,
-					StatusCodes.Status200OK,
-					"application/json"));
+			if (!isGenericOutcome && !isNoContentOutcome)
+				continue;
+
+			Type? payloadType = null;
+
+			if (isGenericOutcome)
+			{
+				payloadType = returnType.GetGenericArguments()[0];
+
+				if (NeedsProduces(action, StatusCodes.Status200OK))
+					action.Filters.Add(new ProducesResponseTypeAttribute(
+						payloadType,
+						StatusCodes.Status200OK,
+						"application/json"));
+			}
+			else if (NeedsProduces(action, StatusCodes.Status204NoContent))
+				action.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status204NoContent));
 
 
 			var errorStatuses = ErrorResponses.Keys.ToList();
@@ -43,7 +57,7 @@ public class OutcomeResultProducesResponseConvention : IApplicationModelConventi
 			{
 				errorStatuses.Remove(StatusCodes.Status409Conflict);
 
-				if (HasNoRoutePlaceholders(action) && IsListGet(action, payloadType))
+				if (payloadType is not null && HasNoRoutePlaceholders(action) && IsListGet(action, payloadType))
 					errorStatuses.Remove(StatusCodes.Status404NotFound);
 			}
 

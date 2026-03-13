@@ -12,7 +12,7 @@ public class AuthService(SignInManager<IamUser> signInManager, UserManager<IamUs
 	private static readonly Error RegistrationFailedError =
 		new("Iam.RegistrationFailed", "Registration failed", null, ErrorType.Conflict);
 
-	public async Task<Result<AuthUser>> LoginAsync(string email, string password, CancellationToken cancellationToken)
+	public async Task<Result> LoginAsync(string email, string password, CancellationToken cancellationToken)
 	{
 		var user = await userManager.FindByEmailAsync(email);
 
@@ -24,10 +24,10 @@ public class AuthService(SignInManager<IamUser> signInManager, UserManager<IamUs
 
 		await signInManager.SignInAsync(user, isPersistent: true);
 
-		return new AuthUser(user.Email!);
+		return Result.Success();
 	}
 
-	public async Task<Result<AuthUser>> RegisterAsync(string email, string password,
+	public async Task<Result> RegisterAsync(string email, string password,
 		CancellationToken cancellationToken)
 	{
 		var existingUser = await userManager.FindByEmailAsync(email);
@@ -43,9 +43,7 @@ public class AuthService(SignInManager<IamUser> signInManager, UserManager<IamUs
 
 		var result = await userManager.CreateAsync(user, password);
 
-		return result.Succeeded
-			? new AuthUser(user.Email)
-			: RegistrationFailedError;
+		return result.Succeeded ? Result.Success() : RegistrationFailedError;
 	}
 
 	public Task LogoutAsync(CancellationToken cancellationToken) => signInManager.SignOutAsync();

@@ -4,12 +4,12 @@ namespace Iam.Application.Abstractions.Authentication;
 
 public interface IAuthService
 {
-	Task<Result<AuthUser>> LoginAsync(
+	Task<Result> LoginAsync(
 		string email,
 		string password,
 		CancellationToken cancellationToken);
 
-	Task<Result<AuthUser>> RegisterAsync(
+	Task<Result> RegisterAsync(
 		string email,
 		string password,
 		CancellationToken cancellationToken);

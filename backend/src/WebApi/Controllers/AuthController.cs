@@ -21,20 +21,16 @@ public sealed record RegisterRequest
 public class AuthController(IMediator mediator) : ControllerBase
 {
 	[HttpPost("login")]
-	public async Task<OutcomeResult<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken) =>
+	public async Task<OutcomeResult> Login(LoginRequest request, CancellationToken cancellationToken) =>
 		await mediator.Send(new LoginCommand(request.Email, request.Password), cancellationToken);
 
 	[Authorize]
 	[HttpPost("logout")]
-	public async Task<IActionResult> Logout()
-	{
-		await mediator.Send(new LogoutCommand());
-
-		return NoContent();
-	}
+	public async Task<OutcomeResult> Logout(CancellationToken cancellationToken) =>
+		await mediator.Send(new LogoutCommand(), cancellationToken);
 
 	[HttpPost("register")]
-	public async Task<OutcomeResult<RegisterResponse>> Register(RegisterRequest request,
+	public async Task<OutcomeResult> Register(RegisterRequest request,
 		CancellationToken cancellationToken) =>
 		await mediator.Send(new RegisterCommand(request.Email, request.Password), cancellationToken);
 

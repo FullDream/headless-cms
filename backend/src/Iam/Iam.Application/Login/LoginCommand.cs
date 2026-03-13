@@ -2,4 +2,4 @@
 
 namespace Iam.Application.Login;
 
-public sealed record LoginCommand(string Username, string Password) : ICommand<LoginResponse>;
+public sealed record LoginCommand(string Username, string Password) : ICommand;

@@ -1,10 +1,15 @@
 ﻿using Iam.Application.Abstractions.Authentication;
 using MediatR;
+using SharedKernel.Result;
 
 namespace Iam.Application.Logout;
 
-public class LogoutCommandHandler(IAuthService authService) : IRequestHandler<LogoutCommand>
+public class LogoutCommandHandler(IAuthService authService) : IRequestHandler<LogoutCommand, Result>
 {
-	public Task Handle(LogoutCommand request, CancellationToken cancellationToken) =>
-		authService.LogoutAsync(cancellationToken);
+	public async Task<Result> Handle(LogoutCommand request, CancellationToken cancellationToken)
+	{
+		await authService.LogoutAsync(cancellationToken);
+
+		return Result.Success();
+	}
 }
