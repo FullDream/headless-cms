@@ -6,19 +6,21 @@ namespace Iam.Infrastructure;
 
 public class AuthService(SignInManager<IamUser> signInManager, UserManager<IamUser> userManager) : IAuthService
 {
+	private static readonly Error InvalidCredentialsError =
+		new("Iam.InvalidCredentials", "Invalid email or password", null, ErrorType.Unauthenticated);
+
+	private static readonly Error RegistrationFailedError =
+		new("Iam.RegistrationFailed", "Registration failed", null, ErrorType.Conflict);
+
 	public async Task<Result<AuthUser>> LoginAsync(string email, string password, CancellationToken cancellationToken)
 	{
 		var user = await userManager.FindByEmailAsync(email);
 
-		if (user == null) return new Error("Iam.NotFound", "User not found", nameof(email), ErrorType.NotFound);
+		if (user == null) return InvalidCredentialsError;
 
 		var result = await signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure: true);
 
-		if (!result.Succeeded)
-			return new Error("Iam.IncorrectPassword",
-				"The password is incorrect",
-				nameof(email),
-				ErrorType.Unauthenticated);
+		if (!result.Succeeded) return InvalidCredentialsError;
 
 		await signInManager.SignInAsync(user, isPersistent: true);
 
@@ -30,8 +32,7 @@ public class AuthService(SignInManager<IamUser> signInManager, UserManager<IamUs
 	{
 		var existingUser = await userManager.FindByEmailAsync(email);
 
-		if (existingUser != null)
-			return new Error("Iam.UserExist", "User with this email already exists", nameof(email), ErrorType.Conflict);
+		if (existingUser != null) return RegistrationFailedError;
 
 		var user = new IamUser
 		{
@@ -44,8 +45,7 @@ public class AuthService(SignInManager<IamUser> signInManager, UserManager<IamUs
 
 		return result.Succeeded
 			? new AuthUser(user.Email)
-			: Result<AuthUser>.Failure(result.Errors
-				.Select(e => new Error(e.Code, e.Description, null, ErrorType.BusinessRule)).ToArray());
+			: RegistrationFailedError;
 	}
 
 	public Task LogoutAsync(CancellationToken cancellationToken) => signInManager.SignOutAsync();

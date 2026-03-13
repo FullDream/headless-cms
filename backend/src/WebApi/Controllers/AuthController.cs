@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Common.Results;
 
 namespace WebApi.Controllers;
 
@@ -20,12 +21,8 @@ public sealed record RegisterRequest
 public class AuthController(IMediator mediator) : ControllerBase
 {
 	[HttpPost("login")]
-	public async Task<IActionResult> Login(LoginRequest request)
-	{
-		var result = await mediator.Send(new LoginCommand(request.Email, request.Password));
-
-		return result.IsSuccess ? NoContent() : Unauthorized();
-	}
+	public async Task<OutcomeResult<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken) =>
+		await mediator.Send(new LoginCommand(request.Email, request.Password), cancellationToken);
 
 	[Authorize]
 	[HttpPost("logout")]
@@ -37,12 +34,9 @@ public class AuthController(IMediator mediator) : ControllerBase
 	}
 
 	[HttpPost("register")]
-	public async Task<IActionResult> Register(RegisterRequest request, CancellationToken cancellationToken)
-	{
-		var result = await mediator.Send(new RegisterCommand(request.Email, request.Password), cancellationToken);
-
-		return result.IsSuccess ? NoContent() : Conflict();
-	}
+	public async Task<OutcomeResult<RegisterResponse>> Register(RegisterRequest request,
+		CancellationToken cancellationToken) =>
+		await mediator.Send(new RegisterCommand(request.Email, request.Password), cancellationToken);
 
 	[Authorize]
 	[HttpGet("me")]
