@@ -10,6 +10,7 @@
 		"build": {
 			"executor": "@angular/build:application",
 			"outputs": ["{options.outputPath}"],
+			"defaultConfiguration": "production",
 			"options": {
 				"outputPath": "dist/headless-cms",
 				"browser": "./src/main.ts",
@@ -43,15 +44,15 @@
 					"extractLicenses": false,
 					"sourceMap": true
 				}
-			},
-			"defaultConfiguration": "production"
+			}
 		},
 		"serve": {
 			"continuous": true,
+			"executor": "@angular/build:dev-server",
+			"defaultConfiguration": "development",
 			"options": {
 				"proxyConfig": "proxy.conf.json"
 			},
-			"executor": "@angular/build:dev-server",
 			"configurations": {
 				"production": {
 					"buildTarget": "headless-cms:build:production"
@@ -59,8 +60,7 @@
 				"development": {
 					"buildTarget": "headless-cms:build:development"
 				}
-			},
-			"defaultConfiguration": "development"
+			}
 		},
 		"extract-i18n": {
 			"executor": "@angular/build:extract-i18n",
@@ -78,7 +78,8 @@
 			"executor": "@nx/vitest:test",
 			"outputs": ["{options.reportsDirectory}"],
 			"options": {
-				"reportsDirectory": "coverage/headless-cms"
+				"configFile": "vite.config.mts",
+				"reportsDirectory": "{projectRoot}/coverage/headless-cms"
 			}
 		},
 		"serve-static": {

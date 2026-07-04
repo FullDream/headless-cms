@@ -25,9 +25,11 @@
 			"cache": true,
 			"inputs": [
 				"default",
+				"^default",
 				"{workspaceRoot}/.eslintrc.json",
 				"{workspaceRoot}/.eslintignore",
-				"{workspaceRoot}/eslint.config.mjs"
+				"{workspaceRoot}/eslint.config.mjs",
+				"{workspaceRoot}/tools/eslint-rules/**/*"
 			]
 		},
 		"@nx/js:tsc": {
@@ -94,5 +96,6 @@
 		}
 	},
 	"defaultProject": "headless-cms",
-	"nxCloudId": "694afd86d0a7246a28e9bb4b"
+	"nxCloudId": "694afd86d0a7246a28e9bb4b",
+	"analytics": true
 }
