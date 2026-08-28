@@ -1,12 +1,17 @@
-import { Component, computed, inject } from '@angular/core'
+import { Component, computed, DOCUMENT, effect, inject, signal } from '@angular/core'
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
-import { ContentTypeQueryOptions } from '@headless-cms/content-types/data-access'
-import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental'
-import { Button, ButtonDirective } from 'primeng/button'
+import { injectMutation, QueryClient } from '@tanstack/angular-query-experimental'
 import { AuthOptions } from '@headless-cms/iam/data-access'
-import { MenuItem, MenuItemCommandEvent, PrimeIcons } from 'primeng/api'
-import { Menu } from 'primeng/menu'
+import { MenuItem, MenuItemCommandEvent } from 'primeng/api'
+import { Menu, MenuModule } from 'primeng/menu'
 import { injectLocalStorage } from 'ngxtension/inject-local-storage'
+import { SidebarModule } from 'primeng/sidebar'
+import { AvatarModule } from 'primeng/avatar'
+import { PIcon } from '@primeicons/angular/p-icon'
+import { Tooltip } from 'primeng/tooltip'
+import { Ripple } from 'primeng/ripple'
+import { SecondarySidebar } from '@headless-cms/shared/ui'
+import { CdkPortalOutlet } from '@angular/cdk/portal'
 
 export type NavItem = {
 	label: string
@@ -16,69 +21,105 @@ export type NavItem = {
 	items?: NavItem[]
 }
 
-type Theme = 'auto' | 'light' | 'dark'
+type Theme = 'system' | 'light' | 'dark'
 
 const themeIconMap: Record<Theme, string> = {
-	auto: PrimeIcons.DESKTOP,
-	dark: PrimeIcons.MOON,
-	light: PrimeIcons.SUN,
+	system: 'desktop',
+	dark: 'moon',
+	light: 'sun',
 }
 
 @Component({
 	selector: 'app-layout',
 	templateUrl: './layout.html',
-	imports: [ButtonDirective, RouterOutlet, RouterLink, RouterLinkActive, Menu, Button],
+	imports: [
+		RouterOutlet,
+		RouterLink,
+		RouterLinkActive,
+		Menu,
+		RouterOutlet,
+		SidebarModule,
+		AvatarModule,
+		PIcon,
+		Tooltip,
+		RouterLink,
+		RouterLinkActive,
+		MenuModule,
+		Ripple,
+		CdkPortalOutlet,
+		SecondarySidebar,
+	],
 })
 export class LayoutComponent {
 	readonly #authOptions = inject(AuthOptions)
-	readonly #queryOptions = inject(ContentTypeQueryOptions)
 	readonly queryClient = inject(QueryClient)
 
-	readonly theme = injectLocalStorage<'auto' | 'light' | 'dark'>('theme', { defaultValue: 'auto' })
-	readonly router = inject(Router)
-
-	protected readonly queryList = injectQuery(() => this.#queryOptions.list)
+	protected readonly theme = injectLocalStorage<'light' | 'system' | 'dark'>('theme', { defaultValue: 'system' })
+	protected readonly router = inject(Router)
 
 	protected readonly logoutMutation = injectMutation(() => this.#authOptions.logout())
 	protected readonly currentThemeIcon = computed(() => themeIconMap[this.theme()])
 
-	protected readonly menu = computed(() =>
-		this.queryList.data()?.map(type => ({
-			label: type.name,
-			id: type.id,
-			icon: `pi pi-${type.kind === 'collection' ? 'list' : 'file'}`,
-			routerLink: `/content-types/${type.id}`,
-		})),
-	)
+	protected readonly menuItems = [
+		{
+			link: '/',
+			icon: 'home',
+			label: 'Home',
+			routerLinkActiveOptions: { exact: true },
+		},
+		{
+			link: 'content-entries',
+			icon: 'file-edit',
+			label: 'Content Manager',
+		},
+		{
+			link: 'content-types',
+			icon: 'database',
+			label: 'Content Type Builder',
+		},
+	]
 
-	protected readonly contentManagerMenu = computed(() =>
-		this.queryList.data()?.map(type => ({
-			label: type.name,
-			id: type.id,
-			icon: `pi pi-${type.kind === 'collection' ? 'list' : 'file'}`,
-			routerLink: `/content-entries/${type.name}`,
-		})),
-	)
+	userItems: MenuItem[] = [
+		{
+			label: 'john@acme.com',
+			items: [
+				{ label: 'Settings', icon: 'cog' },
+				{ label: 'Notifications', icon: 'bell' },
+				{ separator: true },
+				{ label: 'Sign out', icon: 'sign-out', command: () => this.logout() },
+			],
+		},
+	]
+	protected readonly sidebarOpen = signal(false)
+
+	constructor() {
+		const document = inject(DOCUMENT)
+
+		effect(() => {
+			document.documentElement.dataset.theme = this.theme()
+		})
+	}
+
+	protected toggleSidebar(): void {
+		this.sidebarOpen.update(prev => !prev)
+	}
 
 	protected readonly themeMenu = computed<MenuItem[]>(() => [
 		{
 			label: 'Light',
-			icon: 'pi pi-sun',
-			value: 'light_mode',
+			icon: 'sun',
 			disabled: this.theme() === 'light',
 			command: (event: MenuItemCommandEvent) => this.theme.set('light'),
 		},
 		{
-			label: 'Auto',
-			icon: 'pi pi-desktop',
-			value: 'auto',
-			disabled: this.theme() === 'auto',
-			command: () => this.theme.set('auto'),
+			label: 'System',
+			icon: 'desktop',
+			disabled: this.theme() === 'system',
+			command: () => this.theme.set('system'),
 		},
 		{
 			label: 'Dark',
-			icon: 'pi pi-moon',
-			value: 'dark_mode',
+			icon: 'moon',
 			disabled: this.theme() === 'dark',
 			command: () => this.theme.set('dark'),
 		},

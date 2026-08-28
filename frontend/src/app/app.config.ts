@@ -2,14 +2,14 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessC
 import { provideRouter, withComponentInputBinding, withExperimentalAutoCleanupInjectors } from '@angular/router'
 import { appRoutes } from './app.routes'
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental'
-import { HttpErrorResponse, HttpStatusCode, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http'
+import { HttpErrorResponse, HttpStatusCode, provideHttpClient, withInterceptors } from '@angular/common/http'
 import { providePrimeNG } from 'primeng/config'
-import { createThemeConfig } from './theme.config'
 import { HubConnectionFactory } from '@ssv/signalr-client'
 import { withDevtools } from '@tanstack/angular-query-experimental/devtools'
 import { authInterceptor } from '@headless-cms/iam/data-access'
 import { provideSignalFormsConfig } from '@angular/forms/signals'
 import { NG_STATUS_CLASSES } from '@angular/forms/signals/compat'
+import Aura from '@primeuix/themes/aura'
 
 const retryConfig = (failureCount: number, error: Error): boolean => {
 	if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Unauthorized) return false
@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
 		provideBrowserGlobalErrorListeners(),
 		provideZonelessChangeDetection(),
 		provideRouter(appRoutes, withComponentInputBinding(), withExperimentalAutoCleanupInjectors()),
-		provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+		provideHttpClient(withInterceptors([authInterceptor])),
 		provideTanStackQuery(
 			new QueryClient({ defaultOptions: { queries: { retry: retryConfig }, mutations: { retry: retryConfig } } }),
 			withDevtools(),
@@ -33,7 +33,15 @@ export const appConfig: ApplicationConfig = {
 		}),
 		providePrimeNG({
 			ripple: true,
-			theme: createThemeConfig(true),
+			theme: {
+				preset: Aura,
+				options: {
+					cssLayer: {
+						name: 'primeng',
+						order: 'theme, base, primeng',
+					},
+				},
+			},
 		}),
 	],
 }

@@ -1,6 +1,6 @@
 import { Route } from '@angular/router'
-import { ContentSchemaProvider } from '@headless-cms/shared/data-access'
 import { ContentTypeSchema } from '@headless-cms/content-types/data-access'
+import { ContentSchemaProvider } from '@headless-cms/shared/data-access'
 import { LayoutComponent } from './layout/layout'
 
 export const appRoutes: Route[] = [
@@ -11,29 +11,15 @@ export const appRoutes: Route[] = [
 			{ path: '', pathMatch: 'full', redirectTo: 'content-types' },
 			{
 				path: 'content-types',
+
 				loadChildren: () =>
-					import('@headless-cms/content-types/feat-editor').then(m => m.contentTypeEditorRoutes),
+					import('@headless-cms/content-types/feat-shell').then(m => m.contentTypeShellRoutes),
 			},
 			{
-				path: 'content-entries/:typeName',
+				path: 'content-entries',
 				providers: [{ provide: ContentSchemaProvider, useClass: ContentTypeSchema }],
-				children: [
-					{
-						path: '',
-						loadComponent: () =>
-							import('@headless-cms/content-entries/feat-list').then(m => m.ContentEntriesFeatList),
-					},
-					{
-						path: 'new',
-						loadComponent: () =>
-							import('@headless-cms/content-entries/feat-editor').then(m => m.ContentEntryEditor),
-					},
-					{
-						path: ':contentEntryId',
-						loadComponent: () =>
-							import('@headless-cms/content-entries/feat-editor').then(m => m.ContentEntryEditor),
-					},
-				],
+				loadChildren: () =>
+					import('@headless-cms/content-entries/feat-shell').then(m => m.contentEntryShellRoutes),
 			},
 		],
 	},

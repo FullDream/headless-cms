@@ -3,3 +3,16 @@
 
 @plugin "tailwindcss-primeui";
 @custom-variant dark (&:where(.dark-mode, .dark-mode *));
+
+
+[data-theme='dark'] {
+	color-scheme: dark;
+}
+
+[data-theme='light'] {
+	color-scheme: light;
+}
+
+[data-theme='system'] {
+	color-scheme: light dark;
+}

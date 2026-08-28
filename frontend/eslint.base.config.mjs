@@ -20,6 +20,16 @@ export default [
 					depConstraints: [
 						{
 							sourceTag: 'type:app',
+							onlyDependOnLibsWithTags: [
+								'type:shell',
+								'type:feature',
+								'type:ui',
+								'type:data-access',
+								'type:util',
+							],
+						},
+						{
+							sourceTag: 'type:shell',
 							onlyDependOnLibsWithTags: ['type:feature', 'type:ui', 'type:data-access', 'type:util'],
 						},
 						{

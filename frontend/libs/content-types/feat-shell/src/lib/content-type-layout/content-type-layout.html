@@ -1,0 +1,83 @@
+<ng-template uiSecondarySidebarPortal>
+	<p-sidebar-header>
+		<div class="flex h-7 items-center justify-between px-1">
+			<span class="text-sm font-semibold">Content Type Builder</span>
+			<a
+				routerLink="new"
+				pButton
+				iconOnly
+				type="button"
+				severity="secondary"
+				variant="text"
+				rounded
+				pTooltip="Create content type"
+				aria-label="Create content type"
+			>
+				<svg pIcon="plus"></svg>
+			</a>
+		</div>
+	</p-sidebar-header>
+
+	<p-sidebar-content>
+		@if (queryList.isError()) {
+			<p-sidebar-group>
+				<p-message
+					[severity]="queryList.isFetching() ? 'secondary' : 'error'"
+					size="small"
+					[icon]="queryList.isFetching() ? 'pi pi-spinner pi-spin' : 'pi pi-exclamation-triangle'"
+					variant="outlined"
+				>
+
+					@if (queryList.isFetching()) {
+						Refreshing content types...
+					} @else {
+						{{ queryList.data() ? "Couldn't refresh content types." : "Couldn't load content types." }}
+
+						<button class="cursor-pointer underline decoration-1" (click)="queryList.refetch()">
+							Try again
+						</button>
+					}
+				</p-message>
+			</p-sidebar-group>
+		}
+		@if (queryList.isLoading() || queryList.data()) {
+			@for (group of menu(); track group.kind) {
+				<p-sidebar-group>
+					<p-sidebar-group-label>{{ group.label }}</p-sidebar-group-label>
+					<p-sidebar-group-content>
+						<p-sidebar-menu>
+							@if (queryList.isLoading()) {
+								@for (item of skeletons[group.kind]; track $index) {
+									<p-sidebar-menu-item>
+										<a pSidebarMenuButton aria-hidden="true"
+										   class="cursor-default hover:bg-transparent">
+											<p-skeleton/>
+										</a>
+									</p-sidebar-menu-item>
+								}
+							} @else {
+								@for (item of group.items; track item.id) {
+									<p-sidebar-menu-item>
+										<a
+											pSidebarMenuButton
+											[routerLink]="item.id"
+											routerLinkActive
+											#rla="routerLinkActive"
+											[isActive]="rla.isActive"
+										>
+											<span>{{ item.name }}</span>
+										</a>
+									</p-sidebar-menu-item>
+								} @empty {
+									<span class="text-muted-color px-3 py-2 text-sm"> {{ group.emptyLabel }} </span>
+								}
+							}
+						</p-sidebar-menu>
+					</p-sidebar-group-content>
+				</p-sidebar-group>
+			}
+		}
+	</p-sidebar-content>
+</ng-template>
+
+<router-outlet/>

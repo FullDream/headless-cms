@@ -1,0 +1,53 @@
+<ng-template uiSecondarySidebarPortal>
+	<p-sidebar-header>
+		<div class="flex items-center justify-between px-1 h-7">
+			<span class="text-sm font-semibold">Content Manager</span>
+		</div>
+	</p-sidebar-header>
+
+	<p-sidebar-content>
+		<p-sidebar-group>
+			<p-sidebar-group-label>Collection Types</p-sidebar-group-label>
+			<p-sidebar-group-content>
+				<p-sidebar-menu>
+					@for (item of collectionTypes(); track item.id) {
+					<p-sidebar-menu-item>
+						<a
+							pSidebarMenuButton
+							[routerLink]="item.name"
+							routerLinkActive
+							#rla="routerLinkActive"
+							[isActive]="rla.isActive"
+						>
+							<span>{{ item.name }}</span>
+						</a>
+					</p-sidebar-menu-item>
+					}
+				</p-sidebar-menu>
+			</p-sidebar-group-content>
+		</p-sidebar-group>
+
+		<p-sidebar-group>
+			<p-sidebar-group-label>Single Types</p-sidebar-group-label>
+			<p-sidebar-group-content>
+				<p-sidebar-menu>
+					@for (item of singleTypes(); track item.id) {
+					<p-sidebar-menu-item>
+						<a
+							pSidebarMenuButton
+							[routerLink]="item.name"
+							routerLinkActive
+							#rla="routerLinkActive"
+							[isActive]="rla.isActive"
+						>
+							<span>{{ item.name }}</span>
+						</a>
+					</p-sidebar-menu-item>
+					}
+				</p-sidebar-menu>
+			</p-sidebar-group-content>
+		</p-sidebar-group>
+	</p-sidebar-content>
+</ng-template>
+
+<router-outlet />

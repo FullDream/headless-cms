@@ -1,0 +1,13 @@
+{
+	"name": "content-types-feat-shell",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/content-types/feat-shell/src",
+	"prefix": "ct",
+	"projectType": "library",
+	"tags": ["scope:content-types", "type:shell"],
+	"targets": {
+		"lint": {
+			"executor": "@nx/eslint:lint"
+		}
+	}
+}

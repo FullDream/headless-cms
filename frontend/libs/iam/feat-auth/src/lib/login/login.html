@@ -11,8 +11,29 @@
 				<label for="email">Email</label>
 			</p-float-label>
 			<p-float-label variant="on">
-<!--				<p-password class="w-full"  inputId="password"  fluid toggleMask feedback="false" />-->
-				<input pInputText id="password"  class="w-full" [formField]="form.password"/>
+				<p-iconfield>
+					<input
+						pInputPassword
+						id="password"
+						type="password"
+						class="w-full"
+						[(mask)]="mask"
+						[formField]="form.password"
+						[type]="mask() ? 'password' : 'text'"
+					/>
+
+					<p-inputicon
+						style="cursor: pointer"
+						(click)="mask.set(!mask())"
+					>
+						@if (mask()) {
+							<svg data-p-icon="eye"></svg>
+						} @else {
+							<svg data-p-icon="eye-slash"></svg>
+						}
+					</p-inputicon>
+				</p-iconfield>
+
 				<label for="password">Password</label>
 			</p-float-label>
 

@@ -7,10 +7,14 @@ import { ButtonDirective } from 'primeng/button'
 import { injectQueryParams } from 'ngxtension/inject-query-params'
 import { Router } from '@angular/router'
 import { FloatLabel } from 'primeng/floatlabel'
-
+import { IconField } from 'primeng/iconfield'
+import { InputIcon } from 'primeng/inputicon'
+import { InputPassword } from 'primeng/inputpassword'
+import { Eye } from '@primeicons/angular/eye'
+import { EyeSlash } from '@primeicons/angular/eye-slash'
 @Component({
 	selector: 'iam-auth-login',
-	imports: [InputText, FormField, ButtonDirective, FloatLabel],
+	imports: [InputText, FormField, ButtonDirective, FloatLabel, IconField, InputIcon, InputPassword, Eye, EyeSlash],
 	templateUrl: './login.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { class: 'block h-dvh w-dvw flex items-center justify-center bg-gray-50 px-4' },
@@ -19,6 +23,8 @@ export class AuthLoginComponent {
 	readonly #authOptions = inject(AuthOptions)
 	readonly #returnUrl = injectQueryParams('returnUrl')
 	readonly router = inject(Router)
+
+	protected readonly mask = signal(true)
 
 	protected readonly loginModel = signal({ email: '', password: '' })
 	protected readonly form = form(this.loginModel, schemaPath => {

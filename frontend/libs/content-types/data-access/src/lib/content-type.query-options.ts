@@ -46,7 +46,6 @@ export class ContentTypeQueryOptions {
 	readonly list: CreateQueryOptionsWithRealtime<GetContentTypesResponse, ApiErrorResponse<GetContentTypesErrors>> = {
 		...queryOptions<GetContentTypesResponse, ApiErrorResponse<GetContentTypesErrors>>({
 			queryKey: this.#contentTypesListKey,
-			placeholderData: [],
 			queryFn: () => lastValueFrom(this.#client.get<GetContentTypesResponse>(this.#apiUrl)),
 		}),
 		connectionKey: this.#contentTypeKey,
@@ -99,9 +98,7 @@ export class ContentTypeQueryOptions {
 		// 			: undefined,
 		// 	)
 		// },
-		onSuccess: () => 
-			this.#queryClient.invalidateQueries({ queryKey: [this.#contentTypesListKey] })
-
+		onSuccess: () => this.#queryClient.invalidateQueries({ queryKey: [this.#contentTypesListKey] }),
 	})
 
 	readonly delete = mutationOptions<
