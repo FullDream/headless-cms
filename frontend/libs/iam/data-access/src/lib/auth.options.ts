@@ -16,7 +16,7 @@ type LoginVariables = {
 @Injectable({ providedIn: 'root' })
 export class AuthOptions {
 	readonly #httpClient = inject(HttpClient)
-	readonly #url = `api/iam/auth`
+	readonly #url = `api/auth`
 
 	public me(): CreateQueryOptions<void, HttpErrorResponse, void, ['iam', 'auth', 'me']> {
 		return queryOptions({
