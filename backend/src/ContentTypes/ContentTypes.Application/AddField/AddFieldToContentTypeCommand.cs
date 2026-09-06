@@ -1,8 +1,12 @@
-﻿using BuildingBlocks.Messaging;
+﻿using BuildingBlocks.Authorization;
+using BuildingBlocks.Messaging;
+using ContentTypes.Application.Authorization;
 using ContentTypes.Application.Common.ContentField;
-using ContentTypes.Application.Create;
 
 namespace ContentTypes.Application.AddField;
 
 public sealed record AddFieldToContentTypeCommand(Guid ContentTypeId, CreateContentFieldDto Field)
-	: ICommand<ContentFieldDto>;
+	: ICommand<ContentFieldDto>, IRequirePermission
+{
+	public PermissionRequirement Permission => ContentTypePermissions.Update;
+}
