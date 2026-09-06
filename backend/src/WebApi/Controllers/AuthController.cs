@@ -1,7 +1,7 @@
 using System.Security.Claims;
-using Iam.Application.Login;
-using Iam.Application.Logout;
-using Iam.Application.Register;
+using Iam.Application.Authentication.Login;
+using Iam.Application.Authentication.Logout;
+using Iam.Application.Authentication.Register;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
@@ -17,7 +17,7 @@ public sealed record RegisterRequest
 }
 
 [ApiController]
-[Route("iam/auth")]
+[Route("auth")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
 	[HttpPost("login")]
@@ -30,19 +30,19 @@ public class AuthController(IMediator mediator) : ControllerBase
 		await mediator.Send(new LogoutCommand(), cancellationToken);
 
 	[HttpPost("register")]
-	public async Task<OutcomeResult> Register(RegisterRequest request,
-		CancellationToken cancellationToken) =>
+	public async Task<OutcomeResult> Register(RegisterRequest request, CancellationToken cancellationToken) =>
 		await mediator.Send(new RegisterCommand(request.Email, request.Password), cancellationToken);
 
 	[Authorize]
 	[HttpGet("me")]
 	public IActionResult Me()
 	{
-		return Ok(new
-		{
-			id = User.FindFirstValue(ClaimTypes.NameIdentifier),
-			email = User.FindFirstValue(ClaimTypes.Email),
-			permissions = User.FindAll("permission").Select(x => x.Value)
-		});
+		return Ok(
+			new
+			{
+				id = User.FindFirstValue(ClaimTypes.NameIdentifier),
+				email = User.FindFirstValue(ClaimTypes.Email),
+				permissions = User.FindAll("permission").Select(x => x.Value)
+			});
 	}
 }

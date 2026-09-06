@@ -8,7 +8,8 @@ namespace ContentTypes.Application.GetAll;
 internal sealed class GetContentTypesHandler(IContentTypeRepository repository)
 	: IRequestHandler<GetContentTypesQuery, Result<IEnumerable<ContentTypeDto>>>
 {
-	public async Task<Result<IEnumerable<ContentTypeDto>>> Handle(GetContentTypesQuery request,
+	public async Task<Result<IEnumerable<ContentTypeDto>>> Handle(
+		GetContentTypesQuery request,
 		CancellationToken cancellationToken)
 	{
 		var contentTypes = await repository.FindManyAsync(request.Kind, cancellationToken);

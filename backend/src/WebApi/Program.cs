@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BuildingBlocks.Authorization;
 using BuildingBlocks.Messaging;
 using BuildingBlocks.Messaging.Tags;
 using BuildingBlocks.Validation;
@@ -31,6 +32,7 @@ builder.Services.AddContentEntriesInfrastructure(builder.Configuration);
 builder.Services.AddContentEntriesApplication();
 
 // MediatR
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PermissionBehavior<,>));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
@@ -55,11 +57,19 @@ builder.Services.AddOpenApi(o => o.AddSchemaTransformer<FluentValidationSchemaTr
 
 var app = builder.Build();
 
+await app.Services.InitializeIamInfrastructureAsync();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.MapOpenApi();
 	app.MapScalarApiReference();
+
+	app.Lifetime.ApplicationStarted.Register(() =>
+	{
+		foreach (var url in app.Urls)
+			app.Logger.LogInformation("Scalar: {Url}/scalar", url.TrimEnd('/'));
+	});
 }
 
 app.UseHttpsRedirection();
