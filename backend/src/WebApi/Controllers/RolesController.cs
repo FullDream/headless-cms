@@ -17,24 +17,24 @@ namespace WebApi.Controllers;
 [Route("roles")]
 public class RolesController(IMediator mediator) : ControllerBase
 {
-	[HttpGet]
+	[HttpGet(Name = "Roles")]
 	public async Task<OutcomeResult<IReadOnlyCollection<RoleDto>>> Index(CancellationToken cancellationToken) =>
 		await mediator.Send(new GetRolesQuery(), cancellationToken);
 
-	[HttpGet("{id:guid}")]
+	[HttpGet("{id:guid}", Name = "RoleById")]
 	public async Task<OutcomeResult<RoleDto>> GetById(Guid id, CancellationToken cancellationToken) =>
 		await mediator.Send(new GetRoleByIdQuery(id), cancellationToken);
 
-	[HttpPost]
+	[HttpPost(Name = "CreateRole")]
 	public async Task<OutcomeResult<RoleDto>> Create(CreateRoleDto body, CancellationToken cancellationToken) =>
 		await mediator.Send(new CreateRoleCommand(body.Name, body.Permissions), cancellationToken);
 
-	[HttpPut("{id:guid}")]
+	[HttpPut("{id:guid}", Name = "UpdateRole")]
 	public async Task<OutcomeResult<RoleDto>>
 		Update(Guid id, UpdateRoleDto body, CancellationToken cancellationToken) =>
 		await mediator.Send(new UpdateRoleCommand(id, body.Name, body.Permissions), cancellationToken);
 
-	[HttpDelete("{id:guid}")]
+	[HttpDelete("{id:guid}", Name = "DeleteRole")]
 	public async Task<OutcomeResult<RoleDto>> Delete(Guid id, CancellationToken cancellationToken) =>
 		await mediator.Send(new RemoveRoleCommand(id), cancellationToken);
 }

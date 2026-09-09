@@ -13,6 +13,6 @@ internal sealed class GetAccessResourcesQueryHandler(IAccessResourceRepository r
 	{
 		var resources = await resourceRepository.FindManyAsync(cancellationToken);
 
-		return resources.Select(resource => resource.ToDto()).ToArray();
+		return Result<IReadOnlyCollection<AccessResourceDto>>.Success(resources.ToTreeDto());
 	}
 }

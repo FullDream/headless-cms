@@ -12,7 +12,7 @@ namespace WebApi.Controllers;
 [Route("access-resources")]
 public class AccessResourcesController(IMediator mediator) : ControllerBase
 {
-	[HttpGet]
+	[HttpGet(Name = "AccessResources")]
 	public async Task<OutcomeResult<IReadOnlyCollection<AccessResourceDto>>>
 		Index(CancellationToken cancellationToken) =>
 		await mediator.Send(new GetAccessResourcesQuery(), cancellationToken);
