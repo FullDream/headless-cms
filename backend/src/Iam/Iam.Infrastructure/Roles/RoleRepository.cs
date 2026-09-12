@@ -11,7 +11,8 @@ internal sealed class RoleRepository(RoleManager<PersistenceRole> roleManager, I
 	{
 		var roles = await dbContext.Roles.AsNoTracking()
 			.Include(x => x.Permissions)
-			.OrderBy(x => x.Name)
+			.OrderBy(x => x.Kind == RoleKind.Custom)
+			.ThenBy(x => x.Name)
 			.ToArrayAsync(cancellationToken);
 
 		return roles.Select(MapToDomain).ToArray();
