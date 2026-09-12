@@ -1,17 +1,20 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using FluentValidation.Validators;
 using Microsoft.AspNetCore.OpenApi;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace WebApi.Common.OpenApi;
 
 // TODO: Refactor this
 public class FluentValidationSchemaTransformer : IOpenApiSchemaTransformer
 {
-	public Task TransformAsync(OpenApiSchema schema, OpenApiSchemaTransformerContext context,
+	public Task TransformAsync(
+		OpenApiSchema schema,
+		OpenApiSchemaTransformerContext context,
 		CancellationToken cancellationToken)
 	{
 		var applicationServices = context.ApplicationServices;
@@ -24,7 +27,7 @@ public class FluentValidationSchemaTransformer : IOpenApiSchemaTransformer
 
 		var descriptor = validator.CreateDescriptor();
 
-		if (schema.Type == "object" && schema.Properties is { Count: > 0 })
+		if (schema.Type?.HasFlag(JsonSchemaType.Object) == true && schema.Properties is { Count: > 0 })
 		{
 			foreach (var (key, value) in schema.Properties)
 			{
@@ -45,7 +48,8 @@ public class FluentValidationSchemaTransformer : IOpenApiSchemaTransformer
 						foreach (var component in rule.Components)
 						{
 							var propertyValidator = component.Validator; // IPropertyValidator
-							MapValidatorToSchema(propertyValidator, value, schema, key);
+							if (value is OpenApiSchema propertySchema)
+								MapValidatorToSchema(propertyValidator, propertySchema, schema, key);
 						}
 					}
 				}
@@ -82,7 +86,10 @@ public class FluentValidationSchemaTransformer : IOpenApiSchemaTransformer
 	}
 
 
-	private static void MapValidatorToSchema(IPropertyValidator rule, OpenApiSchema prop, OpenApiSchema parent,
+	private static void MapValidatorToSchema(
+		IPropertyValidator rule,
+		OpenApiSchema prop,
+		OpenApiSchema parent,
 		string propName)
 	{
 		// NotEmpty / NotNull -> required + minLength:1 (для строк)
@@ -90,7 +97,7 @@ public class FluentValidationSchemaTransformer : IOpenApiSchemaTransformer
 		{
 			parent.Required ??= new HashSet<string>();
 			parent.Required.Add(propName);
-			prop.Nullable = false; // OpenAPI 3.0
+			prop.Type &= ~JsonSchemaType.Null;
 		}
 
 		// NotEmpty -> required + minLength/minItems = 1
@@ -99,10 +106,10 @@ public class FluentValidationSchemaTransformer : IOpenApiSchemaTransformer
 			parent.Required ??= new HashSet<string>();
 			parent.Required.Add(propName);
 
-			if (prop.Type == "string")
+			if (prop.Type?.HasFlag(JsonSchemaType.String) == true)
 				prop.MinLength = Math.Max(prop.MinLength ?? 0, 1);
 
-			if (prop.Type == "array")
+			if (prop.Type?.HasFlag(JsonSchemaType.Array) == true)
 				prop.MinItems = Math.Max(prop.MinItems ?? 0, 1);
 		}
 
@@ -125,14 +132,14 @@ public class FluentValidationSchemaTransformer : IOpenApiSchemaTransformer
 			var (min, max) = GetRange(rule);
 			if (min is not null)
 			{
-				prop.Minimum = TryToDecimal(min);
-				prop.ExclusiveMinimum = false;
+				prop.Minimum = TryToDecimal(min)?.ToString(CultureInfo.InvariantCulture);
+				prop.ExclusiveMinimum = null;
 			}
 
 			if (max is not null)
 			{
-				prop.Maximum = TryToDecimal(max);
-				prop.ExclusiveMaximum = false;
+				prop.Maximum = TryToDecimal(max)?.ToString(CultureInfo.InvariantCulture);
+				prop.ExclusiveMaximum = null;
 			}
 		}
 
@@ -141,19 +148,19 @@ public class FluentValidationSchemaTransformer : IOpenApiSchemaTransformer
 			var (min, max) = GetRange(rule);
 			if (min is not null)
 			{
-				prop.Minimum = TryToDecimal(min);
-				prop.ExclusiveMinimum = true;
+				prop.ExclusiveMinimum = TryToDecimal(min)?.ToString(CultureInfo.InvariantCulture);
+				prop.Minimum = null;
 			}
 
 			if (max is not null)
 			{
-				prop.Maximum = TryToDecimal(max);
-				prop.ExclusiveMaximum = true;
+				prop.ExclusiveMaximum = TryToDecimal(max)?.ToString(CultureInfo.InvariantCulture);
+				prop.Maximum = null;
 			}
 		}
 
 		// EmailAddress -> format: email
-		if (rule.GetType().Name.Contains("EmailValidator") && prop.Type == "string")
+		if (rule.GetType().Name.Contains("EmailValidator") && prop.Type?.HasFlag(JsonSchemaType.String) == true)
 		{
 			prop.Format = "email";
 		}

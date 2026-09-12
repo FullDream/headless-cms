@@ -1,10 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
         <RootNamespace>ContentEntries.Infrastructure</RootNamespace>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,10 +11,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="2.1.66"/>
-        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.9"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.9"/>
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.9"/>
+        <PackageReference Include="Dapper" Version="2.1.86"/>
+        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.12"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.12"/>
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.12"/>
         <PackageReference Include="SqlKata" Version="4.0.1"/>
         <PackageReference Include="SqlKata.Execution" Version="4.0.1"/>
     </ItemGroup>
