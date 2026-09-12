@@ -1,0 +1,69 @@
+<ng-template
+	uiPageHeaderPortal
+	[breadcrumbs]="[{ label: 'Roles', routerLink: ['/settings/roles/'] }, {label: ' New role'}]"
+	[loading]="roleById.isFetching() || resources.isFetching()"
+>
+	<button pButton form="role-editor-form"  [disabled]="!canEdit() || !roleForm().dirty()" >{{isCreate() ? 'Create' : 'Update' }} </button>
+</ng-template>
+
+<form [formRoot]="roleForm" id="role-editor-form" class="mx-auto flex w-full max-w-4xl flex-col gap-10 px-10 py-5">
+	<section class="flex flex-col gap-5">
+		<div>
+			<h2 class="font-semibold">General</h2>
+			<p class="text-muted-color text-sm">Basic role information.</p>
+		</div>
+
+		<p-floatlabel variant="on">
+			<input pInputText id="on_label" [formField]="roleForm.name" autocomplete="off"/>
+			<label for="on_label">Name</label>
+		</p-floatlabel>
+		<ui-error-message [messages]="nameErrors()"/>
+	</section>
+
+	<section class="flex flex-col gap-5">
+		<div>
+			<h2 class="font-semibold">Permissions</h2>
+			<p class="text-muted-color text-sm">Configure what users with this role can access.</p>
+		</div>
+
+		@for (resource of resources.data(); track resource.id) {
+			<ng-container
+				[ngTemplateOutlet]="resourceTemplate"
+				[ngTemplateOutletContext]="{$implicit: resource, resourceForm: roleForm.resources[$index], level: 0 }"
+			/>
+		}
+	</section>
+</form>
+
+<ng-template #resourceTemplate let-resource let-resourceForm="resourceForm" let-level="level">
+	<section class="flex flex-col" [style.padding-left.rem]="level * 1.5">
+		<div class="border-surface-200 flex items-center border-b py-3">
+			<h3 class="font-semibold">{{ resource.name }}</h3>
+		</div>
+
+		<div class="divide-surface-100 divide-y">
+			@if (!resource.capabilities.length && !resource.children.length) {
+				<p class="text-muted-color text-sm">resource is empty</p>
+			}
+			
+			@for (capability of resource.capabilities; track capability.action) {
+				<div class="flex min-h-12 items-center justify-between gap-6">
+					<span class="text-sm"> {{ capability.action }} </span>
+
+					<p-selectbutton
+						unselectable
+						[options]="scopeOptions(capability)"
+						[formField]="resourceForm.capabilities[$index].scope"
+					/>
+				</div>
+			}
+		</div>
+
+		@for (child of resource.children; track child.id) {
+			<ng-container
+				[ngTemplateOutlet]="resourceTemplate"
+				[ngTemplateOutletContext]="{$implicit: child,level: level + 1}"
+			/>
+		}
+	</section>
+</ng-template>

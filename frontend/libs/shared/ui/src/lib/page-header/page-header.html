@@ -1,0 +1,23 @@
+<header class="relative border-surface-200 dark:border-surface-700 flex h-12 items-center justify-between gap-2 border-b px-4">
+	<p-breadcrumb [model]="breadcrumbItems()" styleClass="border-0! bg-transparent! p-0!">
+		<ng-template #item let-item>
+			@if (item.routerLink !== undefined) {
+				<a [routerLink]="item.routerLink" class="text-sm font-medium hover:underline">{{ item.label }}</a>
+			} @else {
+				<span class="text-sm font-medium">{{ item.label }}</span>
+			}
+		</ng-template>
+		<ng-template #separator>
+			<span class="text-muted-color text-xs">/</span>
+		</ng-template>
+	</p-breadcrumb>
+
+	<div class="flex shrink-0 items-center gap-2 empty:hidden">
+		<ng-template [cdkPortalOutlet]="portal()"/>
+	</div>
+	<p-progress-bar
+		mode="indeterminate"
+		class="absolute inset-x-0 bottom-0 h-0.5! transition-opacity  duration-150"
+		[class.opacity-0]="!showLoading()"
+		[class.opacity-100]="showLoading()" />
+</header>

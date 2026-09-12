@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-query-experimental'
+import { CreateQueryOptions, mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-query-experimental'
 import { HttpClient } from '@angular/common/http'
 import { lastValueFrom } from 'rxjs'
 import * as R from 'remeda'
@@ -43,28 +43,11 @@ export class ContentTypeQueryOptions {
 	readonly #apiUrl = `/api/${this.#contentTypeKey}`
 	readonly #queryClient = inject(QueryClient)
 
-	readonly list: CreateQueryOptionsWithRealtime<GetContentTypesResponse, ApiErrorResponse<GetContentTypesErrors>> = {
+	readonly list: CreateQueryOptions<GetContentTypesResponse, ApiErrorResponse<GetContentTypesErrors>> = {
 		...queryOptions<GetContentTypesResponse, ApiErrorResponse<GetContentTypesErrors>>({
 			queryKey: this.#contentTypesListKey,
 			queryFn: () => lastValueFrom(this.#client.get<GetContentTypesResponse>(this.#apiUrl)),
 		}),
-		connectionKey: this.#contentTypeKey,
-		realtimeHandlers: {
-			updated: (payload: ContentTypeDto) => {
-				this.#queryClient.setQueryData<ContentTypeDto>([...this.#contentTypesDetailKey, payload.id], ct =>
-					ct ? { ...ct, ...payload } : undefined,
-				)
-				this.#queryClient.setQueryData<ContentTypeDto[]>(this.#contentTypesListKey, list =>
-					list
-						? R.pipe(
-								list,
-								R.map(ct => (ct.id === payload.id ? { ...ct, ...payload } : ct)),
-								R.sortBy(R.prop('name')),
-							)
-						: undefined,
-				)
-			},
-		},
 	}
 
 	readonly create = mutationOptions<ContentTypeDto, ApiErrorResponse<PostContentTypesErrors>, CreateContentTypeDto>({
@@ -178,7 +161,7 @@ export class ContentTypeQueryOptions {
 
 	getById(
 		id?: string | null,
-	): CreateQueryOptionsWithRealtime<GetContentTypesByIdResponse, ApiErrorResponse<GetContentTypesByIdErrors>, any> {
+	): CreateQueryOptions<GetContentTypesByIdResponse, ApiErrorResponse<GetContentTypesByIdErrors>, any> {
 		const cached = this.#queryClient
 			.getQueryData<GetContentTypesResponse>(this.#contentTypesListKey)
 			?.find(ct => ct.id === id)
@@ -192,25 +175,6 @@ export class ContentTypeQueryOptions {
 				staleTime: 600000,
 				initialDataUpdatedAt: this.#queryClient.getQueryState(this.#contentTypesListKey)?.dataUpdatedAt,
 			}),
-			connectionKey: this.#contentTypeKey,
-			realtimeHandlers: {
-				updated: (payload: ContentTypeDto) => {
-					this.#queryClient.setQueryData<ContentTypeDto>([...this.#contentTypesDetailKey, payload.id], ct =>
-						ct ? { ...ct, ...payload } : undefined,
-					)
-
-					console.log('updated', payload)
-					this.#queryClient.setQueryData<ContentTypeDto[]>(this.#contentTypesListKey, list =>
-						list
-							? R.pipe(
-									list,
-									R.map(ct => (ct.id === payload.id ? { ...ct, ...payload } : ct)),
-									R.sortBy(R.prop('name')),
-								)
-							: undefined,
-					)
-				},
-			},
 		}
 	}
 }

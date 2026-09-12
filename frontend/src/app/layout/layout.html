@@ -161,11 +161,8 @@
 	</p-sidebar>
 	}
 	<!-- Main content -->
-	<p-sidebar-main>
-		<header class="border-surface-200 dark:border-surface-700 flex h-12 items-center gap-2 border-b px-4">
-			<span class="text-sm font-medium">Table Editor</span>
-			<span class="text-muted-color text-xs">/ users</span>
-		</header>
+	<p-sidebar-main uiPageHeaderOutlet #pageHeader="uiPageHeaderOutlet">
+		<ui-page-header [breadcrumbs]="pageHeader.breadcrumbs()" [loading]="loading() || pageHeader.loading()" [portal]="pageHeader.portal()" />
 
 		<main>
 			<router-outlet />

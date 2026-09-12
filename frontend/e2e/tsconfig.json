@@ -10,8 +10,7 @@
 		"noPropertyAccessFromIndexSignature": true,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
-		"ignoreDeprecations": "6.0",
-		"rootDir": "."
+		"ignoreDeprecations": "6.0"
 	},
 	"include": [
 		"**/*.ts",

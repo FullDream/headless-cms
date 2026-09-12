@@ -9,6 +9,7 @@ export const appRoutes: Route[] = [
 		component: LayoutComponent,
 		children: [
 			{ path: '', pathMatch: 'full', redirectTo: 'content-types' },
+
 			{
 				path: 'content-types',
 
@@ -20,6 +21,17 @@ export const appRoutes: Route[] = [
 				providers: [{ provide: ContentSchemaProvider, useClass: ContentTypeSchema }],
 				loadChildren: () =>
 					import('@headless-cms/content-entries/feat-shell').then(m => m.contentEntryShellRoutes),
+			},
+			{
+				path: 'settings',
+				loadComponent: () => import('./settings/settings').then(m => m.Settings),
+				children: [
+					{ path: '', pathMatch: 'full', redirectTo: 'roles' },
+					{
+						path: 'roles',
+						loadChildren: () => import('@headless-cms/iam/feat-roles').then(m => m.rolesRoutes),
+					},
+				],
 			},
 		],
 	},

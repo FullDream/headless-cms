@@ -10,8 +10,9 @@ import { AvatarModule } from 'primeng/avatar'
 import { PIcon } from '@primeicons/angular/p-icon'
 import { Tooltip } from 'primeng/tooltip'
 import { Ripple } from 'primeng/ripple'
-import { SecondarySidebar } from '@headless-cms/shared/ui'
+import { PageHeaderComponent, PageHeaderOutlet, SecondarySidebar } from '@headless-cms/shared/ui'
 import { CdkPortalOutlet } from '@angular/cdk/portal'
+import { NavigationLoading } from './navigation-loading'
 
 export type NavItem = {
 	label: string
@@ -48,6 +49,8 @@ const themeIconMap: Record<Theme, string> = {
 		Ripple,
 		CdkPortalOutlet,
 		SecondarySidebar,
+		PageHeaderComponent,
+		PageHeaderOutlet,
 	],
 })
 export class LayoutComponent {
@@ -59,7 +62,7 @@ export class LayoutComponent {
 
 	protected readonly logoutMutation = injectMutation(() => this.#authOptions.logout())
 	protected readonly currentThemeIcon = computed(() => themeIconMap[this.theme()])
-
+	protected readonly loading = inject(NavigationLoading).loading
 	protected readonly menuItems = [
 		{
 			link: '/',
@@ -76,6 +79,11 @@ export class LayoutComponent {
 			link: 'content-types',
 			icon: 'database',
 			label: 'Content Type Builder',
+		},
+		{
+			link: 'settings',
+			icon: 'cog',
+			label: 'Settings',
 		},
 	]
 
@@ -109,7 +117,7 @@ export class LayoutComponent {
 			label: 'Light',
 			icon: 'sun',
 			disabled: this.theme() === 'light',
-			command: (event: MenuItemCommandEvent) => this.theme.set('light'),
+			command: () => this.theme.set('light'),
 		},
 		{
 			label: 'System',
@@ -124,6 +132,7 @@ export class LayoutComponent {
 			command: () => this.theme.set('dark'),
 		},
 	])
+
 	protected logout(): void {
 		this.logoutMutation.mutate(undefined, {
 			onSuccess: () => {

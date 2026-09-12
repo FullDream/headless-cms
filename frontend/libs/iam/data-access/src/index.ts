@@ -1,2 +1,5 @@
 export * from './lib/auth.interceptor'
 export * from './lib/auth.options'
+export * from './lib/generated'
+export * from './lib/roles-query-options'
+export * from './lib/access-resources-query-options'

@@ -1,11 +1,17 @@
 {
-	"name": "data-access",
+	"name": "iam-data-access",
 	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "libs/iam/data-access/src",
 	"prefix": "iam",
 	"projectType": "library",
 	"tags": ["scope:iam", "type:data-access"],
 	"targets": {
+		"generate-api": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "orval --config libs/iam/data-access/orval.config.ts"
+			}
+		},
 		"lint": {
 			"executor": "@nx/eslint:lint"
 		}

@@ -1,0 +1,30 @@
+<ng-template uiSecondarySidebarPortal>
+	<p-sidebar-header>
+		<div class="flex h-7 items-center justify-between px-1">
+			<span class="text-sm font-semibold">Settings</span>
+		</div>
+	</p-sidebar-header>
+
+	<p-sidebar-content>
+		<p-sidebar-group>
+			<p-sidebar-group-label>Access management</p-sidebar-group-label>
+			<p-sidebar-group-content>
+				<p-sidebar-menu>
+					<p-sidebar-menu-item>
+						<a
+							pSidebarMenuButton
+							routerLink="roles"
+							routerLinkActive
+							#rla="routerLinkActive"
+							[isActive]="rla.isActive"
+						>
+							<span>Roles</span>
+						</a>
+					</p-sidebar-menu-item>
+				</p-sidebar-menu>
+			</p-sidebar-group-content>
+		</p-sidebar-group>
+	</p-sidebar-content>
+</ng-template>
+
+<router-outlet />

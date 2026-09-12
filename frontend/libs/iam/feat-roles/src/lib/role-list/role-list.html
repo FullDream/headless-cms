@@ -1,0 +1,46 @@
+<ng-template uiPageHeaderPortal [breadcrumbs]="[{ label: 'Roles' }]" [loading]="roles.isFetching()">
+	<button pButton routerLink="new" severity="secondary">
+		<svg data-p-icon="plus"></svg>
+		Create role
+	</button>
+</ng-template>
+
+<ui-dynamic-table [columnDefs]="columns" [data]="roles.data()" [loading]="roles.isLoading()">
+	<ng-template uiDynamicTableCell="kind" let-value="value">
+		@if (value === 'superAdmin') {
+			<p-tag value="System"/>
+		}
+	</ng-template>
+
+	<ng-template uiDynamicTableCell="actions" let-role>
+
+		@if (role.kind === 'custom') {
+			<button
+				pButton
+				severity="secondary"
+				iconOnly
+				text
+				pTooltip="More actions"
+				tooltipPosition="left"
+				tooltipEvent="both"
+				aria-label="More actions"
+				(click)="removeRole.mutate(role.id)"
+			>
+				<svg data-p-icon="ellipsis-v" size="20"></svg>
+			</button>
+		}
+		<a
+			pButton
+			[routerLink]="[role.id]"
+			iconOnly
+			severity="secondary"
+			text
+			pTooltip="Open role"
+			tooltipPosition="left"
+			tooltipEvent="both"
+			aria-label="Open role"
+		>
+			<svg data-p-icon="chevron-right" size="20"></svg>
+		</a>
+	</ng-template>
+</ui-dynamic-table>
