@@ -1,11 +1,11 @@
+using BuildingBlocks.Presentation.Results;
 using Iam.Application.AccessResources;
 using Iam.Application.AccessResources.GetAccessResources;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common.Results;
 
-namespace WebApi.Controllers;
+namespace Iam.Presentation.Controllers;
 
 [Authorize]
 [ApiController]

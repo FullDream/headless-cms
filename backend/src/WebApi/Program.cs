@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using BuildingBlocks.Authorization;
 using BuildingBlocks.Messaging;
 using BuildingBlocks.Messaging.Tags;
+using BuildingBlocks.Presentation.Results;
 using BuildingBlocks.Validation;
 using ContentEntries.Application;
 using ContentEntries.Infrastructure;
@@ -10,10 +11,10 @@ using ContentTypes.Application;
 using ContentTypes.Infrastructure;
 using Iam.Application;
 using Iam.Infrastructure;
+using Iam.Presentation;
 using MediatR;
 using Scalar.AspNetCore;
 using WebApi.Common.OpenApi;
-using WebApi.Common.Results;
 using WebApi.Common.Serialization;
 using WebApi.Dispatchers;
 using WebApi.Hubs;
@@ -43,7 +44,10 @@ builder.Services.AddSingleton<IEventDispatcher<ContentTypeEventTag>, ContentType
 var enumConverter = new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false);
 
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(enumConverter));
-builder.Services.AddControllers(options => options.Conventions.Add(new OutcomeResultProducesResponseConvention()))
+builder
+	.Services
+	.AddControllers(options => options.Conventions.Add(new OutcomeResultProducesResponseConvention()))
+	.AddIamPresentation()
 	.AddJsonOptions(options =>
 	{
 		options.JsonSerializerOptions.Converters.Add(enumConverter);

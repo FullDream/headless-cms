@@ -1,3 +1,4 @@
+using BuildingBlocks.Presentation.Results;
 using ContentTypes.Application.AddField;
 using ContentTypes.Application.Common.ContentField;
 using ContentTypes.Application.Common.ContentType;
@@ -13,7 +14,6 @@ using ContentTypes.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common.Results;
 using WebApi.Contracts.ContentTypes;
 
 namespace WebApi.Controllers;

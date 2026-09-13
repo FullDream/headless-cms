@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Result;
 
-namespace WebApi.Common.Results;
+namespace BuildingBlocks.Presentation.Results;
 
 public class OutcomeResult(Result result) : ActionResult
 {

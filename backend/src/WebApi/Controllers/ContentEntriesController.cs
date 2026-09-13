@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
+using BuildingBlocks.Presentation.Results;
 using ContentEntries.Application.Create;
 using ContentEntries.Application.List;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common.Results;
 
 namespace WebApi.Controllers;
 
@@ -16,7 +16,9 @@ public class ContentEntriesController(IMediator mediator) : ControllerBase
 		await mediator.Send(new ListContentEntriesQuery(name));
 
 	[HttpPost]
-	public async Task<OutcomeResult<IReadOnlyDictionary<string, object?>>> CreateEntry(string name,
-		Dictionary<string, JsonElement> body, CancellationToken cancellationToken) =>
+	public async Task<OutcomeResult<IReadOnlyDictionary<string, object?>>> CreateEntry(
+		string name,
+		Dictionary<string, JsonElement> body,
+		CancellationToken cancellationToken) =>
 		await mediator.Send(new CreateContentEntryCommand(name, body), cancellationToken);
 }

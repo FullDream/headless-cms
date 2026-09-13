@@ -1,13 +1,13 @@
-﻿using Iam.Application.Users;
+﻿using BuildingBlocks.Presentation.Results;
+using Iam.Application.Users;
 using Iam.Application.Users.GetUserById;
 using Iam.Application.Users.GetUsers;
 using Iam.Application.Users.UpdateUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common.Results;
 
-namespace WebApi.Controllers;
+namespace Iam.Presentation.Controllers;
 
 [Authorize]
 [ApiController]

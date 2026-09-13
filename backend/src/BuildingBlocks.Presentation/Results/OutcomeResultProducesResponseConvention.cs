@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace WebApi.Common.Results;
+namespace BuildingBlocks.Presentation.Results;
 
 public class OutcomeResultProducesResponseConvention : IApplicationModelConvention
 {
@@ -42,10 +42,8 @@ public class OutcomeResultProducesResponseConvention : IApplicationModelConventi
 				payloadType = returnType.GetGenericArguments()[0];
 
 				if (NeedsProduces(action, StatusCodes.Status200OK))
-					action.Filters.Add(new ProducesResponseTypeAttribute(
-						payloadType,
-						StatusCodes.Status200OK,
-						"application/json"));
+					action.Filters.Add(
+						new ProducesResponseTypeAttribute(payloadType, StatusCodes.Status200OK, "application/json"));
 			}
 			else if (NeedsProduces(action, StatusCodes.Status204NoContent))
 				action.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status204NoContent));
@@ -71,32 +69,31 @@ public class OutcomeResultProducesResponseConvention : IApplicationModelConventi
 			}
 
 			foreach (var status in errorStatuses.Where(status => NeedsProduces(action, status)))
-				action.Filters.Add(new ProducesResponseTypeAttribute(
-					ErrorResponses[status],
-					status,
-					"application/problem+json"));
+				action.Filters.Add(
+					new ProducesResponseTypeAttribute(ErrorResponses[status], status, "application/problem+json"));
 		}
 	}
 
 	private static bool IsHttpMethod(ActionModel action, string method)
 	{
 		return action.Selectors.Any(s =>
-			s.ActionConstraints?.OfType<HttpMethodActionConstraint>()
+			s
+				.ActionConstraints
+				?.OfType<HttpMethodActionConstraint>()
 				.Any(c => c.HttpMethods.Contains(method, StringComparer.OrdinalIgnoreCase)) == true);
 	}
 
 	private static bool HasNoRoutePlaceholders(ActionModel action) =>
 		action.Selectors.All(s =>
-			string.IsNullOrEmpty(s.AttributeRouteModel?.Template) ||
-			(!s.AttributeRouteModel.Template.Contains('{') && !s.AttributeRouteModel.Template.Contains('}')));
+			string.IsNullOrEmpty(s.AttributeRouteModel?.Template) || (!s.AttributeRouteModel.Template.Contains('{') &&
+			                                                          !s.AttributeRouteModel.Template.Contains('}')));
 
 	private static bool IsListGet(ActionModel action, Type payload)
 	{
-		return
-			payload.IsArray ||
-			(payload.IsGenericType && (payload.GetGenericTypeDefinition() == typeof(IEnumerable<>) ||
-			                           payload.GetGenericTypeDefinition() == typeof(IAsyncEnumerable<>))) ||
-			typeof(IEnumerable).IsAssignableFrom(payload);
+		return payload.IsArray ||
+		       (payload.IsGenericType && (payload.GetGenericTypeDefinition() == typeof(IEnumerable<>) ||
+		                                  payload.GetGenericTypeDefinition() == typeof(IAsyncEnumerable<>))) ||
+		       typeof(IEnumerable).IsAssignableFrom(payload);
 	}
 
 	private static bool NeedsProduces(ActionModel action, int status) =>

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using BuildingBlocks.Presentation.Results;
 using Iam.Application.Authentication.Login;
 using Iam.Application.Authentication.Logout;
 using Iam.Application.Authentication.Register;
@@ -6,15 +7,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common.Results;
+using RegisterRequest = Iam.Presentation.Contracts.Authentication.RegisterRequest;
 
-namespace WebApi.Controllers;
-
-public sealed record RegisterRequest
-{
-	public string Email { get; init; } = default!;
-	public string Password { get; init; } = default!;
-}
+namespace Iam.Presentation.Controllers;
 
 [ApiController]
 [Route("auth")]

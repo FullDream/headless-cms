@@ -21,6 +21,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj"/>
+        <ProjectReference Include="..\Iam\Iam.Presentation\Iam.Presentation.csproj"/>
         <ProjectReference Include="..\ContentEntries\ ContentEntries.Infrastructure\ContentEntries.Infrastructure.csproj"/>
         <ProjectReference Include="..\ContentEntries\ContentEntries.Application\ContentEntries.Application.csproj"/>
         <ProjectReference Include="..\ContentTypes\ContentTypes.Application\ContentTypes.Application.csproj"/>

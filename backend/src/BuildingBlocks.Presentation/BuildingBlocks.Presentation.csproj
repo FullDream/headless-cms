@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        <ProjectReference Include="..\BuildingBlocks\BuildingBlocks.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Using Include="Microsoft.AspNetCore.Http"/>
+        <Using Include="Microsoft.Extensions.DependencyInjection"/>
+    </ItemGroup>
+</Project>
