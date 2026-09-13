@@ -68,6 +68,17 @@ internal sealed class DatabaseInitializer(IamDbContext dbContext, IRoleRepositor
 				Capability(PermissionAction.Update, AccessScope.All),
 				Capability(PermissionAction.Delete, AccessScope.All)
 			]);
+
+		yield return Resource(
+			SystemAccessResourceIds.Users,
+			"users",
+			"Users",
+			[
+				Capability(PermissionAction.Read, AccessScope.All),
+				Capability(PermissionAction.Create, AccessScope.All),
+				Capability(PermissionAction.Update, AccessScope.All),
+				Capability(PermissionAction.Delete, AccessScope.All)
+			]);
 	}
 
 	private static AccessResource Resource(

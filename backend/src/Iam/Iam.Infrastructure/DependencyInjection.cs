@@ -2,6 +2,7 @@
 using Iam.Application.Abstractions.Authentication;
 using Iam.Domain.AccessResource;
 using Iam.Domain.Roles;
+using Iam.Domain.Users;
 using Iam.Infrastructure.AccessResources;
 using Iam.Infrastructure.Authentication;
 using Iam.Infrastructure.Authorization;
@@ -29,7 +30,8 @@ public static class DependencyInjection
 
 		services.AddHybridCache();
 
-		services.AddAuthentication(IdentityConstants.ApplicationScheme)
+		services
+			.AddAuthentication(IdentityConstants.ApplicationScheme)
 			.AddCookie(
 				IdentityConstants.ApplicationScheme,
 				options =>
@@ -47,7 +49,8 @@ public static class DependencyInjection
 					};
 				});
 
-		services.AddIdentityCore<PersistenceUser>()
+		services
+			.AddIdentityCore<PersistenceUser>()
 			.AddRoles<PersistenceRole>()
 			.AddEntityFrameworkStores<IamDbContext>()
 			.AddSignInManager()
@@ -56,6 +59,7 @@ public static class DependencyInjection
 		services.AddScoped<DatabaseInitializer>();
 		services.AddScoped<IAuthService, AuthService>();
 		services.AddScoped<IRoleRepository, RoleRepository>();
+		services.AddScoped<IUserRepository, UserRepository>();
 		services.AddScoped<IAccessResourceRepository, AccessResourceRepository>();
 		services.AddScoped<IPermissionChecker, PermissionChecker>();
 		services.AddScoped<RoleSnapshotProvider>();
