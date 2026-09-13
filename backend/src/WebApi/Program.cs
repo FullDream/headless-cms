@@ -46,7 +46,8 @@ var enumConverter = new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allo
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(enumConverter));
 builder
 	.Services
-	.AddControllers(options => options.Conventions.Add(new OutcomeResultProducesResponseConvention()))
+	.AddControllers()
+	.AddOutcomeResults()
 	.AddIamPresentation()
 	.AddJsonOptions(options =>
 	{
